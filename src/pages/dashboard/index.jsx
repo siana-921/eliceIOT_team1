@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Chart from "../../components/Chart/DoughnutChart/DoughnutChart";
+import HumidityChart from "@/components/Chart/DoughnutChart/DoughnutChart";
+("../../components/Chart/DoughnutChart/DoughnutChart");
 import {
   chartData,
   chartOptions,
 } from "../../components/Chart/DoughnutChart/Data";
 import LineChart from "@/components/Chart/LineChart/LineChart";
+import TemperatureChart from "@/components/Chart/TemperatureChart/TemperatureChart";
 
 const INTERVAL_GAP = 5000;
 
@@ -21,9 +23,19 @@ export default function Dashboard() {
         <li>Controller</li>
         <li>My Page</li>
       </div>
-      <Chart />
-      <Chart />
+      <TemperatureChart />
+      <HumidityChart />
+      <div>
+        <p>1,234</p>
+        <p>토양수분</p>
+      </div>
+      <div>
+        <p>🔺</p>
+        <p>10</p>
+      </div>
       <LineChart />
+      <h1>모터펌프!!!</h1>
+      <h1>식물 LED</h1>
     </div>
   );
 }
