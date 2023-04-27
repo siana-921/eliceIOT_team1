@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Chart from "../../components/Chart/DoughnutChart/DoughnutChart";
@@ -12,7 +13,15 @@ const INTERVAL_GAP = 5000;
 export default function Dashboard() {
   return (
     <div>
-      <p>대시보드입니다</p>
+      <h1>
+        <Link href="/">Basil Farm</Link>
+      </h1>
+      <div>
+        <li>Dashboard</li>
+        <li>Controller</li>
+        <li>My Page</li>
+      </div>
+      <Chart />
       <Chart />
       <LineChart />
     </div>
