@@ -9,12 +9,13 @@ const ControlCard = () => {
   return (
     <ControlPanel>
       <FirstPanel>
-        <Title>데이터</Title>
+        <Title style={{ marginLeft: "-25px" }}>데이터</Title>
         <BarGraph></BarGraph>
       </FirstPanel>
       <SecondPanel>
         <Title>목표 습도</Title>
-        <Goal></Goal>%
+        <Goal></Goal>
+        <span style={{ fontSize: "86px" }}>%</span>
         <CurrentCondition>
           현재 습도가 목표 습도에 비해 2% 부족합니다.
         </CurrentCondition>
