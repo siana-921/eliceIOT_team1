@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Chart from "./Chart/chart";
+import Chart from "./chart/chart";
+import { chartData, chartOptions } from "./chart/data";
 
 const INTERVAL_GAP = 5000;
 
