@@ -32,29 +32,7 @@ const Watering = () => {
   return (
     <Section>
       <Contents>
-        <h2
-          style={{
-            padding: "1em",
-            paddingBottom: 0,
-            fontSize: "3.6em",
-            fontWeight: "600",
-            color: "#000",
-          }}
-        >
-          내 바질의 습도는 . .
-        </h2>
-        <h3
-          style={{
-            marginTop: "-0.2em",
-            padding: "0.1em",
-            fontFamily: "Boba_Cups",
-            fontSize: "16em",
-            fontWeight: "bold",
-            color: "#00a86b",
-          }}
-        >
-          32%
-        </h3>
+        <Title>습도 제어</Title>
         <ControlCard></ControlCard>
       </Contents>
       <Background>
@@ -148,9 +126,14 @@ const wavemove2 = keyframes`
 const Section = styled.div``;
 const Curtain = styled.div`
   width: 100%;
-  height: 40%;
+  height: 50%;
   background: linear-gradient(to top, transparent, white);
   z-index: 4;
+`;
+const Title = styled.h1`
+  padding: 80px 0 30px 0;
+  font-size: 96px;
+  text-align: center;
 `;
 const Contents = styled.div`
   position: relative;
