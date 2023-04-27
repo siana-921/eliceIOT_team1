@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
@@ -23,7 +24,6 @@ const Watering = () => {
     if (!isWaveVisible) {
       const first = firstwave.current;
       const second = secondwave.current;
-      console.log("사라졌당");
       // conA의 위치를 conB의 오른쪽에 위치시키기
       first.style.transform = `translateX(${second.offsetWidth}px)`;
     }
@@ -39,65 +39,81 @@ const Watering = () => {
         <Curtain></Curtain>
         <Waves>
           <Wave1 ref={firstwave}>
-            <img
+            <Image
               src="/images/wave1_2.png"
               style={{ opacity: 0.48 }}
               alt="Wave"
+              width={5000}
+              height={1090}
             />
           </Wave1>
           <Wave2 ref={secondwave}>
-            <img
+            <Image
               src="/images/wave1_2.png"
               style={{ opacity: 0.48 }}
               alt="Wave"
+              width={5000}
+              height={1090}
             />
           </Wave2>
         </Waves>
         <Waves>
           <Wave3 ref={firstwave}>
-            <img
+            <Image
               src="/images/wave3_2.png"
               style={{ opacity: 0.68 }}
               alt="Wave"
+              width={5000}
+              height={1090}
             />
           </Wave3>
           <Wave4 ref={secondwave}>
-            <img
+            <Image
               src="/images/wave3_2.png"
               style={{ opacity: 0.68 }}
               alt="Wave"
+              width={5000}
+              height={1090}
             />
           </Wave4>
         </Waves>
         <Waves>
           <Wave5>
-            <img
+            <Image
               src="/images/wave4_2.png"
               style={{ opacity: 0.48 }}
               alt="Wave"
+              width={5000}
+              height={1090}
             />
           </Wave5>
           <Wave6>
-            <img
+            <Image
               src="/images/wave4_2.png"
               style={{ opacity: 0.48 }}
               alt="Wave"
+              width={5000}
+              height={1090}
             />
           </Wave6>
         </Waves>
         <Waves>
           <Wave7>
-            <img
+            <Image
               src="/images/wave1_2.png"
               style={{ opacity: 0.55 }}
               alt="Wave"
+              width={5000}
+              height={1090}
             />
           </Wave7>
           <Wave8>
-            <img
+            <Image
               src="/images/wave1_2.png"
               style={{ opacity: 0.55 }}
               alt="Wave"
+              width={5000}
+              height={1090}
             />
           </Wave8>
         </Waves>

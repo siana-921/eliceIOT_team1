@@ -3,18 +3,34 @@ import styled from "@emotion/styled";
 
 import Bar from "../elements/bar";
 
+import nowHumidity from "../../../public/dummydata/nowHumidity";
+
 const BarGraph = () => {
   return (
     <div>
       <Graph>
-        <Title>현재 습도</Title>
-        <Bar percent={42} thickness={17}></Bar>
-        <SubTitle style={{ marginTop: "30px" }}>최고 습도</SubTitle>
-        <Bar percent={82} thickness={12}></Bar>
-        <SubTitle>최저 습도</SubTitle>
-        <Bar percent={17} thickness={12}></Bar>
-        <SubTitle>평균 습도</SubTitle>
-        <Bar percent={34} thickness={12}></Bar>
+        <Title>현재 습도 ({nowHumidity.now})</Title>
+        <Bar percent={nowHumidity.now} thickness={17} color={"#7ACFDE"}></Bar>
+        <SubTitle style={{ marginTop: "30px" }}>
+          최고 습도 ({nowHumidity.maximum})
+        </SubTitle>
+        <Bar
+          percent={nowHumidity.maximum}
+          thickness={12}
+          color={"#000000"}
+        ></Bar>
+        <SubTitle>최저 습도 ({nowHumidity.minimum})</SubTitle>
+        <Bar
+          percent={nowHumidity.minimum}
+          thickness={12}
+          color={"#000000"}
+        ></Bar>
+        <SubTitle>평균 습도 ({nowHumidity.average})</SubTitle>
+        <Bar
+          percent={nowHumidity.average}
+          thickness={12}
+          color={"#000000"}
+        ></Bar>
       </Graph>
     </div>
   );
