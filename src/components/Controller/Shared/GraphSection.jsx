@@ -12,7 +12,11 @@ const GraphSection = (props) => {
         <Title>
           현재 {props.text} ({nowHumidity.now})
         </Title>
-        <Bar percent={nowHumidity.now} thickness={17} color={"#888888"}></Bar>
+        <Bar
+          percent={nowHumidity.now}
+          thickness={17}
+          color={"rgba(0,0, 0, 0.35)"}
+        ></Bar>
         <SubTitle style={{ marginTop: "30px" }}>
           최고 {props.text} ({nowHumidity.maximum})
         </SubTitle>
