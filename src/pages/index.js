@@ -6,13 +6,13 @@ export default function Home() {
   return (
     <main>
       <div>
-        <MainPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted>
-          <MainPageVideoWrap>
-            <MainPageTextDiv>
-              <MainPageText>바질을 키우는 가장 스마트한 방법</MainPageText>
-            </MainPageTextDiv>
-          </MainPageVideoWrap>
-        </MainPageVideo>
+        <MainPageVideo
+          src="/images/backgroundVideo.mp4"
+          loop
+          autoPlay
+          muted
+        ></MainPageVideo>
+        <MainPageText>바질을 키우는 가장 스마트한 방법</MainPageText>
       </div>
     </main>
   );
@@ -33,7 +33,7 @@ const MainPageVideoWrap = styled.div`
 
 const MainPageTextDiv = styled.div`
   z-index: -1;
-  font-color: rgba(#ffffff);
+  color: rgba(#ffffff);
 `;
 
 const MainPageText = styled.h1`
@@ -42,6 +42,6 @@ const MainPageText = styled.h1`
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: x-large;
-  z-index: -1;
-  font-color: rgba(#ffffff);
+  z-index: 5;
+  color: #ffffff;
 `;
