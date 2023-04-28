@@ -1,17 +1,18 @@
 import Link from "next/link";
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 export default function Home() {
   return (
     <main>
       <div>
-        <MainPageVideoWrap>
-          <MainPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted>
+        <MainPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted>
+          <MainPageVideoWrap>
             <MainPageTextDiv>
               <MainPageText>바질을 키우는 가장 스마트한 방법</MainPageText>
             </MainPageTextDiv>
-          </MainPageVideo>
-        </MainPageVideoWrap>
+          </MainPageVideoWrap>
+        </MainPageVideo>
       </div>
     </main>
   );
@@ -35,10 +36,12 @@ const MainPageTextDiv = styled.div`
   font-color: rgba(#ffffff);
 `;
 
-const MainPageText = styled.p`
+const MainPageText = styled.h1`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: x-large;
+  z-index: -1;
+  font-color: rgba(#ffffff);
 `;
