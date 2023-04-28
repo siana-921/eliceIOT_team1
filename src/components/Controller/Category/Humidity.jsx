@@ -36,7 +36,7 @@ const Humidity = () => {
     <HumiditySection>
       <Contents>
         <Title>습도 제어</Title>
-        <Panel subject="humidity" text="습도"></Panel>
+        <Panel subject="humidity" category="습도"></Panel>
       </Contents>
       <Background>
         <Curtain></Curtain>

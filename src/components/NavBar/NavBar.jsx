@@ -1,10 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import styled from "@emotion/styled";
+import Image from "next/image";
+import img from "../../../public/images/logo.png";
 
 const NavBar = () => {
   return (
     <NavigationBar>
+      <LogoLink>
+        <Image src={img} width={150} />
+      </LogoLink>
       <Links>
         <Link href="/dashboard">Dashboard</Link>
         <Space>|</Space>
@@ -27,6 +32,14 @@ const NavigationBar = styled.nav`
   z-index: 999;
 `;
 
+const LogoLink = styled.div`
+  width: 150px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  padding-left: 1em;
+  transform: translateY(-50%);
+`;
 const Links = styled.div`
   position: absolute;
   top: 50%;
