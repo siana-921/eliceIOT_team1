@@ -6,6 +6,9 @@ import { keyframes } from "@emotion/react";
 import Panel from "../Shared/Panel";
 
 const Humidity = () => {
+  //wave 이미지 같은거 2개로 계속 왼쪽으로 이동
+  //한 이미지가 왼쪽으로 완전히 없어지면(isWaveVisible false)
+  //다음 이미지의 오른쪽으로 이동. 반복
   const [isWaveVisible, setIsWaveVisible] = useState(true);
   const firstwave = useRef();
   const secondwave = useRef();
@@ -30,7 +33,7 @@ const Humidity = () => {
   }, [isWaveVisible]);
 
   return (
-    <Section>
+    <HumiditySection>
       <Contents>
         <Title>습도 제어</Title>
         <Panel subject="humidity" text="습도"></Panel>
@@ -118,7 +121,7 @@ const Humidity = () => {
           </Wave8>
         </Waves>
       </Background>
-    </Section>
+    </HumiditySection>
   );
 };
 
@@ -139,7 +142,10 @@ const wavemove2 = keyframes`
     }
 `;
 
-const Section = styled.div``;
+const HumiditySection = styled.div`
+  width: 100vw;
+  height: 100vh;
+`;
 const Curtain = styled.div`
   width: 100%;
   height: 50%;
@@ -170,7 +176,7 @@ const Background = styled.div`
 `;
 const Waves = styled.div`
   position: absolute;
-  top: -45%;
+  top: -55%;
   width: 10000px;
   display: flex;
   z-index: 3;
