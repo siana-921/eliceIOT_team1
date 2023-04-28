@@ -5,27 +5,33 @@ import Bar from "../elements/bar";
 
 import nowHumidity from "../../../public/dummydata/nowHumidity";
 
-const BarGraph = () => {
+const BarGraph = (props) => {
   return (
     <div>
       <Graph>
-        <Title>현재 습도 ({nowHumidity.now})</Title>
-        <Bar percent={nowHumidity.now} thickness={17} color={"#7ACFDE"}></Bar>
+        <Title>
+          현재 {props.text} ({nowHumidity.now})
+        </Title>
+        <Bar percent={nowHumidity.now} thickness={17} color={"#888888"}></Bar>
         <SubTitle style={{ marginTop: "30px" }}>
-          최고 습도 ({nowHumidity.maximum})
+          최고 {props.text} ({nowHumidity.maximum})
         </SubTitle>
         <Bar
           percent={nowHumidity.maximum}
           thickness={12}
           color={"#000000"}
         ></Bar>
-        <SubTitle>최저 습도 ({nowHumidity.minimum})</SubTitle>
+        <SubTitle>
+          최저 {props.text} ({nowHumidity.minimum})
+        </SubTitle>
         <Bar
           percent={nowHumidity.minimum}
           thickness={12}
           color={"#000000"}
         ></Bar>
-        <SubTitle>평균 습도 ({nowHumidity.average})</SubTitle>
+        <SubTitle>
+          평균 {props.text} ({nowHumidity.average})
+        </SubTitle>
         <Bar
           percent={nowHumidity.average}
           thickness={12}

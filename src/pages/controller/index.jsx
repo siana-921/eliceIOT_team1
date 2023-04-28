@@ -1,4 +1,4 @@
-import Watering from "../../components/controller_comp/watering";
+import Watering from "../../components/Controller/watering";
 
 const Controller = () => {
   return (

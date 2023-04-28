@@ -33,7 +33,7 @@ const Watering = () => {
     <Section>
       <Contents>
         <Title>습도 제어</Title>
-        <ControlCard></ControlCard>
+        <ControlCard subject="humidity" text="습도"></ControlCard>
       </Contents>
       <Background>
         <Curtain></Curtain>
@@ -172,7 +172,6 @@ const Waves = styled.div`
   position: absolute;
   top: -45%;
   width: 10000px;
-  height: 500px;
   display: flex;
   z-index: 3;
 
