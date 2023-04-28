@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "@emotion/styled";
 import GraphSection from "./GraphSection";
-import SimpleTable from "../elements/simpleTable";
+import SimpleTable from "../../elements/simpleTable";
 
 //임시 import --- 나중에 props에 따라 각자 다른 api로 연결해서 사용
 //GraphSection와 SimpleTable에도 여기에서 사용되는 컴포넌트는 습도에 관련된 데이터를 가져오라고 props로 알려줘야할듯
-import humidity from "../../../public/dummydata/humidityLog.json";
+import humidity from "../../../../public/dummydata/humidityLog.json";
 
 const Panel = (props) => {
   return (
@@ -27,8 +27,6 @@ const Panel = (props) => {
     </ControlPanel>
   );
 };
-
-export default Panel;
 
 const ControlPanel = styled.div`
   width: 80vw;
@@ -78,6 +76,8 @@ const Goal = styled.input`
 const CurrentCondition = styled.p`
   font-size: 15px;
 `;
+
+export default Panel;
 
 //#112839
 /*

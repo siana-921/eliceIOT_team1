@@ -3,7 +3,7 @@ import Image from "next/image";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
-import Panel from "../Panel";
+import Panel from "../Shared/Panel";
 
 const Humidity = () => {
   const [isWaveVisible, setIsWaveVisible] = useState(true);

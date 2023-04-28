@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import Bar from "../elements/bar";
+import Bar from "../../elements/bar";
 
-import nowHumidity from "../../../public/dummydata/nowHumidity";
+import nowHumidity from "../../../../public/dummydata/nowHumidity";
 
 const GraphSection = (props) => {
   return (
