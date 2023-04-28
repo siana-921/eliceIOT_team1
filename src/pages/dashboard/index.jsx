@@ -34,8 +34,12 @@ export default function Dashboard() {
         <p>10</p>
       </div>
       <LineChart />
-      <h1>모터펌프!!!</h1>
-      <h1>식물 LED</h1>
+      <div>
+        <h1>모터펌프!!!</h1>
+      </div>
+      <div>
+        <h1>식물 LED</h1>
+      </div>
     </div>
   );
 }
