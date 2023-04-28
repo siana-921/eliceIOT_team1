@@ -1,18 +1,18 @@
 import React from "react";
 import styled from "@emotion/styled";
-import BarGraph from "./BarGraph";
+import GraphSection from "./GraphSection";
 import SimpleTable from "../elements/simpleTable";
 
 //임시 import --- 나중에 props에 따라 각자 다른 api로 연결해서 사용
-//BarGraph와 SimpleTable에도 여기에서 사용되는 컴포넌트는 습도에 관련된 데이터를 가져오라고 props로 알려줘야할듯
+//GraphSection와 SimpleTable에도 여기에서 사용되는 컴포넌트는 습도에 관련된 데이터를 가져오라고 props로 알려줘야할듯
 import humidity from "../../../public/dummydata/humidityLog.json";
 
-const ControlCard = (props) => {
+const Panel = (props) => {
   return (
     <ControlPanel>
       <FirstPanel>
         <Title style={{ marginLeft: "-25px" }}>데이터</Title>
-        <BarGraph text={props.text}></BarGraph>
+        <GraphSection text={props.text}></GraphSection>
       </FirstPanel>
       <SecondPanel>
         <Title>목표 {props.text}</Title>
@@ -28,7 +28,7 @@ const ControlCard = (props) => {
   );
 };
 
-export default ControlCard;
+export default Panel;
 
 const ControlPanel = styled.div`
   width: 80vw;

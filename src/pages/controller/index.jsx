@@ -1,9 +1,9 @@
-import Watering from "../../components/Controller/watering";
+import Humidity from "../../components/Controller/Humidity/Humidity";
 
 const Controller = () => {
   return (
     <div>
-      <Watering></Watering>
+      <Humidity></Humidity>
     </div>
   );
 };

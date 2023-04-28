@@ -3,9 +3,9 @@ import Image from "next/image";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
-import ControlCard from "./control_card";
+import Panel from "../Panel";
 
-const Watering = () => {
+const Humidity = () => {
   const [isWaveVisible, setIsWaveVisible] = useState(true);
   const firstwave = useRef();
   const secondwave = useRef();
@@ -33,7 +33,7 @@ const Watering = () => {
     <Section>
       <Contents>
         <Title>습도 제어</Title>
-        <ControlCard subject="humidity" text="습도"></ControlCard>
+        <Panel subject="humidity" text="습도"></Panel>
       </Contents>
       <Background>
         <Curtain></Curtain>
@@ -206,4 +206,4 @@ const Wave7 = styled.div`
 const Wave8 = styled.div`
   animation: ${wavemove2} 20s linear infinite;
 `;
-export default Watering;
+export default Humidity;

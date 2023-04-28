@@ -5,7 +5,7 @@ import Bar from "../elements/bar";
 
 import nowHumidity from "../../../public/dummydata/nowHumidity";
 
-const BarGraph = (props) => {
+const GraphSection = (props) => {
   return (
     <div>
       <Graph>
@@ -58,4 +58,4 @@ const Graph = styled.div`
   width: 100%;
   height: 100%;
 `;
-export default BarGraph;
+export default GraphSection;
