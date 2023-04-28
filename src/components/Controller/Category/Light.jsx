@@ -5,7 +5,59 @@ import { keyframes } from "@emotion/react";
 
 import Panel from "../Shared/Panel";
 
-const Humidity = () => {
-  return <div>빛..</div>;
+const Light = () => {
+  return (
+    <LightFrame>
+      <Contents>
+        <Title>빛 세기 제어</Title>
+        <Panel subject="humidity" text="빛 세기"></Panel>
+      </Contents>
+      <Beam></Beam>
+    </LightFrame>
+  );
 };
-export default Humidity;
+
+const LightFrame = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+`;
+
+const Title = styled.h1`
+  padding: 80px 0 30px 0;
+  font-size: 96px;
+  text-align: center;
+`;
+const Contents = styled.div`
+  position: relative;
+  text-align: center;
+  z-index: 5;
+  color: black;
+  font-family: pretendard;
+`;
+const beamAnimation = keyframes`
+  0% {
+    border-bottom-color: #FFAFBD;
+  }
+  50% {
+    border-bottom-color: #FFC3A0;
+  }
+  100% {
+    border-bottom-color: #8EC5FC;
+  }
+`;
+
+const Beam = styled.div`
+  width: 200px;
+  height: 0px;
+  border-bottom: 100vw solid transparent;
+  border-right: 35vw solid transparent;
+  border-left: 55vw solid transparent;
+  transform: skew(45deg);
+  margin-top: -170vh;
+  margin-left: -70vh;
+  animation: ${beamAnimation} 5s linear infinite;
+  animation-delay: 1s;
+  animation-direction: alternate;
+`;
+export default Light;
