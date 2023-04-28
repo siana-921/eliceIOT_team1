@@ -1,14 +1,22 @@
 import Link from "next/link";
-import { RecoilRoot } from "recoil";
 
 export default function Home() {
   return (
-    <RecoilRoot>
-      <main>
-        <div>
-          <Link href="/dashboard">대시보드로가기</Link>
+    <main>
+      <header class="">
+        <div class="header_logo">
+          <p>안셍세요</p>
         </div>
-      </main>
-    </RecoilRoot>
+        <div class="header_menu">
+          <p>메입니니</p>
+        </div>
+      </header>
+      <div>
+        <video src="/images/backgroundVideo.mp4" loop autoPlay muted></video>
+        <div class="content">
+          <span>바질팜팜팜</span>
+        </div>
+      </div>
+    </main>
   );
 }
