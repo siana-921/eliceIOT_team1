@@ -6,23 +6,41 @@ import SimpleTable from "../../elements/simpleTable";
 //임시 import --- 나중에 props에 따라 각자 다른 api로 연결해서 사용
 //GraphSection와 SimpleTable에도 여기에서 사용되는 컴포넌트는 습도에 관련된 데이터를 가져오라고 props로 알려줘야할듯
 import humidity from "../../../../public/dummydata/humidityLog.json";
+import light from "../../../../public/dummydata/lightLog.json";
 
 const Panel = (props) => {
   return (
     <ControlPanel>
       <FirstPanel>
         <Title style={{ marginLeft: "-25px" }}>데이터</Title>
-        <GraphSection text={props.text}></GraphSection>
+        <GraphSection text={props.category}></GraphSection>
       </FirstPanel>
       <SecondPanel>
-        <Title>목표 {props.text}</Title>
-        <Goal></Goal>
-        <span style={{ fontSize: "86px" }}>%</span>
-        <CurrentCondition>
-          현재 {props.text}가 목표 {props.text}에 비해 2% 부족합니다.
-        </CurrentCondition>
-        <Title style={{ marginTop: "40px" }}>{props.text} 제어 기록</Title>
-        <SimpleTable data={humidity} />
+        {props.category === "조도" ? (
+          <Category>
+            <Title>LED 제어</Title>
+            <Buttons>
+              <Button style={{ backgroundColor: "#00a86b", color: "#fff" }}>
+                ON
+              </Button>
+              <Button>OFF</Button>
+            </Buttons>
+            <Title style={{ marginTop: "40px" }}>{props.text} 제어 기록</Title>
+            <SimpleTable data={light} />
+          </Category>
+        ) : (
+          <Category>
+            <Title>목표 {props.category}</Title>
+            <Goal></Goal>
+            <span style={{ fontSize: "86px" }}>%</span>
+            <CurrentCondition>
+              현재 {props.category}가 목표 {props.category}에 비해 2%
+              부족합니다.
+            </CurrentCondition>
+            <Title style={{ marginTop: "40px" }}>{props.text} 제어 기록</Title>
+            <SimpleTable data={humidity} />
+          </Category>
+        )}
       </SecondPanel>
     </ControlPanel>
   );
@@ -50,6 +68,7 @@ const ThirdPanel = styled.div`
   padding: 15px;
 `;
 
+const Category = styled.div``;
 //firstPanel
 const Title = styled.h3`
   font-size: 32px;
@@ -76,7 +95,19 @@ const Goal = styled.input`
 const CurrentCondition = styled.p`
   font-size: 15px;
 `;
-
+const Buttons = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`;
+const Button = styled.button`
+  width: 40%;
+  height: 20vh;
+  min-height: 150px;
+  border: none;
+  border-radius: 20px;
+  font-size: 5em;
+  font-weight: 700;
+`;
 export default Panel;
 
 //#112839
