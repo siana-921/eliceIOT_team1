@@ -19,3 +19,8 @@ export const data = {
 export default function HumidityChart() {
   return <Doughnut data={data} />;
 }
+
+// width: ${(props) => props.width};
+// height: ${(props) => (props.height ? props.height : '120px')};
+// margin: ${(props) => props.margin};
+// border-radius: ${(props) => props.radius};
