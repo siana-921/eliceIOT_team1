@@ -16,7 +16,7 @@ export const data = {
   ],
 };
 
-export default function HumidityChart() {
+export default function HumidityChart(props) {
   return <Doughnut data={data} />;
 }
 

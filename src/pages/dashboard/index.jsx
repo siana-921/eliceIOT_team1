@@ -9,20 +9,14 @@ import {
 } from "../../components/Chart/DoughnutChart/Data";
 import LineChart from "@/components/Chart/LineChart/LineChart";
 import TemperatureChart from "@/components/Chart/TemperatureChart/TemperatureChart";
+import NavBar from "@/components/NavBar/NavBar";
 
 const INTERVAL_GAP = 5000;
 
 export default function Dashboard() {
   return (
     <div>
-      <h1>
-        <Link href="/">Basil Farm</Link>
-      </h1>
-      <div>
-        <li>Dashboard</li>
-        <li>Controller</li>
-        <li>My Page</li>
-      </div>
+      <NavBar />
       <TemperatureChart />
       <HumidityChart />
       <div>
