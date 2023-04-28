@@ -9,8 +9,8 @@ const Light = () => {
   return (
     <LightFrame>
       <Contents>
-        <Title>빛 세기 제어</Title>
-        <Panel subject="humidity" text="빛 세기"></Panel>
+        <Title>조도 제어</Title>
+        <Panel subject="humidity" category="조도"></Panel>
       </Contents>
       <Beam></Beam>
     </LightFrame>
@@ -37,13 +37,13 @@ const Contents = styled.div`
 `;
 const beamAnimation = keyframes`
   0% {
-    border-bottom-color: #FFAFBD;
+    border-bottom-color: #FFB0BB;
   }
   50% {
     border-bottom-color: #FFC3A0;
   }
   100% {
-    border-bottom-color: #8EC5FC;
+    border-bottom-color: #ABC4E4;
   }
 `;
 
@@ -56,7 +56,7 @@ const Beam = styled.div`
   transform: skew(45deg);
   margin-top: -170vh;
   margin-left: -70vh;
-  animation: ${beamAnimation} 5s linear infinite;
+  animation: ${beamAnimation} 4s linear infinite;
   animation-delay: 1s;
   animation-direction: alternate;
 `;
