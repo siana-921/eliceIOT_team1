@@ -9,6 +9,7 @@ const Controller = () => {
       <NavBar></NavBar>
       <Panels>
         <Humidity></Humidity>
+        <Space></Space>
         <Light></Light>
       </Panels>
     </div>
@@ -20,5 +21,11 @@ const Panels = styled.div`
   top: 0;
   left: 0;
   right: 0;
+`;
+
+const Space = styled.div`
+  background-color: black;
+  width: 100vw;
+  height: 80vh;
 `;
 export default Controller;
