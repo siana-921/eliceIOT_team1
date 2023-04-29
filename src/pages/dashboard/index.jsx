@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import HumidityChart from "@/components/Chart/MoistureChart/MoistureChart";
+import HumidityChart from "@/components/Chart/HumidityChart/HumidityChart";
 ("../../components/Chart/DoughnutChart/DoughnutChart");
 import {
   chartData,
   chartOptions,
-} from "../../components/Chart/MoistureChart/Data";
+} from "../../components/Chart/HumidityChart/Data";
 import LineChart from "@/components/Chart/LineChart/LineChart";
 import TemperatureChart from "@/components/Chart/TemperatureChart/TemperatureChart";
 import NavBar from "@/components/NavBar/NavBar";
@@ -27,7 +27,7 @@ export default function Dashboard(props) {
       </div>
       <div>
         <p>🔺</p>
-        <p>10</p>
+        <p>100</p>
       </div>
       <LineChart />
       <div>
