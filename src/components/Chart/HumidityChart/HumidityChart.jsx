@@ -3,15 +3,15 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-let moistureData = [];
-let moistureFullName = [];
+let humidityData = [];
+let humidityFullName = [];
 
 export const data = {
-  labels: moistureFullName,
+  labels: humidityFullName,
   datasets: [
     {
       label: "습도",
-      data: moistureData,
+      data: humidityData,
       backgroundColor: ["rgba(0, 168, 107, 0.2)", "rgba(228,228,228, 0.2)"],
       borderColor: ["rgba(0, 168, 107, 1)", "rgba(228,228,228, 1)"],
       borderWidth: 1,

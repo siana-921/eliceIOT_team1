@@ -1,19 +1,21 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import HumidityChart from "@/components/Chart/DoughnutChart/DoughnutChart";
+import HumidityChart from "@/components/Chart/MoistureChart/MoistureChart";
 ("../../components/Chart/DoughnutChart/DoughnutChart");
 import {
   chartData,
   chartOptions,
-} from "../../components/Chart/DoughnutChart/Data";
+} from "../../components/Chart/MoistureChart/Data";
 import LineChart from "@/components/Chart/LineChart/LineChart";
 import TemperatureChart from "@/components/Chart/TemperatureChart/TemperatureChart";
 import NavBar from "@/components/NavBar/NavBar";
+import Light from "@/components/Dashboard/Light";
+import MotorPump from "@/components/Dashboard/Motorpump";
 
 const INTERVAL_GAP = 5000;
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   return (
     <div>
       <NavBar />
@@ -29,10 +31,10 @@ export default function Dashboard() {
       </div>
       <LineChart />
       <div>
-        <h1>모터펌프!!!</h1>
+        <MotorPump />
       </div>
       <div>
-        <h1>식물 LED</h1>
+        <Light />
       </div>
     </div>
   );
