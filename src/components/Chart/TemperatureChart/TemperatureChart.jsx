@@ -10,7 +10,7 @@ const data = {
   labels: temperatureFullName,
   datasets: [
     {
-      label: "My First Dataset",
+      label: "Temperature",
       data: temperatureData,
       backgroundColor: ["rgb(0,168,107)", "rgba(228, 228, 228, 0.2)"],
       hoverOffset: 4,
