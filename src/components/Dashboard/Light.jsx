@@ -4,7 +4,7 @@ import LineChart from "../Chart/LineChart/LineChart";
 // 조도 센서
 export default function LightComponent(props) {
   const [currentLight, setCurrentLight] = useState(null);
-  const [previousLight, setPreviousLight] = useState(null);
+  const [previousLight, setPreviousLight] = useState(null); // 24시간 전 조도
   const diffrence = [];
 
   useEffect(() => {
