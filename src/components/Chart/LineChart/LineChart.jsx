@@ -3,6 +3,8 @@ import { Line } from "react-chartjs-2";
 
 ChartJS.register(...registerables);
 
+// 조도차트
+
 let lightData = [];
 let lightFullName = [];
 

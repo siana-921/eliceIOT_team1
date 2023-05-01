@@ -4,17 +4,15 @@
 
 # Figma
 
-[https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fvpc6cgxrzFIsNXW8DFwlZs%2FIoT-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%3Fnode-id%3D0%3A1%26t%3D1BicK3MmUEdjRGTV-1](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fvpc6cgxrzFIsNXW8DFwlZs%2FIoT-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%3Fnode-id%3D0%3A1%26t%3D1BicK3MmUEdjRGTV-1)
+[✅ 피그마](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fvpc6cgxrzFIsNXW8DFwlZs%2FIoT-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%3Fnode-id%3D0%3A1%26t%3D1BicK3MmUEdjRGTV-1)
 
 # Color Code
 
-![컬러코](%E1%84%83%E1%85%B5%E1%84%8C%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%AB%20%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8B%E1%85%A1%E1%84%8B%E1%85%AE%E1%86%BA%20d2003cbe91bd47528b28b602ef7b61e9/image_23.png)
+[✅ 컬러코드](/uploads/884abe4f5d8d35bca95931cff4fdf17b/image_23__1_.png)
 
 # Font
 
-![폰트이미지1](%E1%84%83%E1%85%B5%E1%84%8C%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%AB%20%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8B%E1%85%A1%E1%84%8B%E1%85%AE%E1%86%BA%20d2003cbe91bd47528b28b602ef7b61e9/Untitled.png)
-
-![폰트이미지2](%E1%84%83%E1%85%B5%E1%84%8C%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%AB%20%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8B%E1%85%A1%E1%84%8B%E1%85%AE%E1%86%BA%20d2003cbe91bd47528b28b602ef7b61e9/Untitled%201.png)
+[✅ 폰트이미지](/uploads/07f1ceba9dc744e37bb9b3deb3dc1291/image_21.png)
 
 [Pretendard](https://cactus.tistory.com/306)
 
