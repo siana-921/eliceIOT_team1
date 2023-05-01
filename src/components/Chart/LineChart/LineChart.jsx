@@ -3,27 +3,49 @@ import { Line } from "react-chartjs-2";
 
 ChartJS.register(...registerables);
 
-// 조도차트
+// 조도센서차트
+export default function LineChart(props) {
+  const maxLightValue = Math.max(...lightData);
+  const minLightValue = Math.min(...lightData);
 
-let lightData = [];
-let lightFullName = [];
+  const { lightData } = props;
 
-const DATA_COUNT = 7;
+  const DATA_COUNT = 6;
+  const labels = ["0시", "4시", "8시", "12시", "16시", "20시"];
 
-// const labels = ["1", "2", "3", "4", "5", "6", "7"];
-const data = {
-  labels: lightFullName,
-  datasets: [
-    {
-      label: "조도",
-      data: lightData,
-      fill: false,
-      borderColor: "rgb(75, 192, 192)",
-      tension: 0.1,
+  let lineChartData = [];
+  for (let i = 0; i < DATA_COUNT; i++) {
+    lineChartData.push({
+      x: labels[i],
+      y: lightData[i],
+    });
+  }
+
+  const data = {
+    labels: lightFullName,
+    datasets: [
+      {
+        label: "조도",
+        data: lightData,
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        tension: 0.1,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      y: {
+        min: minLightValue,
+        max: maxLightValue,
+        // y축 간격
+        ticks: {
+          stepSize: 10,
+        },
+      },
     },
-  ],
-};
+  };
 
-export default function LineChart() {
-  return <Line data={data} />;
+  return <Line data={data} options={options} />;
 }
