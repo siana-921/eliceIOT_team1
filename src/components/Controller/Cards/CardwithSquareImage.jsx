@@ -6,7 +6,12 @@ const CardwithSquareImage = (props) => {
   return (
     <Card size={props.size}>
       <ImageWrapper size={props.size}>
-        <Image src={props.image} width={props.size} alt="cardimage"></Image>
+        <Image
+          src={props.image}
+          width={props.size}
+          alt="cardimage"
+          priority={true}
+        ></Image>
       </ImageWrapper>
       <TextArea>
         <StyledTitle>{props.subjectName}</StyledTitle>
@@ -56,5 +61,6 @@ const StyledButton = styled.button`
   background-color: #97c410;
   font-size: 1.6rem;
   font-weight: 500;
+  cursor: pointer;
 `;
 export default CardwithSquareImage;

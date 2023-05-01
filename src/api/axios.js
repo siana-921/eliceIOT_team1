@@ -11,22 +11,22 @@ if (process.env.NODE_ENV === "development") {
   console.log("etc"); // 기타 환경
 }
 
-const getSensorData = async (deviceID) => {
+export const getSensorData = async (deviceID) => {
   console.log("==============GET DATA==============");
   console.log(deviceID);
 
   try {
     const res = await axios.get("/sensor");
     console.log(res);
-    return res;
+    return res.data;
   } catch (err) {
     console.log(err);
     return;
   }
 };
 
-const setActuator = async (deviceID, actuatorSettings) => {
-  console.log("==============SET ACTUATOR==============");
+export const controlFan = async (deviceID, actuatorSettings) => {
+  console.log("==============SET FAN==============");
   console.log(deviceID);
 
   try {
@@ -36,5 +36,25 @@ const setActuator = async (deviceID, actuatorSettings) => {
     return;
   }
 };
+export const controlLed = async (deviceID, actuatorSettings) => {
+  console.log("==============SET LED==============");
+  console.log(deviceID);
 
-export default { getSensorData, setActuator };
+  try {
+    await axios.post("/actuators", actuatorSettings);
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+};
+export const controlPump = async (deviceID, actuatorSettings) => {
+  console.log("==============SET PUMP==============");
+  console.log(deviceID);
+
+  try {
+    await axios.post("/actuators", actuatorSettings);
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+};

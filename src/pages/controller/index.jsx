@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar/NavBar";
 import styled from "@emotion/styled";
 import CardwithSquareImage from "../../components/Controller/Cards/CardwithSquareImage";
@@ -5,17 +6,49 @@ import soilMoisture from "../../../public/images/soil_moisture.png";
 import airHumidity from "../../../public/images/air_humidity.png";
 import airTemperature from "../../../public/images/air_temperature.png";
 import illuminance from "../../../public/images/illuminance.png";
-import { getSensorData } from "../../api/axios";
+import {
+  getSensorData,
+  controlFan,
+  controlLed,
+  controlPump,
+} from "../../api/axios";
 
 //CardwithSquareImage에 prop 넘겨줄때 각각 넘겨주지 말고 객체를 넘기면 될것같은데->DB구성후에 생각하기로..
 const Controller = () => {
-  const term = 15;
+  const [sensorData, setSensorData] = useState(null);
+  const [isLedOn, setIsLedOn] = useState(false);
+  const [isFanOn, setIsFanOn] = useState(false);
+  const [isPumpOn, setIsPumpOn] = useState(false);
 
-  const realTimeData = setInterval(() => {
-    getSensorData();
-  }, term * 60 * 1000);
+  const term = 5;
 
-  console.log(realTimeData);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSensorData(getSensorData());
+    }, term * 60 * 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  console.log(sensorData);
+
+  const setFan = () => {
+    console.log("환풍기 켜~~~");
+    controlFan("deviceID", fanSettings);
+    setIsFanOn(true);
+  };
+  const setLed = () => {
+    console.log("LED 켜~~~");
+    controlLed("deviceID", ledSettings);
+    setIsLedOn(true);
+  };
+  const setWaterPump = () => {
+    console.log("워터펌프 켜~~~");
+    controlPump("deviceID", pumpSettings);
+    setIsPumpOn(true);
+  };
 
   return (
     <ContainerWrapper>
@@ -23,6 +56,7 @@ const Controller = () => {
       <Container>
         <Panel left>
           <CardwithSquareImage
+            onClick={setFan}
             image={airHumidity}
             size={220}
             subject={"airhumidity"}
@@ -31,6 +65,7 @@ const Controller = () => {
             buttonText={"환풍기 켜기"}
           ></CardwithSquareImage>
           <CardwithSquareImage
+            onClick={setLed}
             image={airTemperature}
             size={220}
             subject={"temperature"}
@@ -41,6 +76,7 @@ const Controller = () => {
         </Panel>
         <Panel>
           <CardwithSquareImage
+            onClick={setWaterPump}
             image={soilMoisture}
             size={220}
             subject={"soilmoisture"}
@@ -49,6 +85,7 @@ const Controller = () => {
             buttonText={"즉시 물주기"}
           ></CardwithSquareImage>
           <CardwithSquareImage
+            onClick={setLed}
             image={illuminance}
             size={220}
             subject={"illuminance"}
