@@ -12,7 +12,7 @@ export default function Moisture() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/v1/moisture");
+        const res = await axios.get("http://localhost:3000/api/dashboard");
         const data = res.data;
         setCurrentMoisture(data.current);
         setPreviousMoisture(data.previous);
