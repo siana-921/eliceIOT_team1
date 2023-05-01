@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { DashboardCommonAreaDiv } from "@/styles/dashboard.styles";
 import axios from "axios";
 
 // 토양 수분감지 센서
@@ -25,11 +24,11 @@ export default function Moisture() {
   }, []);
 
   return (
-    <DashboardCommonAreaDiv>
+    <>
       <h1>{currentMoisture}</h1>
       <h3>현재 토양 수분량</h3>
       <p>{moistureArrowSign}</p>
       <p>{Math.abs(currentMoisture - previousMoisture)}</p>
-    </DashboardCommonAreaDiv>
+    </>
   );
 }

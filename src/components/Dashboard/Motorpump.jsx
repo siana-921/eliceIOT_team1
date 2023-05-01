@@ -1,23 +1,27 @@
-// import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-// // 모터펌프
-// export default function Motorpump(props) {
-//   const [currentMotorpump, setCurrentMotorpump] = useState(null);
-//   const [previousMotorpump, setPreviousMotorpump] = useState(null);
-//   const difference = [];
+// 모터펌프
+export default function Motorpump() {
+  const [isOn, setIsOn] = useState(false);
+  const [motorPumping, setmotorPumping] = useState(0);
 
-//   useEffect(() => {
-//     const currentMotorpumpValue = Motorpump(props);
-//     setCurrentLight(currentMotorpumpValue);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("http://localhost:3000/api/dashboard");
+      const data = await res.json();
+      setIsOn(data.isOn);
+      setmotorPumping(data.motorPumping);
+    };
+    fetchData();
+    const interval = setInterval(fetchData, 5000); // 5초마다 데이터 업데이트
+    return () => clearInterval(interval);
+  }, []);
 
-//     if (previousMotorpump !== null) {
-//       let difference = currentMotorpumpValue - previousMotorpump;
-//       console.log(`${difference}`);
-//     }
-
-//     setPreviousLight(currentMotorpumpValue);
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [props]);
-
-//   return <div>퍼프동작</div>;
-// }
+  return (
+    <div>
+      <h2>{motorPumping}</h2>
+      <p>{isOn ? "켜짐" : "꺼짐"}</p>
+      <p>모터펌프</p>
+    </div>
+  );
+}

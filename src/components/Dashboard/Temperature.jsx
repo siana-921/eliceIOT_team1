@@ -1,4 +1,4 @@
-import TemperatureChart from "../Chart/TemperatureChart/TemperatureChart";
+import TemperatureChart from "../Chart/TemperatureChart";
 
 // 온도 센서
 // topic: temp

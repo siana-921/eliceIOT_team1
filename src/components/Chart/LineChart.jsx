@@ -5,10 +5,10 @@ ChartJS.register(...registerables);
 
 // 조도센서차트
 export default function LineChart(props) {
+  const { lightData } = props;
+  const lightFullName = [];
   const maxLightValue = Math.max(...lightData);
   const minLightValue = Math.min(...lightData);
-
-  const { lightData } = props;
 
   const DATA_COUNT = 6;
   const labels = ["0시", "4시", "8시", "12시", "16시", "20시"];

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import LineChart from "../Chart/LineChart/LineChart";
+import LineChart from "../Chart/LineChart";
 import axios from "axios";
 
 // 조도 센서
