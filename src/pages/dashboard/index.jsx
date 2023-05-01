@@ -12,6 +12,7 @@ import TemperatureChart from "@/components/Chart/TemperatureChart/TemperatureCha
 import NavBar from "@/components/NavBar/NavBar";
 import Light from "@/components/Dashboard/Light";
 import MotorPump from "@/components/Dashboard/Motorpump";
+import Moisture from "@/components/Dashboard/Moisture";
 
 const INTERVAL_GAP = 5000;
 
@@ -22,12 +23,7 @@ export default function Dashboard(props) {
       <TemperatureChart />
       <HumidityChart />
       <div>
-        <p>1,234</p>
-        <p>토양수분</p>
-      </div>
-      <div>
-        <p>🔺</p>
-        <p>100</p>
+        <Moisture />
       </div>
       <LineChart />
       <div>
