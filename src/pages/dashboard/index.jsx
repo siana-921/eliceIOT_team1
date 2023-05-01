@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import styled from "@emotion/styled";
 import axios from "axios";
 import HumidityChart from "@/components/Chart/HumidityChart/HumidityChart";
 ("../../components/Chart/DoughnutChart/DoughnutChart");
@@ -9,6 +8,7 @@ import NavBar from "@/components/NavBar/NavBar";
 import Light from "@/components/Dashboard/Light";
 import MotorPump from "@/components/Dashboard/Motorpump";
 import Moisture from "@/components/Dashboard/Moisture";
+import Led from "@/components/Dashboard/Led";
 
 const INTERVAL_GAP = 5000;
 
@@ -16,18 +16,27 @@ export default function Dashboard(props) {
   return (
     <div>
       <NavBar />
-      <TemperatureChart />
-      <HumidityChart />
       <div>
-        <Moisture />
+        <DashboardCommonAreaDiv>
+          <TemperatureChart />
+        </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <HumidityChart />
+        </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <Moisture />
+        </DashboardCommonAreaDiv>
       </div>
-      {/* 조도 */}
-      <LineChart />
       <div>
-        <MotorPump />
-      </div>
-      <div>
-        <Light />
+        <DashboardCommonAreaDiv>
+          <Light />
+        </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <MotorPump />
+        </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <Led />
+        </DashboardCommonAreaDiv>
       </div>
     </div>
   );
@@ -68,3 +77,9 @@ export async function getServerSideProps() {
     };
   }
 }
+
+export const DashboardCommonAreaDiv = styled.div`
+  position: absolute;
+  width: 30.2rem;
+  height: 22.18rem;
+`;
