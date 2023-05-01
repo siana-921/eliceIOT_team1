@@ -1,41 +1,84 @@
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import styled from "@emotion/styled";
 import axios from "axios";
-import HumidityChart from "@/components/Chart/DoughnutChart/DoughnutChart";
+import HumidityChart from "@/components/Chart/HumidityChart";
 ("../../components/Chart/DoughnutChart/DoughnutChart");
-import {
-  chartData,
-  chartOptions,
-} from "../../components/Chart/DoughnutChart/Data";
-import LineChart from "@/components/Chart/LineChart/LineChart";
-import TemperatureChart from "@/components/Chart/TemperatureChart/TemperatureChart";
+import Temp from "@/components/Dashboard/Temp";
+import NavBar from "@/components/NavBar/NavBar";
+import Light from "@/components/Dashboard/Light";
+import MotorPump from "@/components/Dashboard/Motorpump";
+import Moisture from "@/components/Dashboard/Moisture";
+import Led from "@/components/Dashboard/Led";
 
 const INTERVAL_GAP = 5000;
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   return (
     <div>
-      <h1>
-        <Link href="/">Basil Farm</Link>
-      </h1>
+      <NavBar />
       <div>
-        <li>Dashboard</li>
-        <li>Controller</li>
-        <li>My Page</li>
-      </div>
-      <TemperatureChart />
-      <HumidityChart />
-      <div>
-        <p>1,234</p>
-        <p>토양수분</p>
+        <DashboardCommonAreaDiv>
+          <Temp />
+        </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <HumidityChart />
+        </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <Moisture />
+        </DashboardCommonAreaDiv>
       </div>
       <div>
-        <p>🔺</p>
-        <p>10</p>
+        <DashboardCommonAreaDiv>
+          <Light />
+        </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <MotorPump />
+        </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <Led />
+        </DashboardCommonAreaDiv>
       </div>
-      <LineChart />
-      <h1>모터펌프!!!</h1>
-      <h1>식물 LED</h1>
     </div>
   );
 }
+
+export async function getServerSideProps() {
+  try {
+    const response = await axios.get("http://localhost:3000/api/dashboard");
+    if (response.status === 200) {
+      return {
+        props: {
+          dashboard: response.data.data,
+        },
+      };
+    } else {
+      return {
+        props: {
+          dashboard: null,
+          error: {
+            statusCode: response.status,
+            title: `${response.statusText} - ${result.request.url}`,
+          },
+        },
+      };
+    }
+  } catch (err) {
+    console.log(err.response);
+    const statusCode = err.response ? err.response.status : "🚨에러발생";
+    console.log(err.response);
+    return {
+      props: {
+        dashboard: null,
+        err: {
+          statusCode,
+          title: err.response ? err.response.data : "🚨에러발생",
+        },
+      },
+    };
+  }
+}
+
+export const DashboardCommonAreaDiv = styled.div`
+  position: absolute;
+  width: 30.2rem;
+  height: 22.18rem;
+`;
