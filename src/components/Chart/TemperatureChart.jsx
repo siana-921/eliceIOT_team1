@@ -3,23 +3,32 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-let temperatureData = [];
-let temperatureFullName = [];
-
 const data = {
-  labels: temperatureFullName,
+  labels: "온도",
   datasets: [
     {
       label: "Temperature",
-      data: temperatureData,
+      data: [temperature],
       backgroundColor: ["rgb(0,168,107)", "rgba(228, 228, 228, 0.2)"],
-      hoverOffset: 4,
-      rotation: -90,
-      circumference: 180,
     },
   ],
 };
 
+const options = {
+  cutout: "50%",
+  rotation: -90,
+  circumference: 180,
+  plugins: {
+    legend: {
+      display: true,
+      position: "right",
+    },
+    tooltip: {
+      enabled: true,
+    },
+  },
+};
+
 export default function TemperatureChart() {
-  return <Doughnut data={data} />;
+  return <Doughnut data={data} options={options} />;
 }

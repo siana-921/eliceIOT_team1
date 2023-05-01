@@ -2,8 +2,7 @@ import styled from "@emotion/styled";
 import axios from "axios";
 import HumidityChart from "@/components/Chart/HumidityChart";
 ("../../components/Chart/DoughnutChart/DoughnutChart");
-import LineChart from "@/components/Chart/LineChart";
-import TemperatureChart from "@/components/Chart/TemperatureChart";
+import Temp from "@/components/Dashboard/Temp";
 import NavBar from "@/components/NavBar/NavBar";
 import Light from "@/components/Dashboard/Light";
 import MotorPump from "@/components/Dashboard/Motorpump";
@@ -18,7 +17,7 @@ export default function Dashboard(props) {
       <NavBar />
       <div>
         <DashboardCommonAreaDiv>
-          <TemperatureChart />
+          <Temp />
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
           <HumidityChart />
