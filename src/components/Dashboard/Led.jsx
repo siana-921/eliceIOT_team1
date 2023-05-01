@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 
-// 모터펌프
-export default function Motorpump() {
+// 식물LED
+export default function Led() {
   const [isOn, setIsOn] = useState(false);
-  const [motorPumping, setmotorPumping] = useState(0);
+  const [brightness, setBrightness] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("http://localhost:3000/api/dashboard");
-      const data = await res.json();
+      const response = await fetch("http://localhost:3000/api/dashboard");
+      const data = await response.json();
       setIsOn(data.isOn);
-      setmotorPumping(data.motorPumping);
+      setBrightness(data.brightness);
     };
     fetchData();
     const interval = setInterval(fetchData, 5000); // 5초마다 데이터 업데이트
@@ -19,9 +19,9 @@ export default function Motorpump() {
 
   return (
     <div>
-      <h2>{motorPumping}</h2>
+      <h2>{brightness}</h2>
       <p>{isOn ? "켜짐" : "꺼짐"}</p>
-      <p>모터펌프</p>
+      <p>LED 조명</p>
     </div>
   );
 }
