@@ -39,3 +39,39 @@ export default function Dashboard(props) {
     </div>
   );
 }
+
+export async function getServerSideProps() {
+  try {
+    const response = await axios.get("http://localhost:3000/api/dashboard");
+    if (response.status === 200) {
+      return {
+        props: {
+          dashboard: response.data.data,
+        },
+      };
+    } else {
+      return {
+        props: {
+          dashboard: null,
+          error: {
+            statusCode: response.status,
+            title: `${response.statusText} - ${result.request.url}`,
+          },
+        },
+      };
+    }
+  } catch (err) {
+    console.log(err.response);
+    const statusCode = err.response ? err.response.status : "🚨에러발생";
+    console.log(err.response);
+    return {
+      props: {
+        dashboard: null,
+        err: {
+          statusCode,
+          title: err.response ? err.response.data : "🚨에러발생",
+        },
+      },
+    };
+  }
+}

@@ -1,22 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export default function Light(props) {
+export default function LightComponent(props) {
   const [currentLight, setCurrentLight] = useState(null);
   const [previousLight, setPreviousLight] = useState(null);
-  
+  const diffrence = [];
+
   useEffect(() => {
     const currentLightValue = Light(props);
     setCurrentLight(currentLightValue);
 
     if (previousLight !== null) {
-      const difference = currentLightValue - previousLight;
-      console.log(`The difference from the previous illumination is: ${difference}`);
+      let difference = currentLightValue - previousLight;
     }
 
-setPreviousLight(currentLightValue);
+    setPreviousLight(currentLightValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
-  return (
-    // Render your component here
-  );
+  return <div>${props};</div>;
 }

@@ -1,22 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export default function Motorpump(props) {
   const [currentMotorpump, setCurrentMotorpump] = useState(null);
   const [previousMotorpump, setPreviousMotorpump] = useState(null);
-  
+  const difference = [];
+
   useEffect(() => {
     const currentMotorpumpValue = Motorpump(props);
     setCurrentLight(currentMotorpumpValue);
 
     if (previousMotorpump !== null) {
       let difference = currentMotorpumpValue - previousMotorpump;
-      console.log(${difference});
     }
 
     setPreviousLight(currentMotorpumpValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
-  return (
-    ${difference}
-  );
+  return <div>${props}</div>;
 }
