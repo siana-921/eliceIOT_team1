@@ -3,12 +3,15 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+let temperatureData = [];
+let temperatureFullName = [];
+
 const data = {
-  labels: ["기온"],
+  labels: temperatureFullName,
   datasets: [
     {
-      label: "My First Dataset",
-      data: [300, 150],
+      label: "Temperature",
+      data: temperatureData,
       backgroundColor: ["rgb(0,168,107)", "rgba(228, 228, 228, 0.2)"],
       hoverOffset: 4,
       rotation: -90,

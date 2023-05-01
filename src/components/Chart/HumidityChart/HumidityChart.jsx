@@ -3,12 +3,15 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+let humidityData = [];
+let humidityFullName = [];
+
 export const data = {
-  labels: ["습도"],
+  labels: humidityFullName,
   datasets: [
     {
-      label: "# of Votes",
-      data: [12, 19],
+      label: "습도",
+      data: humidityData,
       backgroundColor: ["rgba(0, 168, 107, 0.2)", "rgba(228,228,228, 0.2)"],
       borderColor: ["rgba(0, 168, 107, 1)", "rgba(228,228,228, 1)"],
       borderWidth: 1,
@@ -19,8 +22,3 @@ export const data = {
 export default function HumidityChart(props) {
   return <Doughnut data={data} />;
 }
-
-// width: ${(props) => props.width};
-// height: ${(props) => (props.height ? props.height : '120px')};
-// margin: ${(props) => props.margin};
-// border-radius: ${(props) => props.radius};
