@@ -2,21 +2,21 @@
 
 # 디자인 레이아웃
 
-# Figma
+## 1. Figma
 
 [✅ 피그마](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fvpc6cgxrzFIsNXW8DFwlZs%2FIoT-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%3Fnode-id%3D0%3A1%26t%3D1BicK3MmUEdjRGTV-1)
 
-# Color Code
+## 2. Color Code
 
 ![✅ 컬러코드](https://kdt-gitlab.elice.io/iot_track/class_01/iot_project/team1/frontend/uploads/884abe4f5d8d35bca95931cff4fdf17b/image_23__1_.png)
 
-# Font
+## 3. Font
 
 ![✅ 폰트이미지](https://kdt-gitlab.elice.io/iot_track/class_01/iot_project/team1/frontend/uploads/07f1ceba9dc744e37bb9b3deb3dc1291/image_21.png)
 
-[Pretendard](https://cactus.tistory.com/306)
+### 👉 [Pretendard](https://cactus.tistory.com/306)
 
-## ✏️ Commit Convention
+## Commit Convention
 
 |  태그 이름  |                               설명                               |  검색 키워드  |
 | :---------: | :--------------------------------------------------------------: | :-----------: |
