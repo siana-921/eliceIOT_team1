@@ -7,8 +7,8 @@ import img from "../../../public/images/logo.png";
 const NavBar = () => {
   return (
     <NavigationBar>
-      <LogoLink>
-        <Image src={img} width={150} />
+      <LogoLink href="/">
+        <Image src={img} width={150} alt="logo" />
       </LogoLink>
       <Links>
         <Link href="/dashboard">Dashboard</Link>
@@ -32,7 +32,7 @@ const NavigationBar = styled.nav`
   z-index: 999;
 `;
 
-const LogoLink = styled.div`
+const LogoLink = styled.a`
   width: 150px;
   position: absolute;
   top: 50%;
