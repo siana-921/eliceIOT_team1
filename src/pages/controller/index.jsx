@@ -5,9 +5,18 @@ import soilMoisture from "../../../public/images/soil_moisture.png";
 import airHumidity from "../../../public/images/air_humidity.png";
 import airTemperature from "../../../public/images/air_temperature.png";
 import illuminance from "../../../public/images/illuminance.png";
+import { getSensorData } from "../../api/axios";
 
 //CardwithSquareImage에 prop 넘겨줄때 각각 넘겨주지 말고 객체를 넘기면 될것같은데->DB구성후에 생각하기로..
 const Controller = () => {
+  const term = 15;
+
+  const realTimeData = setInterval(() => {
+    getSensorData();
+  }, term * 60 * 1000);
+
+  console.log(realTimeData);
+
   return (
     <ContainerWrapper>
       <NavBar></NavBar>
@@ -73,34 +82,3 @@ const Panel = styled.div`
   padding: 2rem 2rem 2rem 2rem;
   border-right: ${({ left }) => (left ? "solid 1px #8d8d8d" : "none")};
 `;
-
-/*
-const Controller = () => {
-  return (
-    <div>
-      <NavBar></NavBar>
-      <Panels>
-        <Humidity></Humidity>
-        <Space></Space>
-        <Light></Light>
-      </Panels>
-    </div>
-  );
-};
-
-
-const Panels = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-`;
-
-const Space = styled.div`
-  background-color: black;
-  width: 100vw;
-  height: 80vh;
-`;
-export default Controller;
-
-*/
