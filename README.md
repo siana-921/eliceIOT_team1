@@ -8,11 +8,11 @@
 
 # Color Code
 
-[✅ 컬러코드](/uploads/884abe4f5d8d35bca95931cff4fdf17b/image_23__1_.png)
+![✅ 컬러코드](https://kdt-gitlab.elice.io/iot_track/class_01/iot_project/team1/frontend/uploads/884abe4f5d8d35bca95931cff4fdf17b/image_23__1_.png)
 
 # Font
 
-[✅ 폰트이미지](/uploads/07f1ceba9dc744e37bb9b3deb3dc1291/image_21.png)
+![✅ 폰트이미지](https://kdt-gitlab.elice.io/iot_track/class_01/iot_project/team1/frontend/uploads/07f1ceba9dc744e37bb9b3deb3dc1291/image_21.png)
 
 [Pretendard](https://cactus.tistory.com/306)
 
