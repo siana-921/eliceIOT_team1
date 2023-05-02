@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === "development") {
 } else {
   console.log("etc"); // 기타 환경
 }
-
+/*
 export const getSensorData = async (deviceID) => {
   console.log("==============GET DATA==============");
   console.log(deviceID);
@@ -24,7 +24,7 @@ export const getSensorData = async (deviceID) => {
     return;
   }
 };
-
+*/
 export const controlFan = async (deviceID, actuatorSettings) => {
   console.log("==============SET FAN==============");
   console.log(deviceID);
