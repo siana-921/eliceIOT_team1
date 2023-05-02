@@ -1,11 +1,11 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const temperatureData = [];
 const data = {
-  labels: "온도",
+  labels: ["온도"],
   datasets: [
     {
       label: "Temperature",
