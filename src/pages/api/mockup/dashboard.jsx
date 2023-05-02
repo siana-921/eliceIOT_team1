@@ -12,7 +12,7 @@ export default function handler(req, res) {
       created_at: "2023-04-25",
     },
     {
-      idx: 2,
+      idx: productId,
       device_id: "basil02",
       temp: 11,
       humidity: 26,

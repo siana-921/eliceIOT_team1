@@ -10,7 +10,9 @@ export default function Temp() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/dashboard");
+        const res = await axios.get(
+          "http://localhost:3000/api/mockup/dashboard"
+        );
         const data = res.data;
 
         setTemperature(data.map((d) => d.temp));

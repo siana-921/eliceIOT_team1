@@ -6,13 +6,14 @@ export default function Moisture() {
   const [currentMoisture, setCurrentMoisture] = useState(null);
   const [previousMoisture, setPreviousMoisture] = useState(null);
 
-  const moistureArrowSign = `${currentMoisture} - ${previousMoisture}  > 0 ? "🔺" : "🔻"
-  }`;
-
+  const moistureArrowSign =
+    currentMoisture - previousMoisture > 0 ? "🔺" : "🔻";
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/dashboard");
+        const res = await axios.get(
+          "http://localhost:3000/api/mockup/dashboard"
+        );
         const data = res.data;
         setCurrentMoisture(data.current);
         setPreviousMoisture(data.previous);
@@ -21,7 +22,7 @@ export default function Moisture() {
       }
     };
     fetchData();
-  }, []);
+  }, [setCurrentMoisture, setPreviousMoisture]);
 
   return (
     <>
