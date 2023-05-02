@@ -7,7 +7,7 @@ export default function Motorpump() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("http://localhost:3000/api/dashboard");
+      const res = await fetch("http://localhost:3000/api/mockup/actuators");
       const data = await res.json();
       setIsOn(data.isOn);
       setMotorPumping(data.motorPumping);

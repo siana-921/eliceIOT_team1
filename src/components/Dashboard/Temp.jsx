@@ -10,10 +10,12 @@ export default function Temp() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/dashboard");
-        const data = response.data;
+        const res = await axios.get(
+          "http://localhost:3000/api/mockup/dashboard"
+        );
+        const data = res.data;
 
-        setTemperature(data.temperature);
+        setTemperature(data.map((d) => d.temp));
       } catch (err) {
         console.error(err);
       }
@@ -24,7 +26,7 @@ export default function Temp() {
 
   return (
     <>
-      <TemperatureChart />
+      <TemperatureChart temperatureData={temperature} />
       <h3>온도</h3>
     </>
   );
