@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import axios from "axios";
-import HumidityChart from "@/components/Chart/HumidityChart";
+import HumidityChart from "@/components/Dashboard/Chart/HumidityChart";
 ("../../components/Chart/DoughnutChart/DoughnutChart");
 import Temp from "@/components/Dashboard/Temp";
 import NavBar from "@/components/NavBar/NavBar";
