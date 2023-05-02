@@ -119,16 +119,22 @@ const Panel = styled.div`
   border-right: ${({ left }) => (left ? "solid 1px #8d8d8d" : "none")};
 `;
 
-export async function getServerSideProps(deviceID) {
+export async function getServerSideProps(context) {
   console.log("==============GET DATA==============");
-  console.log(`device ID : ${deviceID}`);
+  console.log(`device ID : ${context.query.deviceID}`);
 
   try {
     const res = await axios.get("/sensor");
     console.log(res);
-    return res.data;
+    return {
+      props: {
+        data: res.data,
+      },
+    };
   } catch (err) {
     console.log(err);
-    return;
+    return {
+      props: {},
+    };
   }
 }
