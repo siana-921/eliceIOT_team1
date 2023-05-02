@@ -7,8 +7,8 @@ export default function Led() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://localhost:3000/api/dashboard");
-      const data = await response.json();
+      const res = await fetch("http://localhost:3000/api/mockup/actuators");
+      const data = await res.json();
       setIsOn(data.isOn);
       setBrightness(data.brightness);
     };

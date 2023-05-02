@@ -43,7 +43,7 @@ export default function Dashboard(props) {
 
 export async function getServerSideProps() {
   try {
-    const response = await axios.get("http://localhost:3000/api/dashboard");
+    const response = await axios.get("http://localhost:3000/api/mockup");
     if (response.status === 200) {
       return {
         props: {
@@ -78,7 +78,6 @@ export async function getServerSideProps() {
 }
 
 export const DashboardCommonAreaDiv = styled.div`
-  position: absolute;
   width: 30.2rem;
   height: 22.18rem;
 `;

@@ -13,12 +13,14 @@ export default function LightComponent(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/dashboard");
+        const res = await axios.get(
+          "http://localhost:3000/api/mockup/dashboard"
+        );
         const data = res.data;
         const lightValues = data.lightData.slice(0, DATA_COUNT); // 4시간 단위로 나누기
         setLightData(lightValues);
       } catch (err) {
-        console.log("🚨에러발생");
+        console.log("🚨조도센서에러발생");
       }
     };
     fetchData();
