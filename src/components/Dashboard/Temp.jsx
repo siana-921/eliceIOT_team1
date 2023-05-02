@@ -24,7 +24,7 @@ export default function Temp() {
 
   return (
     <>
-      {temperature && <TemperatureChart temperatureData={temperature} />}
+      <TemperatureChart temperatureData={temperature} />
       <h3>온도</h3>
     </>
   );
