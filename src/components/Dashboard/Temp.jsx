@@ -1,4 +1,4 @@
-import TemperatureChart from "../Chart/TemperatureChart";
+import TemperatureChart from "./Chart/TemperatureChart";
 import { useState, useEffect } from "react";
 import axios from "axios";
 

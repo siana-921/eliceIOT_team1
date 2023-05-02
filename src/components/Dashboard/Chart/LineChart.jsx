@@ -1,4 +1,4 @@
-import { Chart as ChartJS, registerables } from "chart.js";
+import { Chart as ChartJS, registerables } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 
 ChartJS.register(...registerables);
