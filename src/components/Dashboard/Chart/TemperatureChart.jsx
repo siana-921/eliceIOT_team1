@@ -5,7 +5,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const temperatureData = [];
 const data = {
-  labels: "온도",
+  labels: ["온도"],
   datasets: [
     {
       label: "Temperature",
