@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar/NavBar";
 import styled from "@emotion/styled";
 import CardwithSquareImage from "../../components/Controller/Cards/CardwithSquareImage";
-import soilMoisture from "../../../public/images/soil_moisture.png";
-import airHumidity from "../../../public/images/air_humidity.png";
-import airTemperature from "../../../public/images/air_temperature.png";
-import illuminance from "../../../public/images/illuminance.png";
+import soilMoisture from "../../../public/images/soil_moisture.svg";
+import airHumidity from "../../../public/images/air_humidity.svg";
+import airTemperature from "../../../public/images/air_temperature.svg";
+import illuminance from "../../../public/images/illuminance.svg";
 import {
-  getSensorData,
   controlFan,
   controlLed,
   controlPump,
-} from "../../api/axios";
+} from "../../api/SetActuatorApi.js";
 
 //CardwithSquareImage에 prop 넘겨줄때 각각 넘겨주지 말고 객체를 넘기면 될것같은데->DB구성후에 생각하기로..
 const Controller = () => {
@@ -119,3 +118,23 @@ const Panel = styled.div`
   padding: 2rem 2rem 2rem 2rem;
   border-right: ${({ left }) => (left ? "solid 1px #8d8d8d" : "none")};
 `;
+
+export async function getServerSideProps(context) {
+  console.log("==============GET DATA==============");
+  console.log(`device ID : ${context.query.deviceID}`);
+
+  try {
+    const res = await axios.get("/sensor");
+    console.log(res);
+    return {
+      props: {
+        data: res.data,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      props: {},
+    };
+  }
+}
