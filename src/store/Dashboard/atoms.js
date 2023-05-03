@@ -2,5 +2,10 @@ import { atom } from "recoil";
 
 export const dashboardDataAtom = atom({
   key: "dashboardDataAtom",
-  default: { led: 0 },
+  default: {},
+});
+
+export const actuatorDataAtom = atom({
+  key: "dashboardDataAtom",
+  default: {},
 });

@@ -10,13 +10,17 @@ import Moisture from "@/components/Dashboard/Moisture";
 import Led from "@/components/Dashboard/Led";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import { dashboardDataAtom } from "../../store/Dashboard/atoms";
+import {
+  dashboardDataAtom,
+  actuatorDataAtom,
+} from "../../store/Dashboard/atoms";
 import LightComponent from "@/components/Dashboard/Light";
 
 const INTERVAL_GAP = 5000;
 
 export default function Dashboard(props) {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
+  const setActuatorData = useSetRecoilState(actuatorDataAtom);
 
   setDashboardData({});
 
@@ -32,7 +36,8 @@ export default function Dashboard(props) {
       );
       const actuatorData = await actuatorResponse.json();
 
-      setDashboardData(dashboardData, actuatorData);
+      setDashboardData(dashboardData);
+      setActuatorData(actuatorData);
     };
     fetchData();
     const interval = setInterval(fetchData, 5000); // 5초마다 데이터 업데이트

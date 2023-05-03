@@ -12,4 +12,5 @@ const UserProfile = () => {
   );
 };
 
+const ProfileImageWrapper = styled.div``;
 export default UserProfile;

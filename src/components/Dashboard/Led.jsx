@@ -1,14 +1,16 @@
 import { useRecoilValue } from "recoil";
-import { dashboardDataAtom } from "../../store/Dashboard/atoms";
+import { actuatorDataAtom } from "../../store/Dashboard/atoms";
 
 // 식물LED
 export default function Led() {
-  const dashboardData = useRecoilValue(dashboardDataAtom);
+  const actuatorData = useRecoilValue(actuatorDataAtom);
 
   return (
     <div>
-      <h2>{dashboardData.led}</h2>
-      <p>{dashboardData.led === 0 ? "꺼짐" : "켜짐"}</p>
+      <h2>{actuatorData[0].led}</h2>
+      {console.log(actuatorData[0].led)}
+      {console.log(actuatorData[1].led)}
+      <p>{actuatorData[1]?.led ? "켜짐" : "꺼짐"}</p>
       <p>식물 LED</p>
     </div>
   );
