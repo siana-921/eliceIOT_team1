@@ -18,16 +18,21 @@ const INTERVAL_GAP = 5000;
 export default function Dashboard(props) {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
 
-  setDashboardData({ brightness: 100, isOn: true });
+  setDashboardData({ isOn: false, led: 0 });
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
+      const dashboardResponse = await fetch(
         "http://localhost:3000/api/mockup/dashboard"
       );
-      const data = await response.json();
+      const dashboardData = await dashboardResponse.json();
 
-      setDashboardData(data);
+      const actuatorResponse = await fetch(
+        "http://localhost:3000/api/mockup/actuators"
+      );
+      const actuatorData = await actuatorResponse.json();
+
+      setDashboardData(dashboardData, actuatorData);
     };
     fetchData();
     const interval = setInterval(fetchData, 5000); // 5초마다 데이터 업데이트

@@ -7,9 +7,9 @@ export default function Led() {
 
   return (
     <div>
-      <h2>{dashboardData.brightness}</h2>
-      <p>{dashboardData.isOn ? "켜짐" : "꺼짐"}</p>
-      <p>LED 조명</p>
+      <h2>{dashboardData.led}</h2>
+      <p>{dashboardData.led ? "켜짐" : "꺼짐"}</p>
+      <p>식물 LED</p>
     </div>
   );
 }
