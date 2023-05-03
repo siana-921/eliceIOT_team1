@@ -12,7 +12,7 @@ import { dashboardDataAtom } from "../../store/Dashboard/atoms";
 import LightComponent from "@/components/Dashboard/Light";
 import Humidity from "@/components/Dashboard/Humidity";
 
-export default function Dashboard(props) {
+export default function Dashboard() {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
 
   setDashboardData({});
@@ -32,9 +32,10 @@ export default function Dashboard(props) {
       setDashboardData(dashboardData, actuatorData);
     };
     fetchData();
-    const interval = setInterval(fetchData, 5000); // 5초마다 데이터 업데이트
+    const interval = setInterval(fetchData, 5000);
+    // 5초마다 데이터 업데이트
     return () => clearInterval(interval);
-  }, [setDashboardData, props.dashboard]);
+  }, [setDashboardData]);
 
   return (
     <div>
