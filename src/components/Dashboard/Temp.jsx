@@ -5,7 +5,7 @@ import axios from "axios";
 // 온도 센서
 // topic: temp
 export default function Temp() {
-  const [temperature, setTemperature] = useState(null);
+  const [temperature, setTemperature] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {

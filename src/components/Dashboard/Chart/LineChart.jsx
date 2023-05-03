@@ -14,12 +14,13 @@ export default function LineChart(props) {
   const labels = ["0시", "4시", "8시", "12시", "16시", "20시"];
 
   let lineChartData = [];
-  for (let i = 0; i < DATA_COUNT; i++) {
+
+  labels.forEach((label, index) => {
     lineChartData.push({
-      x: labels[i],
-      y: lightData[i],
+      x: label,
+      y: lightData[index],
     });
-  }
+  });
 
   const data = {
     labels: lightFullName,

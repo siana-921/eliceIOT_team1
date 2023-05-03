@@ -8,10 +8,31 @@ import Light from "@/components/Dashboard/Light";
 import MotorPump from "@/components/Dashboard/Motorpump";
 import Moisture from "@/components/Dashboard/Moisture";
 import Led from "@/components/Dashboard/Led";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { dashboardDataAtom } from "../../store/Dashboard/atoms";
 
 const INTERVAL_GAP = 5000;
 
 export default function Dashboard(props) {
+  const setDashboardData = useSetRecoilState(dashboardDataAtom);
+
+  setDashboardData({ brightness: 100, isOn: true });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        "http://localhost:3000/api/mockup/dashboard"
+      );
+      const data = await response.json();
+
+      setDashboardData(data);
+    };
+    fetchData();
+    const interval = setInterval(fetchData, 5000); // 5초마다 데이터 업데이트
+    return () => clearInterval(interval);
+  }, [setDashboardData, props.dashboard]);
+
   return (
     <div>
       <NavBar />
@@ -44,23 +65,12 @@ export default function Dashboard(props) {
 export async function getServerSideProps() {
   try {
     const response = await axios.get("http://localhost:3000/api/mockup");
-    if (response.status === 200) {
-      return {
-        props: {
-          dashboard: response.data.data,
-        },
-      };
-    } else {
-      return {
-        props: {
-          dashboard: null,
-          error: {
-            statusCode: response.status,
-            title: `${response.statusText} - ${result.request.url}`,
-          },
-        },
-      };
-    }
+
+    return {
+      props: {
+        dashboard: response.data.data,
+      },
+    };
   } catch (err) {
     console.log(err.response);
     const statusCode = err.response ? err.response.status : "🚨에러발생";
@@ -70,7 +80,7 @@ export async function getServerSideProps() {
         dashboard: null,
         err: {
           statusCode,
-          title: err.response ? err.response.data : "🚨에러발생",
+          title: statusCode,
         },
       },
     };

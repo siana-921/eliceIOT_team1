@@ -2,6 +2,7 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import Image from "next/image";
+import Dashboard from "./pages/dashboard";
 
 export default function Home() {
   return (
