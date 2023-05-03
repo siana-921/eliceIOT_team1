@@ -15,7 +15,7 @@ const NavBar = () => {
         <Space>|</Space>
         <Link href="/controller">Controller</Link>
         <Space>|</Space>
-        <Link href="/">Profile</Link>
+        <Link href="/myPage">Profile</Link>
       </Links>
     </NavigationBar>
   );
