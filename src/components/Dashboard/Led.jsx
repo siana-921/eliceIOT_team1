@@ -8,7 +8,8 @@ export default function Led() {
   return (
     <div>
       <h2>{dashboardData.brightness}</h2>
-      <p>{dashboardData.isOn ? "켜짐" : "꺼짐"}</p>
+      {console.log(dashboardData[0])}
+      <p>{dashboardData[0].light ? "켜짐" : "꺼짐"}</p>
       <p>LED 조명</p>
     </div>
   );
