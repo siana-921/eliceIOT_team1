@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { dashboardDataAtom } from "../../store/Dashboard/atoms";
 import LightComponent from "@/components/Dashboard/Light";
+import Humidity from "@/components/Dashboard/Humidity";
 
 const INTERVAL_GAP = 5000;
 
@@ -47,7 +48,7 @@ export default function Dashboard(props) {
           <Temp />
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
-          <HumidityChart />
+          <Humidity />
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
           <Moisture />
