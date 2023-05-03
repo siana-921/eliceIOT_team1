@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar/NavBar";
 import styled from "@emotion/styled";
 import CardwithSquareImage from "../../components/Controller/Cards/CardwithSquareImage";
-import soilMoisture from "../../../public/images/soil_moisture.svg";
-import airHumidity from "../../../public/images/air_humidity.svg";
-import airTemperature from "../../../public/images/air_temperature.svg";
-import illuminance from "../../../public/images/illuminance.svg";
+
+import getRealTimeData from "../../api/GetRealTimeDataApi";
 import {
   controlFan,
   controlLed,
@@ -19,11 +17,12 @@ const Controller = () => {
   const [isFanOn, setIsFanOn] = useState(false);
   const [isPumpOn, setIsPumpOn] = useState(false);
 
-  const term = 5;
+  const term = 5; //분단위 term
 
   useEffect(() => {
+    const deviceID = "unit002"; //임시...나중에는 로그인한 데이터를 사용하자
     const interval = setInterval(() => {
-      setSensorData(getSensorData());
+      setSensorData(getRealTimeData(deviceID));
     }, term * 60 * 1000);
 
     return () => {
@@ -56,18 +55,16 @@ const Controller = () => {
         <Panel left>
           <CardwithSquareImage
             onClick={setFan}
-            image={airHumidity}
             size={220}
-            subject={"airhumidity"}
+            subject={"airHumidity"}
             subjectName={"대기 수분"}
             measuredValue={40}
             buttonText={"환풍기 켜기"}
           ></CardwithSquareImage>
           <CardwithSquareImage
             onClick={setLed}
-            image={airTemperature}
             size={220}
-            subject={"temperature"}
+            subject={"airTemperature"}
             subjectName={"대기 온도"}
             measuredValue={22}
             buttonText={"LED 켜기"}
@@ -76,16 +73,14 @@ const Controller = () => {
         <Panel>
           <CardwithSquareImage
             onClick={setWaterPump}
-            image={soilMoisture}
             size={220}
-            subject={"soilmoisture"}
+            subject={"soilMoisture"}
             subjectName={"토양 수분"}
             measuredValue={23}
             buttonText={"즉시 물주기"}
           ></CardwithSquareImage>
           <CardwithSquareImage
             onClick={setLed}
-            image={illuminance}
             size={220}
             subject={"illuminance"}
             subjectName={"조도"}
@@ -119,6 +114,7 @@ const Panel = styled.div`
   border-right: ${({ left }) => (left ? "solid 1px #8d8d8d" : "none")};
 `;
 
+//초기 데이터 렌더링 용도
 export async function getServerSideProps(context) {
   console.log("==============GET DATA==============");
   console.log(`device ID : ${context.query.deviceID}`);
