@@ -11,16 +11,16 @@ export default function handler(req, res) {
       pump_term: 17,
       created_at: "2023-04-25",
     },
-    {
-      idx: productId,
-      device_id: "basil02",
-      temp: 11,
-      humidity: 26,
-      light: 80,
-      moisture: 60,
-      pump_term: 15,
-      created_at: "2023-04-26",
-    },
+    // {
+    //   idx: productId,
+    //   device_id: "basil02",
+    //   temp: 11,
+    //   humidity: 26,
+    //   light: 80,
+    //   moisture: 60,
+    //   pump_term: 15,
+    //   created_at: "2023-04-26",
+    // },
   ];
   res.status(200).json(data);
 }

@@ -1,5 +1,8 @@
+import { useState, useEffect } from "react";
+
 import { useRecoilValue } from "recoil";
 import { dashboardDataAtom } from "../../store/Dashboard/atoms";
+
 // 모터펌프
 export default function Motorpump() {
   const dashboardData = useRecoilValue(dashboardDataAtom);

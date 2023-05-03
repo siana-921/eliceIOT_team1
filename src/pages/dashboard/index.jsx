@@ -11,6 +11,7 @@ import Led from "@/components/Dashboard/Led";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { dashboardDataAtom } from "../../store/Dashboard/atoms";
+import LightComponent from "@/components/Dashboard/Light";
 
 const INTERVAL_GAP = 5000;
 
@@ -49,7 +50,7 @@ export default function Dashboard(props) {
       </div>
       <div>
         <DashboardCommonAreaDiv>
-          <Light />
+          <LightComponent />
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
           <MotorPump />

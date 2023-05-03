@@ -6,36 +6,28 @@ ChartJS.register(...registerables);
 // 조도센서차트
 export default function LineChart(props) {
   const { lightData } = props;
-  const lightFullName = [];
   const maxLightValue = Math.max(...lightData);
   const minLightValue = Math.min(...lightData);
 
-  const DATA_COUNT = 6;
   const labels = ["0시", "4시", "8시", "12시", "16시", "20시"];
 
   let lineChartData = [];
 
-  labels.forEach((label, index) => {
-    lineChartData.push({
-      x: label,
-      y: lightData[index],
-    });
-  });
-
   const data = {
-    labels: lightFullName,
+    labels: ["시간"],
     datasets: [
       {
         label: "조도",
         data: lightData,
         fill: false,
-        borderColor: "rgb(75, 192, 192)",
+        backgroundColor: "rgb(75, 192, 192)",
         tension: 0.1,
       },
     ],
   };
 
   const options = {
+    labels: ["조도"],
     scales: {
       y: {
         min: minLightValue,
@@ -47,6 +39,13 @@ export default function LineChart(props) {
       },
     },
   };
+
+  labels.forEach((labels, index) => {
+    lineChartData.push({
+      x: labels,
+      y: lightData[index],
+    });
+  });
 
   return <Line data={data} options={options} />;
 }
