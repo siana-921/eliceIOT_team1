@@ -93,13 +93,14 @@ export async function getServerSideProps() {
 
 export const DashboardDisplayFlex = styled.div`
   display: flex;
-  margin-left: 122px;
-  margin-right: 122px;
+  margin-left: 7.625rem;
+  margin-right: 7.625rem;
+  margin-top: 10%;
 `;
 
 export const DashboardCommonAreaDiv = styled.div`
   width: 30.2rem;
-  height: 22.18rem;
-  margin-left: 37px;
-  margin-right: 37px;
+  height: 19rem;
+  margin-left: 2.31rem;
+  margin-right: 2.31rem;
 `;
