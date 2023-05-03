@@ -19,7 +19,7 @@ export default function Dashboard() {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
   const setActuatorData = useSetRecoilState(actuatorDataAtom);
 
-  setDashboardData({ led: 0 });
+  setDashboardData({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,4 +108,6 @@ export const DashboardCommonAreaDiv = styled.div`
   height: 19rem;
   margin-left: 2.31rem;
   margin-right: 2.31rem;
+  text-align: center;
+  justify-content: center;
 `;
