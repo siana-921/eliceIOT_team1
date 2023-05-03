@@ -19,7 +19,7 @@ export default function Dashboard() {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
   const setActuatorData = useSetRecoilState(actuatorDataAtom);
 
-  setDashboardData({});
+  setDashboardData({ led: 0 });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +40,7 @@ export default function Dashboard() {
     const interval = setInterval(fetchData, 5000);
     // 5초마다 데이터 업데이트
     return () => clearInterval(interval);
-  }, [setDashboardData]);
+  }, [setDashboardData, setActuatorData]);
 
   return (
     <div>
