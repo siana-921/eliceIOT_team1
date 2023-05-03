@@ -1,10 +1,8 @@
 import styled from "@emotion/styled";
 import axios from "axios";
-import HumidityChart from "@/components/Dashboard/Chart/HumidityChart";
 ("../../components/Chart/DoughnutChart/DoughnutChart");
 import Temp from "@/components/Dashboard/Temp";
 import NavBar from "@/components/NavBar/NavBar";
-import Light from "@/components/Dashboard/Light";
 import MotorPump from "@/components/Dashboard/Motorpump";
 import Moisture from "@/components/Dashboard/Moisture";
 import Led from "@/components/Dashboard/Led";
@@ -12,10 +10,9 @@ import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { dashboardDataAtom } from "../../store/Dashboard/atoms";
 import LightComponent from "@/components/Dashboard/Light";
+import Humidity from "@/components/Dashboard/Humidity";
 
-const INTERVAL_GAP = 5000;
-
-export default function Dashboard(props) {
+export default function Dashboard() {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
 
   setDashboardData({});
@@ -35,9 +32,10 @@ export default function Dashboard(props) {
       setDashboardData(dashboardData, actuatorData);
     };
     fetchData();
-    const interval = setInterval(fetchData, 5000); // 5초마다 데이터 업데이트
+    const interval = setInterval(fetchData, 5000);
+    // 5초마다 데이터 업데이트
     return () => clearInterval(interval);
-  }, [setDashboardData, props.dashboard]);
+  }, [setDashboardData]);
 
   return (
     <div>
@@ -47,7 +45,7 @@ export default function Dashboard(props) {
           <Temp />
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
-          <HumidityChart />
+          <Humidity />
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
           <Moisture />
