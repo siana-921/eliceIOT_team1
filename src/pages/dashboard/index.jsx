@@ -14,6 +14,7 @@ import {
 } from "../../store/Dashboard/atoms";
 import LightComponent from "@/components/Dashboard/Light";
 import Humidity from "@/components/Dashboard/Humidity";
+import NavBarTest from "@/components/NavBar/NavBarTest";
 
 export default function Dashboard() {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
@@ -40,11 +41,11 @@ export default function Dashboard() {
     const interval = setInterval(fetchData, 5000);
     // 5초마다 데이터 업데이트
     return () => clearInterval(interval);
-  }, [setDashboardData]);
+  }, [setDashboardData, setActuatorData]);
 
   return (
     <div>
-      <NavBar />
+      <NavBarTest />
       <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
           <Temp />
@@ -100,12 +101,15 @@ export const DashboardDisplayFlex = styled.div`
   display: flex;
   margin-left: 7.625rem;
   margin-right: 7.625rem;
-  margin-top: 10%;
+  margin-top: 8%;
 `;
 
 export const DashboardCommonAreaDiv = styled.div`
-  width: 30.2rem;
-  height: 19rem;
+  width: 32rem;
+  height: 18rem;
   margin-left: 2.31rem;
-  margin-right: 2.31rem;
+  text-align: center;
+  justify-content: center;
+  background: rgba(228, 228, 228, 0.3);
+  border-radius: 20px;
 `;
