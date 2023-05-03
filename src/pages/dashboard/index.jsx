@@ -1,10 +1,8 @@
 import styled from "@emotion/styled";
 import axios from "axios";
-import HumidityChart from "@/components/Dashboard/Chart/HumidityChart";
 ("../../components/Chart/DoughnutChart/DoughnutChart");
 import Temp from "@/components/Dashboard/Temp";
 import NavBar from "@/components/NavBar/NavBar";
-import Light from "@/components/Dashboard/Light";
 import MotorPump from "@/components/Dashboard/Motorpump";
 import Moisture from "@/components/Dashboard/Moisture";
 import Led from "@/components/Dashboard/Led";
@@ -13,8 +11,6 @@ import { useSetRecoilState } from "recoil";
 import { dashboardDataAtom } from "../../store/Dashboard/atoms";
 import LightComponent from "@/components/Dashboard/Light";
 import Humidity from "@/components/Dashboard/Humidity";
-
-const INTERVAL_GAP = 5000;
 
 export default function Dashboard(props) {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
