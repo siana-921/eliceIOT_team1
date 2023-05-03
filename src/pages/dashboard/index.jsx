@@ -8,12 +8,16 @@ import Moisture from "@/components/Dashboard/Moisture";
 import Led from "@/components/Dashboard/Led";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import { dashboardDataAtom } from "../../store/Dashboard/atoms";
+import {
+  dashboardDataAtom,
+  actuatorDataAtom,
+} from "../../store/Dashboard/atoms";
 import LightComponent from "@/components/Dashboard/Light";
 import Humidity from "@/components/Dashboard/Humidity";
 
 export default function Dashboard() {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
+  const setActuatorData = useSetRecoilState(actuatorDataAtom);
 
   setDashboardData({});
 
@@ -29,7 +33,8 @@ export default function Dashboard() {
       );
       const actuatorData = await actuatorResponse.json();
 
-      setDashboardData(dashboardData, actuatorData);
+      setDashboardData(dashboardData);
+      setActuatorData(actuatorData);
     };
     fetchData();
     const interval = setInterval(fetchData, 5000);

@@ -50,7 +50,7 @@ const Controller = () => {
   };
 
   return (
-    <ContainerWrapper>
+    <Main>
       <NavBar></NavBar>
       <Container>
         <Panel left>
@@ -94,13 +94,13 @@ const Controller = () => {
           ></CardwithSquareImage>
         </Panel>
       </Container>
-    </ContainerWrapper>
+    </Main>
   );
 };
 
 export default Controller;
 
-const ContainerWrapper = styled.div`
+const Main = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
