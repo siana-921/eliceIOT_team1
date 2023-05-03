@@ -51,4 +51,5 @@ const Links = styled.div`
 const Space = styled.span`
   padding: 0 10px 0 10px;
 `;
+
 export default NavBar;
