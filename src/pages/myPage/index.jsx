@@ -17,7 +17,15 @@ const MyPage = () => {
 };
 
 const Main = styled.div`
-  display: flex;
+  width: 100vw;
+  height: 100vh;
+`;
+const UserProfileWrapper = styled.div`
+  width: 100vw;
+  height: 360px;
+`;
+const PlantSettingsWrapper = styled.div`
+  width: 100vw;
 `;
 
 export default MyPage;

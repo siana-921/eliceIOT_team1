@@ -6,6 +6,6 @@ export const dashboardDataAtom = atom({
 });
 
 export const actuatorDataAtom = atom({
-  key: "dashboardDataAtom",
+  key: "actuatorDataAtom",
   default: {},
 });
