@@ -5,7 +5,6 @@ import axios from "axios";
 // 조도 센서
 export default function LightComponent(props) {
   const [currentLight, setCurrentLight] = useState(null);
-  const [previousLight, setPreviousLight] = useState(null); // 4시간 전 조도
   const [lightData, setLightData] = useState([]); // 그래프 데이터
 
   const DATA_COUNT = 6;
