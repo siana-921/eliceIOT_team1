@@ -10,8 +10,8 @@ export default function HumidityChart({ humidityData }) {
       {
         label: ["습도"],
         data: humidityData,
-        backgroundColor: ["rgba(0, 168, 107, 0.2)", "rgba(228,228,228, 0.2)"],
-        borderColor: ["rgba(0, 168, 107, 1)", "rgba(228,228,228, 1)"],
+        backgroundColor: ["rgba(0, 168, 107, 0.2)"],
+        borderColor: ["rgba(0, 168, 107, 1)"],
         borderWidth: 1,
       },
     ],

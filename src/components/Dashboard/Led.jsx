@@ -18,7 +18,6 @@ export default function Led() {
 const LedDiv = styled.div`
   align-items: center;
   justify-content: center;
-  height: 5rem;
 
   > h2 {
     font-size: 6rem;
