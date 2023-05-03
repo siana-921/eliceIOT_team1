@@ -14,6 +14,7 @@ import {
 } from "../../store/Dashboard/atoms";
 import LightComponent from "@/components/Dashboard/Light";
 import Humidity from "@/components/Dashboard/Humidity";
+import NavBarTest from "@/components/NavBar/NavBarTest";
 
 export default function Dashboard() {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
@@ -44,7 +45,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <NavBar />
+      <NavBarTest />
       <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
           <Temp />
