@@ -111,5 +111,6 @@ export const DashboardCommonAreaDiv = styled.div`
   text-align: center;
   justify-content: center;
   background: rgba(228, 228, 228, 0.3);
+
   border-radius: 20px;
 `;
