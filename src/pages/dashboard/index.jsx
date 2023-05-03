@@ -18,7 +18,7 @@ const INTERVAL_GAP = 5000;
 export default function Dashboard(props) {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
 
-  setDashboardData({ isOn: false, led: 0 });
+  setDashboardData({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +42,7 @@ export default function Dashboard(props) {
   return (
     <div>
       <NavBar />
-      <div>
+      <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
           <Temp />
         </DashboardCommonAreaDiv>
@@ -52,8 +52,8 @@ export default function Dashboard(props) {
         <DashboardCommonAreaDiv>
           <Moisture />
         </DashboardCommonAreaDiv>
-      </div>
-      <div>
+      </DashboardDisplayFlex>
+      <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
           <LightComponent />
         </DashboardCommonAreaDiv>
@@ -63,7 +63,7 @@ export default function Dashboard(props) {
         <DashboardCommonAreaDiv>
           <Led />
         </DashboardCommonAreaDiv>
-      </div>
+      </DashboardDisplayFlex>
     </div>
   );
 }
@@ -93,7 +93,15 @@ export async function getServerSideProps() {
   }
 }
 
+export const DashboardDisplayFlex = styled.div`
+  display: flex;
+  margin-left: 122px;
+  margin-right: 122px;
+`;
+
 export const DashboardCommonAreaDiv = styled.div`
   width: 30.2rem;
   height: 22.18rem;
+  margin-left: 37px;
+  margin-right: 37px;
 `;
