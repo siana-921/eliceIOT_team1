@@ -15,11 +15,3 @@ export default function Led() {
     </div>
   );
 }
-
-// fetchData().then(datapoints => {
-//   const month = datapoints.financialreport.financials.map(function(index){
-//     return index.date;
-
-//   })
-//   console.log(month);
-// })
