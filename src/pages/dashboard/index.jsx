@@ -8,14 +8,41 @@ import Light from "@/components/Dashboard/Light";
 import MotorPump from "@/components/Dashboard/Motorpump";
 import Moisture from "@/components/Dashboard/Moisture";
 import Led from "@/components/Dashboard/Led";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { dashboardDataAtom } from "../../store/Dashboard/atoms";
+import LightComponent from "@/components/Dashboard/Light";
 
 const INTERVAL_GAP = 5000;
 
 export default function Dashboard(props) {
+  const setDashboardData = useSetRecoilState(dashboardDataAtom);
+
+  setDashboardData({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const dashboardResponse = await fetch(
+        "http://localhost:3000/api/mockup/dashboard"
+      );
+      const dashboardData = await dashboardResponse.json();
+
+      const actuatorResponse = await fetch(
+        "http://localhost:3000/api/mockup/actuators"
+      );
+      const actuatorData = await actuatorResponse.json();
+
+      setDashboardData(dashboardData, actuatorData);
+    };
+    fetchData();
+    const interval = setInterval(fetchData, 5000); // 5초마다 데이터 업데이트
+    return () => clearInterval(interval);
+  }, [setDashboardData, props.dashboard]);
+
   return (
     <div>
       <NavBar />
-      <div>
+      <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
           <Temp />
         </DashboardCommonAreaDiv>
@@ -25,10 +52,10 @@ export default function Dashboard(props) {
         <DashboardCommonAreaDiv>
           <Moisture />
         </DashboardCommonAreaDiv>
-      </div>
-      <div>
+      </DashboardDisplayFlex>
+      <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
-          <Light />
+          <LightComponent />
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
           <MotorPump />
@@ -36,7 +63,7 @@ export default function Dashboard(props) {
         <DashboardCommonAreaDiv>
           <Led />
         </DashboardCommonAreaDiv>
-      </div>
+      </DashboardDisplayFlex>
     </div>
   );
 }
@@ -44,23 +71,12 @@ export default function Dashboard(props) {
 export async function getServerSideProps() {
   try {
     const response = await axios.get("http://localhost:3000/api/mockup");
-    if (response.status === 200) {
-      return {
-        props: {
-          dashboard: response.data.data,
-        },
-      };
-    } else {
-      return {
-        props: {
-          dashboard: null,
-          error: {
-            statusCode: response.status,
-            title: `${response.statusText} - ${result.request.url}`,
-          },
-        },
-      };
-    }
+
+    return {
+      props: {
+        dashboard: response.data.data,
+      },
+    };
   } catch (err) {
     console.log(err.response);
     const statusCode = err.response ? err.response.status : "🚨에러발생";
@@ -70,14 +86,22 @@ export async function getServerSideProps() {
         dashboard: null,
         err: {
           statusCode,
-          title: err.response ? err.response.data : "🚨에러발생",
+          title: statusCode,
         },
       },
     };
   }
 }
 
+export const DashboardDisplayFlex = styled.div`
+  display: flex;
+  margin-left: 122px;
+  margin-right: 122px;
+`;
+
 export const DashboardCommonAreaDiv = styled.div`
   width: 30.2rem;
   height: 22.18rem;
+  margin-left: 37px;
+  margin-right: 37px;
 `;
