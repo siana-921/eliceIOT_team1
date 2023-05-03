@@ -1,26 +1,16 @@
 import { useState, useEffect } from "react";
 
+import { useRecoilValue } from "recoil";
+import { dashboardDataAtom } from "../../store/Dashboard/atoms";
+
 // 모터펌프
 export default function Motorpump() {
-  const [isOn, setIsOn] = useState(false);
-  const [motorPumping, setMotorPumping] = useState(0);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://localhost:3000/api/mockup/actuators");
-      const data = await res.json();
-      setIsOn(data.isOn);
-      setMotorPumping(data.motorPumping);
-    };
-    fetchData();
-    const interval = setInterval(fetchData, 5000); // 5초마다 데이터 업데이트
-    return () => clearInterval(interval);
-  }, []);
+  const dashboardData = useRecoilValue(dashboardDataAtom);
 
   return (
     <div>
-      <h2>{motorPumping}</h2>
-      <p>{isOn ? "켜짐" : "꺼짐"}</p>
+      <h2>{dashboardData.motorPumping}</h2>
+      <p>{dashboardData.isOn ? "켜짐" : "꺼짐"}</p>
       <p>모터펌프</p>
     </div>
   );

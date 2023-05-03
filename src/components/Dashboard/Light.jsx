@@ -9,6 +9,7 @@ export default function LightComponent(props) {
   const [lightData, setLightData] = useState([]); // 그래프 데이터
 
   const DATA_COUNT = 6;
+  const INTERVAL = 5000;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,17 +20,17 @@ export default function LightComponent(props) {
         const data = res.data;
         const lightValues = data.lightData.slice(0, DATA_COUNT); // 4시간 단위로 나누기
         setLightData(lightValues);
+        setCurrentLight(lightValues[0]);
       } catch (err) {
         console.log("🚨조도센서에러발생");
       }
     };
     fetchData();
 
-    const currentLightValue = Math.floor(Math.random() * 255);
-    setCurrentLight(currentLightValue);
+    const intervalId = setInterval(fetchData, INTERVAL);
 
-    setPreviousLight(currentLightValue);
-  }, [props, previousLight, DATA_COUNT]);
+    return () => clearInterval(intervalId);
+  }, [INTERVAL]);
 
   return (
     <div>
