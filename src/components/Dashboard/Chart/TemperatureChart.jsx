@@ -10,7 +10,7 @@ export default function TemperatureChart({ temperatureData }) {
       {
         label: ["Temperature"],
         data: temperatureData,
-        backgroundColor: ["rgb(0,168,107)", "rgba(228, 228, 228, 0.2)"],
+        backgroundColor: ["rgb(0,168,107)"],
       },
     ],
   };

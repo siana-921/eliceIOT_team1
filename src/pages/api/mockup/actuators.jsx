@@ -11,8 +11,8 @@ export default function handler(req, res) {
     {
       idx: productId,
       device_id: "unit002",
-      led: 100,
-      pump: 100,
+      led: 24,
+      pump: 156,
       created_at: 1682658180,
     },
   ];

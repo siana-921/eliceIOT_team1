@@ -25,12 +25,12 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       const dashboardResponse = await fetch(
-        "http://localhost:3000/api/mockup/dashboard"
+        `${process.env.NEXT_PUBLIC_PROD_API_ROOT}/sensor`
       );
       const dashboardData = await dashboardResponse.json();
 
       const actuatorResponse = await fetch(
-        "http://localhost:3000/api/mockup/actuators"
+        `${process.env.NEXT_PUBLIC_PROD_API_ROOT}/actuators`
       );
       const actuatorData = await actuatorResponse.json();
 
@@ -58,9 +58,9 @@ export default function Dashboard() {
         </DashboardCommonAreaDiv>
       </DashboardDisplayFlex>
       <DashboardDisplayFlex>
-        <DashboardCommonAreaDiv>
+        {/* <DashboardCommonAreaDiv>
           <LightComponent />
-        </DashboardCommonAreaDiv>
+        </DashboardCommonAreaDiv> */}
         <DashboardCommonAreaDiv>
           <MotorPump />
         </DashboardCommonAreaDiv>
@@ -74,7 +74,9 @@ export default function Dashboard() {
 
 export async function getServerSideProps() {
   try {
-    const response = await axios.get("http://localhost:3000/api/mockup");
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_PROD_API_ROOT}`
+    );
 
     return {
       props: {
@@ -111,5 +113,6 @@ export const DashboardCommonAreaDiv = styled.div`
   text-align: center;
   justify-content: center;
   background: rgba(228, 228, 228, 0.3);
+
   border-radius: 20px;
 `;
