@@ -7,10 +7,17 @@ export default function Led() {
 
   return (
     <div>
-      <h2>{dashboardData.brightness}</h2>
-      {console.log(dashboardData[0])}
-      <p>{dashboardData[0].light ? "켜짐" : "꺼짐"}</p>
-      <p>LED 조명</p>
+      <h2>{dashboardData.led}</h2>
+      <p>{dashboardData.led === 0 ? "꺼짐" : "켜짐"}</p>
+      <p>식물 LED</p>
     </div>
   );
 }
+
+// fetchData().then(datapoints => {
+//   const month = datapoints.financialreport.financials.map(function(index){
+//     return index.date;
+
+//   })
+//   console.log(month);
+// })

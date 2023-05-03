@@ -18,16 +18,21 @@ const INTERVAL_GAP = 5000;
 export default function Dashboard(props) {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
 
-  setDashboardData({ brightness: 100, isOn: true });
+  setDashboardData({});
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
+      const dashboardResponse = await fetch(
         "http://localhost:3000/api/mockup/dashboard"
       );
-      const data = await response.json();
+      const dashboardData = await dashboardResponse.json();
 
-      setDashboardData(data);
+      const actuatorResponse = await fetch(
+        "http://localhost:3000/api/mockup/actuators"
+      );
+      const actuatorData = await actuatorResponse.json();
+
+      setDashboardData(dashboardData, actuatorData);
     };
     fetchData();
     const interval = setInterval(fetchData, 5000); // 5초마다 데이터 업데이트
@@ -37,7 +42,7 @@ export default function Dashboard(props) {
   return (
     <div>
       <NavBar />
-      <div>
+      <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
           <Temp />
         </DashboardCommonAreaDiv>
@@ -47,8 +52,8 @@ export default function Dashboard(props) {
         <DashboardCommonAreaDiv>
           <Moisture />
         </DashboardCommonAreaDiv>
-      </div>
-      <div>
+      </DashboardDisplayFlex>
+      <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
           <LightComponent />
         </DashboardCommonAreaDiv>
@@ -58,7 +63,7 @@ export default function Dashboard(props) {
         <DashboardCommonAreaDiv>
           <Led />
         </DashboardCommonAreaDiv>
-      </div>
+      </DashboardDisplayFlex>
     </div>
   );
 }
@@ -88,7 +93,15 @@ export async function getServerSideProps() {
   }
 }
 
+export const DashboardDisplayFlex = styled.div`
+  display: flex;
+  margin-left: 122px;
+  margin-right: 122px;
+`;
+
 export const DashboardCommonAreaDiv = styled.div`
   width: 30.2rem;
   height: 22.18rem;
+  margin-left: 37px;
+  margin-right: 37px;
 `;

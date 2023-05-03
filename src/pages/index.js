@@ -1,6 +1,5 @@
 import Link from "next/link";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 
 export default function Home() {
   return (
