@@ -101,14 +101,15 @@ export const DashboardDisplayFlex = styled.div`
   display: flex;
   margin-left: 7.625rem;
   margin-right: 7.625rem;
-  margin-top: 10%;
+  margin-top: 8%;
 `;
 
 export const DashboardCommonAreaDiv = styled.div`
-  width: 30.2rem;
-  height: 19rem;
+  width: 32rem;
+  height: 18rem;
   margin-left: 2.31rem;
-  margin-right: 2.31rem;
   text-align: center;
   justify-content: center;
+  background: rgba(228, 228, 228, 0.3);
+  border-radius: 20px;
 `;
