@@ -1,11 +1,13 @@
 import React from "react";
 import UserProfile from "../../components/MyPage/UserProfile";
 import PlantSettings from "../../components/MyPage/PlantSettings";
+import NavBar from "../../components/NavBar/NavBar";
 import styled from "@emotion/styled";
 
 const MyPage = () => {
   return (
     <Main>
+      <NavBar />
       <UserProfileWrapper>
         <UserProfile></UserProfile>
       </UserProfileWrapper>
@@ -17,7 +19,15 @@ const MyPage = () => {
 };
 
 const Main = styled.div`
-  display: flex;
+  width: 100vw;
+  height: 100vh;
+`;
+const UserProfileWrapper = styled.div`
+  width: 100vw;
+  height: 360px;
+`;
+const PlantSettingsWrapper = styled.div`
+  width: 100vw;
 `;
 
 export default MyPage;

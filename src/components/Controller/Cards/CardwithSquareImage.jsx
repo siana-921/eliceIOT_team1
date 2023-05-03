@@ -7,10 +7,12 @@ const CardwithSquareImage = (props) => {
     <Card size={props.size}>
       <ImageWrapper size={props.size}>
         <Image
-          src={props.image}
+          src={`/images/${props.subject}.svg`}
           width={props.size}
-          alt="cardimage"
+          height={props.size}
           priority={true}
+          quality={100}
+          alt="cardimage"
         ></Image>
       </ImageWrapper>
       <TextArea>
