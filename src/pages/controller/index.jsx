@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar/NavBar";
 import styled from "@emotion/styled";
 import axios from "axios";
+import { useRecoilState } from "recoil";
 import CardwithSquareImage from "../../components/Controller/Cards/CardwithSquareImage";
 
 //import getRealTimeData from "../../api/GetRealTimeDataApi";
@@ -11,7 +12,7 @@ import {
   controlPump,
 } from "../../api/SetActuatorApi.js";
 
-const serverSelect = 2; // 1: prod, 2: dev
+const serverSelect = 1; // 1: prod, 2: dev
 
 if (process.env.NODE_ENV === "production") {
   axios.defaults.baseURL = process.env.NEXT_PUBLIC_PROD_API_ROOT;
@@ -26,7 +27,7 @@ if (process.env.NODE_ENV === "production") {
 
 //CardwithSquareImage에 prop 넘겨줄때 각각 넘겨주지 말고 객체를 넘기면 될것같은데->DB구성후에 생각하기로..
 const Controller = () => {
-  const [sensorData, setSensorData] = useState(null);
+  const [sensorData, setSensorData] = useRecoilState(realtimeDataAtom);
   const [isLedOn, setIsLedOn] = useState(false);
   const [isFanOn, setIsFanOn] = useState(false);
   const [isPumpOn, setIsPumpOn] = useState(false);
