@@ -21,6 +21,16 @@ export default function handler(req, res) {
       pump_term: 15,
       created_at: "2023-04-26",
     },
+    {
+      idx: productId,
+      device_id: "basil03",
+      temp: 15,
+      humidity: 72,
+      light: 200,
+      moisture: 25,
+      pump_term: 95,
+      created_at: "2023-04-27",
+    },
   ];
   res.status(200).json(data);
 }
