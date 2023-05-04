@@ -47,9 +47,7 @@ export default function Dashboard() {
     <div>
       <NavBarTest />
       <DashboardDisplayFlex>
-        <DashboardCommonAreaDiv>
-          <Temp />
-        </DashboardCommonAreaDiv>
+        <Temp />
         <DashboardCommonAreaDiv>
           <Humidity />
         </DashboardCommonAreaDiv>
