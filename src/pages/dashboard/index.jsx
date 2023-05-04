@@ -25,7 +25,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       const dashboardResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_PROD_API_ROOT}/sensor`
+        `${process.env.NEXT_PUBLIC_PROD_API_ROOT}/sensors`
       );
       const dashboardData = await dashboardResponse.json();
 
