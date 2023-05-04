@@ -43,6 +43,9 @@ const LoginPageGIF = styled.video`
 const LoginPageInputArea = styled.div`
   background-color: #ffffff;
 
+  // background: rgba(0, 0, 0, 0.1);
+  // backdrop-filter: blur(5px);
+
   position: absolute;
   top: 10%;
   left: 32%;
