@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import LineChart from "./Chart/LineChart";
 import axios from "axios";
-
+import LightChart from "./Chart/LightChart";
 // 조도 센서
 export default function LightComponent(props) {
   const [currentLight, setCurrentLight] = useState(null);
@@ -33,7 +33,7 @@ export default function LightComponent(props) {
 
   return (
     <div>
-      <LineChart lightData={lightData} />
+      <LightChart lightData={lightData} />
       <p>{currentLight}</p>
       <h3>조도</h3>
     </div>
