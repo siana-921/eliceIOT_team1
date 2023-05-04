@@ -9,7 +9,7 @@ export default function TemperatureChart({ temperatureData }) {
     datasets: [
       {
         label: ["Temperature"],
-        data: temperatureData,
+        data: [temperatureData.slice(-1)[0]],
         backgroundColor: ["rgb(0,168,107)"],
       },
     ],

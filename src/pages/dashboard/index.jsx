@@ -25,12 +25,12 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       const dashboardResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_PROD_API_ROOT}/sensors`
+        `${process.env.NEXT_PUBLIC_DEV_API_ROOT}/dashboard`
       );
       const dashboardData = await dashboardResponse.json();
 
       const actuatorResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_PROD_API_ROOT}/actuators`
+        `${process.env.NEXT_PUBLIC_DEV_API_ROOT}/actuators`
       );
       const actuatorData = await actuatorResponse.json();
 
@@ -47,9 +47,7 @@ export default function Dashboard() {
     <div>
       <NavBarTest />
       <DashboardDisplayFlex>
-        <DashboardCommonAreaDiv>
-          <Temp />
-        </DashboardCommonAreaDiv>
+        <Temp />
         <DashboardCommonAreaDiv>
           <Humidity />
         </DashboardCommonAreaDiv>
@@ -74,9 +72,7 @@ export default function Dashboard() {
 
 export async function getServerSideProps() {
   try {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_PROD_API_ROOT}`
-    );
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_DEV_API_ROOT}`);
 
     return {
       props: {
@@ -110,8 +106,10 @@ export const DashboardCommonAreaDiv = styled.div`
   width: 32rem;
   height: 18rem;
   margin-left: 2.31rem;
+  display: flex;
+  flex-direction: column;
   text-align: center;
-  justify-content: center;
+  align-items: center;
   background: rgba(228, 228, 228, 0.3);
 
   border-radius: 20px;
