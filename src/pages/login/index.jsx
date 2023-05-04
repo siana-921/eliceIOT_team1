@@ -45,8 +45,8 @@ const LoginPageInputArea = styled.div`
 
   position: absolute;
   top: 10%;
-  left: 20%;
-  width: 70rem;
+  left: 32%;
+  width: 40rem;
   height: 47rem;
   display: flex;
 
@@ -70,7 +70,7 @@ const LoginPageInputArea = styled.div`
 const LoginPageBoarder = styled.div`
   width: 80%;
 
-  border-bottom: 0.1rem dotted #000000;
+  border-bottom: 0.8rem solid #000000;
   margin: 1rem;
 `;
 
@@ -81,8 +81,9 @@ const LoginPageInputDiv = styled.div`
   margin: 1rem;
 
   & li {
-    margin: 1.5rem;
+    margin: 1.5rem 0;
     font-size: 1.5rem;
+    font-weight: 500;
   }
 
   & input {
@@ -90,6 +91,7 @@ const LoginPageInputDiv = styled.div`
     height: 100%;
     border: none;
     border-bottom: 0.1rem solid;
+    font-size: 0.9rem;
   }
   & input:focus {
     outline: none;
@@ -101,9 +103,9 @@ const LoginButtonDiv = styled.div`
   display: flex;
 
   & button {
-    height: 2.5rem;
-    width: 10rem;
-    margin: 2rem 1rem;
+    height: 3rem;
+    width: 14rem;
+    margin: 3rem 0.5rem;
     background-color: #00a86b;
     border: none;
     border-radius: 1rem;
