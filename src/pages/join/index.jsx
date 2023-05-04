@@ -16,7 +16,7 @@ export default function Join() {
         <input placeholder="아이디를 입력해주세요." />
         <p>비밀번호</p>
         <input placeholder="비밀번호를 입력해주세요!" />
-        <button>로그인</button>
+        <button>회원가입</button>
       </JoinPageInput>
     </JoinPageMain>
   );

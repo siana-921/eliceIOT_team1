@@ -14,10 +14,10 @@ export default function Home() {
         <MainPageText>바질을 키우는 가장 스마트한 방법</MainPageText>
         <MainPageLogo src="/images/logo.png" alt="logo" />
         <MainPageButtonDiv>
-          <Link href="/Login">
+          <Link href="/login">
             <MainPageButton>로그인</MainPageButton>
           </Link>
-          <Link href="/Join">
+          <Link href="/join">
             <MainPageButton>회원가입</MainPageButton>
           </Link>
         </MainPageButtonDiv>
