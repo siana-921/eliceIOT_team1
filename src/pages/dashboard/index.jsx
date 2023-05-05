@@ -1,27 +1,31 @@
-import styled from "@emotion/styled";
-import axios from "axios";
-("../../components/Chart/DoughnutChart/DoughnutChart");
-import Temp from "@/components/Dashboard/Temp";
-import NavBar from "@/components/NavBar/NavBar";
-import MotorPump from "@/components/Dashboard/Motorpump";
-import Moisture from "@/components/Dashboard/Moisture";
-import Led from "@/components/Dashboard/Led";
-import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
+import styled from '@emotion/styled';
+import axios from 'axios';
+('../../components/Chart/DoughnutChart/DoughnutChart');
+import Temp from '@/components/Dashboard/Temp';
+import NavBar from '@/components/NavBar/NavBar';
+import MotorPump from '@/components/Dashboard/Motorpump';
+import Moisture from '@/components/Dashboard/Moisture';
+import Led from '@/components/Dashboard/Led';
+import { useEffect } from 'react';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 import {
   dashboardDataAtom,
   actuatorDataAtom,
-} from "../../store/Dashboard/atoms";
-import LightComponent from "@/components/Dashboard/Light";
-import Humidity from "@/components/Dashboard/Humidity";
-import NavBarTest from "@/components/NavBar/NavBarTest";
-import LightChart from "@/components/Dashboard/Chart/LightChart";
+  lightListSelector,
+} from '../../store/Dashboard/atoms';
+import LightComponent from '@/components/Dashboard/Light';
+import Humidity from '@/components/Dashboard/Humidity';
+import NavBarTest from '@/components/NavBar/NavBarTest';
+import LightChart from '@/components/Dashboard/Chart/LightChart';
 
 export default function Dashboard() {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
   const setActuatorData = useSetRecoilState(actuatorDataAtom);
+  const lightList = useRecoilValue(lightListSelector);
 
-  setDashboardData({});
+  useEffect(() => {
+    console.log(lightList);
+  }, [lightList]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,7 +86,7 @@ export async function getServerSideProps() {
     };
   } catch (err) {
     console.log(err.response);
-    const statusCode = err.response ? err.response.status : "🚨에러발생";
+    const statusCode = err.response ? err.response.status : '🚨에러발생';
     console.log(err.response);
     return {
       props: {
