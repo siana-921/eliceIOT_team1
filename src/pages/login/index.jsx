@@ -13,12 +13,10 @@ export default function Login() {
         <h1>LOGIN</h1>
         {/* <LoginPageBoarder /> */}
         <LoginPageInputDiv>
-          <ul>
-            <li>아이디</li>
-            <input placeholder="아이디를 입력해주세요." />
-            <li>비밀번호</li>
-            <input placeholder="비밀번호를 입력해주세요." />
-          </ul>
+          <label>아이디</label>
+          <input placeholder="아이디를 입력해주세요." />
+          <label>비밀번호</label>
+          <input placeholder="비밀번호를 입력해주세요." />
         </LoginPageInputDiv>
         <LoginButtonDiv>
           <button>로그인</button>
@@ -81,24 +79,26 @@ const LoginPageInputDiv = styled.div`
   width: 70%;
   align-items: center;
   justify-content: center;
-  margin: 1rem;
+  margin: 2rem;
 
-  & li {
-    margin: 1.5rem 0;
-    font-size: 1.5rem;
+  & label {
+    margin: 0.5rem;
+    font-size: 1.3rem;
     font-weight: 500;
   }
 
   & input {
+    margin: 0.8rem;
     width: 100%;
-    height: 100%;
+    height: 30%;
     border: none;
-    border-bottom: 0.1rem solid;
+    border-bottom: 0.1rem solid grey;
     font-size: 0.9rem;
   }
   & input:focus {
     outline: none;
-    border-bottom: 2px solid #00a86b;
+    border: 2px solid #00a86b;
+    border-radius: 0.5rem;
   }
 `;
 
@@ -108,7 +108,7 @@ const LoginButtonDiv = styled.div`
   & button {
     height: 3rem;
     width: 14rem;
-    margin: 3rem 0.5rem;
+    margin: 5rem 0.5rem;
     background-color: #00a86b;
     border: none;
     border-radius: 1rem;
