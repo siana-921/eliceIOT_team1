@@ -32,7 +32,7 @@ export default function LightComponent(props) {
 
   return (
     <div>
-      <LightChart yesterdayLight={yesterdayLight} currentLight={lightData} />
+      <LightChart yesterdayLight={lightData} currentLight={lightData} />
       <p>{lightData}</p>
       <h3>조도</h3>
     </div>
