@@ -72,19 +72,38 @@ const Controller = (props) => {
 */
 
   const setFan = () => {
-    console.log("환풍기 켜~~~");
-    controlFan("deviceID", fanSettings);
-    setIsFanOn(true);
+    const fanSettings = { device_id: deviceID, fan: 1 };
+    controlFan(fanSettings)
+      .then((res) => {
+        setIsFanOn(true);
+        console.log(res, isFanOn);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   const setLed = () => {
-    console.log("LED 켜~~~");
-    controlLed("deviceID", ledSettings);
-    setIsLedOn(true);
+    const ledSettings = { device_id: deviceID, led: 1 };
+    controlLed(ledSettings)
+      .then((res) => {
+        setIsLedOn(true);
+        console.log(res, isLedOn);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
-  const setWaterPump = () => {
-    console.log("워터펌프 켜~~~");
-    controlPump("deviceID", pumpSettings);
-    setIsPumpOn(true);
+  const setPump = () => {
+    console.log("setpump");
+    const pumpSettings = { device_id: deviceID, pump: 1 };
+    controlPump(pumpSettings)
+      .then((res) => {
+        setIsPumpOn(true);
+        console.log(res, isPumpOn);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -93,7 +112,7 @@ const Controller = (props) => {
       <Container>
         <Panel left>
           <CardwithSquareImage
-            onClick={setFan}
+            onClickHandler={setFan}
             size={220}
             subject={"airHumidity"}
             subjectName={"대기 수분"}
@@ -101,7 +120,7 @@ const Controller = (props) => {
             buttonText={"환풍기 켜기"}
           ></CardwithSquareImage>
           <CardwithSquareImage
-            onClick={setLed}
+            onClickHandler={setLed}
             size={220}
             subject={"airTemperature"}
             subjectName={"대기 온도"}
@@ -111,7 +130,7 @@ const Controller = (props) => {
         </Panel>
         <Panel>
           <CardwithSquareImage
-            onClick={setWaterPump}
+            onClickHandler={setPump}
             size={220}
             subject={"soilMoisture"}
             subjectName={"토양 수분"}
@@ -119,7 +138,7 @@ const Controller = (props) => {
             buttonText={"즉시 물주기"}
           ></CardwithSquareImage>
           <CardwithSquareImage
-            onClick={setLed}
+            onClickHandler={setLed}
             size={220}
             subject={"illuminance"}
             subjectName={"조도"}

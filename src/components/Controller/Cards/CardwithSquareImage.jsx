@@ -42,7 +42,9 @@ const CardwithSquareImage = (props) => {
         <StyledTitle>{props.subjectName}</StyledTitle>
         <StyledText>현재 측정값 : {props.measuredValue}</StyledText>
         <p>{message}</p>
-        <StyledButton>{props.buttonText}</StyledButton>
+        <StyledButton onClick={props.onClickHandler}>
+          {props.buttonText}
+        </StyledButton>
       </TextArea>
     </Card>
   );
