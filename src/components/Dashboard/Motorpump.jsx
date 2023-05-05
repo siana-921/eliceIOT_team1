@@ -8,8 +8,8 @@ export default function Motorpump() {
 
   return (
     <MotorpumpDiv>
-      <h2>{actuatorData[1]?.pump}</h2>
-      <p>{actuatorData[1]?.pump ? "On" : "Off"}</p>
+      <h2>{actuatorData[1]?.pump ? "On" : "Off"}</h2>
+      <p>{actuatorData[1]?.pump}</p>
       <h3>모터펌프</h3>
     </MotorpumpDiv>
   );

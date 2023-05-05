@@ -15,6 +15,7 @@ import {
 import LightComponent from "@/components/Dashboard/Light";
 import Humidity from "@/components/Dashboard/Humidity";
 import NavBarTest from "@/components/NavBar/NavBarTest";
+import LightChart from "@/components/Dashboard/Chart/LightChart";
 
 export default function Dashboard() {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
@@ -54,6 +55,9 @@ export default function Dashboard() {
         <DashboardCommonAreaDiv>
           <Moisture />
         </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <p>에어컨</p>
+        </DashboardCommonAreaDiv>
       </DashboardDisplayFlex>
       <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
@@ -64,6 +68,9 @@ export default function Dashboard() {
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
           <Led />
+        </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <p>수위센서</p>
         </DashboardCommonAreaDiv>
       </DashboardDisplayFlex>
     </div>
