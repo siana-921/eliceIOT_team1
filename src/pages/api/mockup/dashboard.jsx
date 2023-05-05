@@ -13,7 +13,7 @@ export default function handler(req, res) {
     },
     {
       idx: productId,
-      device_id: "basil02",
+      device_id: "basil01",
       temp: 11,
       humidity: 26,
       light: 80,
@@ -23,7 +23,7 @@ export default function handler(req, res) {
     },
     {
       idx: productId,
-      device_id: "basil03",
+      device_id: "basil01",
       temp: 15,
       humidity: 72,
       light: 200,

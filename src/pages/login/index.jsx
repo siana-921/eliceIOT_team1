@@ -40,7 +40,7 @@ const LoginPageGIF = styled.video`
   z-index: -1;
 `;
 
-const LoginPageInputArea = styled.div`
+const LoginPageInputArea = styled.form`
   background-color: #ffffff;
 
   // background: rgba(0, 0, 0, 0.1);

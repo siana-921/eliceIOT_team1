@@ -55,6 +55,9 @@ export default function Dashboard() {
         <DashboardCommonAreaDiv>
           <Moisture />
         </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <p>에어컨</p>
+        </DashboardCommonAreaDiv>
       </DashboardDisplayFlex>
       <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
@@ -65,6 +68,9 @@ export default function Dashboard() {
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
           <Led />
+        </DashboardCommonAreaDiv>
+        <DashboardCommonAreaDiv>
+          <p>수위센서</p>
         </DashboardCommonAreaDiv>
       </DashboardDisplayFlex>
     </div>
