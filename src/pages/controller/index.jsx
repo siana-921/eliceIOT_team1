@@ -106,45 +106,49 @@ const Controller = (props) => {
       });
   };
 
+  const cardProps = [
+    {
+      onClickHandler: setFan,
+      subject: "airHumidity",
+      subjectName: "대기 수분",
+      measuredValue: realTimeSensorData?.humidity,
+      buttonText: "환풍기 켜기",
+    },
+    {
+      onClickHandler: setPump,
+      subject: "soilMoisture",
+      subjectName: "토양 수분",
+      measuredValue: realTimeSensorData?.moisture,
+      buttonText: "물주기",
+    },
+    {
+      onClickHandler: setLed,
+      subject: "airTemperature",
+      subjectName: "대기 온도",
+      measuredValue: realTimeSensorData?.temp,
+      buttonText: "LED 켜기",
+    },
+    {
+      onClickHandler: setLed,
+      subject: "illuminance",
+      subjectName: "조도",
+      measuredValue: realTimeSensorData?.light,
+      buttonText: "LED 켜기",
+    },
+  ];
+
+  //다음에 레이아웃 수정하면서 map으로 바꾸던지 하는걸루
   return (
     <Main>
       <NavBar></NavBar>
       <Container>
         <Panel left>
-          <CardwithSquareImage
-            onClickHandler={setFan}
-            size={220}
-            subject={"airHumidity"}
-            subjectName={"대기 수분"}
-            measuredValue={realTimeSensorData?.humidity}
-            buttonText={"환풍기 켜기"}
-          ></CardwithSquareImage>
-          <CardwithSquareImage
-            onClickHandler={setLed}
-            size={220}
-            subject={"airTemperature"}
-            subjectName={"대기 온도"}
-            measuredValue={realTimeSensorData?.temp}
-            buttonText={"LED 켜기"}
-          ></CardwithSquareImage>
+          <CardwithSquareImage cardProps={cardProps[0]}></CardwithSquareImage>
+          <CardwithSquareImage cardProps={cardProps[1]}></CardwithSquareImage>
         </Panel>
         <Panel>
-          <CardwithSquareImage
-            onClickHandler={setPump}
-            size={220}
-            subject={"soilMoisture"}
-            subjectName={"토양 수분"}
-            measuredValue={realTimeSensorData?.moisture}
-            buttonText={"즉시 물주기"}
-          ></CardwithSquareImage>
-          <CardwithSquareImage
-            onClickHandler={setLed}
-            size={220}
-            subject={"illuminance"}
-            subjectName={"조도"}
-            measuredValue={realTimeSensorData?.light}
-            buttonText={"LED 켜기"}
-          ></CardwithSquareImage>
+          <CardwithSquareImage cardProps={cardProps[2]}></CardwithSquareImage>
+          <CardwithSquareImage cardProps={cardProps[3]}></CardwithSquareImage>
         </Panel>
       </Container>
     </Main>
