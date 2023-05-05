@@ -8,8 +8,8 @@ export default function Led() {
 
   return (
     <LedDiv>
-      <h2>{actuatorData[1]?.led}</h2>
-      <p>{actuatorData[1]?.led ? "On" : "Off"}</p>
+      <h2>{actuatorData[1]?.led ? "ON" : "OFF"}</h2>
+      <p>{actuatorData[1]?.led}</p>
       <h3>식물 LED</h3>
     </LedDiv>
   );

@@ -1,40 +1,52 @@
 import { useState, useEffect } from "react";
-import LineChart from "./Chart/LineChart";
 import axios from "axios";
-
+import LightChart from "./Chart/LightChart";
 // 조도 센서
 export default function LightComponent(props) {
   const [currentLight, setCurrentLight] = useState(null);
-  const [lightData, setLightData] = useState([]); // 그래프 데이터
-
-  const DATA_COUNT = 6;
-  const INTERVAL = 5000;
+  const [yesterdayLight, setYesterdayLight] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:3000/api/mockup/dashboard"
+        const { data: dashboardData } = await axios.get(
+          `${process.env.NEXT_PUBLIC_DEV_API_ROOT}/dashboard`
         );
-        const data = res.data;
-        const lightValues = data.lightData.slice(0, DATA_COUNT); // 4시간 단위로 나누기
-        setLightData(lightValues);
-        setCurrentLight(lightValues[0]);
+
+        // 1. 최신순 정렬
+        const sortedDashboardData = dashboardData.sort((a, b) => {
+          return a.created_at < b.created_at ? 1 : -1;
+        });
+
+        // 2. 최신순 정렬했을 때 가장 최근 light 정보 가져오기
+        setCurrentLight(sortedDashboardData[0].light);
+        setYesterdayLight(sortedDashboardData[1].light);
       } catch (err) {
         console.log("🚨조도센서에러발생");
       }
     };
+
+    // const intervalId = setInterval(() => {
+    //   fetchData();
+    // }, 1000 * 60 * 5); // 5분마다 데이터 fetch
+    // return () => clearInterval(intervalId);
+
     fetchData();
-
-    const intervalId = setInterval(fetchData, INTERVAL);
-
-    return () => clearInterval(intervalId);
-  }, [INTERVAL]);
+  }, []);
 
   return (
     <div>
-      <LineChart lightData={lightData} />
-      <p>{currentLight}</p>
+      {currentLight === null || yesterdayLight === null ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          <LightChart
+            yesterdayLight={yesterdayLight}
+            currentLight={currentLight}
+          />
+          <p>{currentLight}</p>
+        </>
+      )}
       <h3>조도</h3>
     </div>
   );
