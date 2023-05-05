@@ -9,7 +9,7 @@ export default function handler(req, res) {
       light: 100,
       moisture: 50,
       pump_term: 17,
-      created_at: "2023-04-25",
+      created_at: 1682485379,
     },
     {
       idx: productId,
@@ -19,7 +19,7 @@ export default function handler(req, res) {
       light: 80,
       moisture: 60,
       pump_term: 15,
-      created_at: "2023-04-26",
+      created_at: 1682571779,
     },
     {
       idx: productId,
@@ -29,7 +29,7 @@ export default function handler(req, res) {
       light: 200,
       moisture: 25,
       pump_term: 95,
-      created_at: "2023-04-27",
+      created_at: 1682658179,
     },
   ];
   res.status(200).json(data);
