@@ -1,8 +1,31 @@
+import { useState } from "react";
 import styled from "@emotion/styled";
 import Image from "next/image";
 
-//액츄에이터가 작동중이라면 "지금 작동중입니다" 문구 같은거 표시하기
+/*최적 바질 생장 조건*/
+import optimalVal from "../../../../public/optimalGrowingConditions";
+
 const CardwithSquareImage = (props) => {
+  //const [conditionMessage, setConditionMessage] = useState("");
+  const { max } = optimalVal[props.subject];
+  const { min } = optimalVal[props.subject];
+
+  let message = "";
+
+  if (props.measuredValue < min) {
+    const diff = min - props.measuredValue;
+    message = `적정수치보다 ${
+      Number.isInteger(diff) ? diff : diff.toFixed(1)
+    } 부족합니다.`;
+  } else if (props.measuredValue > max) {
+    const diff = props.measuredValue - max;
+    message = `적정수치보다 ${
+      Number.isInteger(diff) ? diff : diff.toFixed(1)
+    } 초과합니다.`;
+  } else {
+    message = "바질이 성장하기에 적합합니다.";
+  }
+
   return (
     <Card size={props.size}>
       <ImageWrapper size={props.size}>
@@ -18,8 +41,7 @@ const CardwithSquareImage = (props) => {
       <TextArea>
         <StyledTitle>{props.subjectName}</StyledTitle>
         <StyledText>현재 측정값 : {props.measuredValue}</StyledText>
-        <p>바질이 자라기 위해서는 ?? % 부족합니다.</p>
-        <p>바질이 자라기 위해서는 ?? % 초과합니다.</p>
+        <p>{message}</p>
         <StyledButton>{props.buttonText}</StyledButton>
       </TextArea>
     </Card>
