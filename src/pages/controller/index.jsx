@@ -1,19 +1,28 @@
+/*라이브러리*/
 import React, { useState, useEffect } from "react";
-import NavBar from "../../components/NavBar/NavBar";
+import { useRecoilState } from "recoil";
 import styled from "@emotion/styled";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+
+/*하위 컴포넌트*/
+import NavBar from "../../components/NavBar/NavBar";
 import CardwithSquareImage from "../../components/Controller/Cards/CardwithSquareImage";
 
-//import getRealTimeData from "../../api/GetRealTimeDataApi";
+/*ATOM*/
+import getRealTimeDataAtom from "../../store/getRealTimeDataAtom";
+
+/*API*/
 import {
   controlFan,
   controlLed,
   controlPump,
 } from "../../api/SetActuatorApi.js";
 
+/*임시 설정*/
+const deviceID = "unit002";
 const serverSelect = 1; // 1: prod, 2: dev
 
+/*환경변수 가져오기*/
 if (process.env.NODE_ENV === "production") {
   axios.defaults.baseURL = process.env.NEXT_PUBLIC_PROD_API_ROOT;
   console.log(`PROD ${axios.defaults.baseURL}`);
@@ -26,23 +35,26 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //CardwithSquareImage에 prop 넘겨줄때 각각 넘겨주지 말고 객체를 넘기면 될것같은데->DB구성후에 생각하기로..
-const Controller = () => {
-  const [sensorData, setSensorData] = useRecoilState(realtimeDataAtom);
+/*컴포넌트 본문*/
+const Controller = (props) => {
+  const [realTimeSensorData, setRealTimeSensorData] =
+    useRecoilState(getRealTimeDataAtom);
   const [isLedOn, setIsLedOn] = useState(false);
   const [isFanOn, setIsFanOn] = useState(false);
   const [isPumpOn, setIsPumpOn] = useState(false);
 
-  const term = 0.1; //분단위 term
-
+  /*정해진 시간마다 데이터 가져오기*/
   useEffect(() => {
-    const deviceID = "unit002"; // 임시... 나중에는 로그인한 데이터를 사용하자
+    //컴포넌트 첫 렌더링시에는 getServerSideProps에서 준 props로 state를 set해서 렌더링!
+    setRealTimeSensorData(props.data);
 
+    const term = 1; //분단위 term
+    //그 이후에는 term 마다 새로 api 요청 (term*60*1000 후가 첫번째 실행임)
     const interval = setInterval(async () => {
       try {
-        const res = await axios.get(`/sensor/${deviceID}`);
-        console.log(res.data);
-        setSensorData(res.data);
-        console.log(sensorData);
+        const res = await axios.get(`/realtime/${deviceID}`);
+        //console.log(res.data);
+        setRealTimeSensorData(res.data[0]);
         return;
       } catch (err) {
         console.log(err);
@@ -52,6 +64,12 @@ const Controller = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  /*
+  useEffect(() => {
+    console.log(realTimeSensorData);
+  }, [realTimeSensorData]);
+*/
 
   const setFan = () => {
     console.log("환풍기 켜~~~");
@@ -79,7 +97,7 @@ const Controller = () => {
             size={220}
             subject={"airHumidity"}
             subjectName={"대기 수분"}
-            measuredValue={sensorData?.humidity}
+            measuredValue={realTimeSensorData?.humidity}
             buttonText={"환풍기 켜기"}
           ></CardwithSquareImage>
           <CardwithSquareImage
@@ -87,7 +105,7 @@ const Controller = () => {
             size={220}
             subject={"airTemperature"}
             subjectName={"대기 온도"}
-            measuredValue={sensorData?.temp}
+            measuredValue={realTimeSensorData?.temp}
             buttonText={"LED 켜기"}
           ></CardwithSquareImage>
         </Panel>
@@ -97,7 +115,7 @@ const Controller = () => {
             size={220}
             subject={"soilMoisture"}
             subjectName={"토양 수분"}
-            measuredValue={sensorData?.moisture}
+            measuredValue={realTimeSensorData?.moisture}
             buttonText={"즉시 물주기"}
           ></CardwithSquareImage>
           <CardwithSquareImage
@@ -105,7 +123,7 @@ const Controller = () => {
             size={220}
             subject={"illuminance"}
             subjectName={"조도"}
-            measuredValue={sensorData?.light}
+            measuredValue={realTimeSensorData?.light}
             buttonText={"LED 켜기"}
           ></CardwithSquareImage>
         </Panel>
@@ -116,6 +134,27 @@ const Controller = () => {
 
 export default Controller;
 
+export async function getServerSideProps() {
+  console.log("==============GET DATA==============");
+  console.log(`device ID : ${deviceID}`);
+
+  try {
+    const res = await axios.get(`/realtime/${deviceID}`);
+    console.log(res.data[0]);
+    return {
+      props: {
+        data: res.data[0],
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      props: {},
+    };
+  }
+}
+
+/*스타일*/
 const Main = styled.div`
   width: 100%;
   display: flex;
@@ -134,24 +173,3 @@ const Panel = styled.div`
   padding: 2rem 2rem 2rem 2rem;
   border-right: ${({ left }) => (left ? "solid 1px #8d8d8d" : "none")};
 `;
-
-//초기 데이터 렌더링 용도 //수정해야됨
-export async function getServerSideProps(context) {
-  console.log("==============GET DATA==============");
-  console.log(`device ID : ${context.query.deviceID}`);
-
-  try {
-    const res = await axios.get("/sensor");
-    console.log(res);
-    return {
-      props: {
-        data: res.data,
-      },
-    };
-  } catch (err) {
-    console.log(err);
-    return {
-      props: {},
-    };
-  }
-}
