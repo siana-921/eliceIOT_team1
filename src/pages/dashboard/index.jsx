@@ -15,6 +15,7 @@ import {
 import LightComponent from "@/components/Dashboard/Light";
 import Humidity from "@/components/Dashboard/Humidity";
 import NavBarTest from "@/components/NavBar/NavBarTest";
+import LightChart from "@/components/Dashboard/Chart/LightChart";
 
 export default function Dashboard() {
   const setDashboardData = useSetRecoilState(dashboardDataAtom);
@@ -57,7 +58,7 @@ export default function Dashboard() {
       </DashboardDisplayFlex>
       <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
-          <LightComponent />
+          <LightChart />
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
           <MotorPump />
