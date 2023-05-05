@@ -12,7 +12,7 @@ export default function LightComponent(props) {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_DEV_API_ROOT}/sensor/dashboard`
+          `${process.env.NEXT_PUBLIC_DEV_API_ROOT}/dashboard`
         );
         const data = res.data;
 
