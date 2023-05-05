@@ -1,7 +1,7 @@
 import { Bar } from "react-chartjs-2";
 
-export default function LightChart(props) {
-  const { yesterdayLight, currentLight } = props;
+export default function LightChart(yesterdayLight, currentLight) {
+  yesterdayLight = currentLight - 86400;
 
   const data = {
     labels: ["24시간 전 조도", "현재 조도"],
