@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import img from "../../../public/images/logo.png";
 import Link from "next/link";
+// import import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { signOut, useSession } from "next-auth/react";
 
 export default function NavBarTest() {
+  const [menuToggle, setMenuToggle] = useState(false);
+  const { data: session, status } = useSession();
+
   return (
     <NavigationBar>
       <LogoLinkA href="/">
         <Image src={img} width={300} alt="logo" />
       </LogoLinkA>
-      <LinkDiv>
-        <LinkStyled href="/dashboard">Dashboard</LinkStyled>
-        <LinkStyledSpan>|</LinkStyledSpan>
-        <LinkStyled href="/controller">Controller</LinkStyled>
-        <LinkStyledSpan>|</LinkStyledSpan>
-        <LinkStyled href="/">Profile</LinkStyled>
-      </LinkDiv>
+      {status === "authenticated" ? (
+        <LinkDiv>
+          <LinkStyled href="/dashboard">Dashboard</LinkStyled>
+          <LinkStyledSpan>|</LinkStyledSpan>
+          <LinkStyled href="/controller">Controller</LinkStyled>
+          <LinkStyledSpan>|</LinkStyledSpan>
+          <LinkStyled href="/">Profile</LinkStyled>
+          <LinkStyledSpan>|</LinkStyledSpan>
+          <LinkStyled href="#" onClick={() => signOut()}>
+            Log out
+          </LinkStyled>
+        </LinkDiv>
+      ) : (
+        <>
+          <LinkStyledSpan>|</LinkStyledSpan>
+          <LinkStyled href="/">Profile</LinkStyled>
+        </>
+      )}
+      ;
     </NavigationBar>
   );
 }
@@ -35,7 +52,7 @@ const LogoLinkA = styled.a`
 `;
 
 const LinkDiv = styled.div`
-  left: 75%;
+  left: 68%;
   position: absolute;
   margin-top: 2.5rem;
   font-size: 1.3rem;
