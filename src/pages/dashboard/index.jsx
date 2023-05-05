@@ -58,7 +58,7 @@ export default function Dashboard() {
       </DashboardDisplayFlex>
       <DashboardDisplayFlex>
         <DashboardCommonAreaDiv>
-          <LightChart />
+          <LightComponent />
         </DashboardCommonAreaDiv>
         <DashboardCommonAreaDiv>
           <MotorPump />
