@@ -11,8 +11,14 @@ const Dashboard2 = ({ data }) => {
           data={data}
           style={{ backgroundColor: "yellow" }}
         ></SectionCard>
+      </SectionDivider>
+      <SectionDivider>
         <BlankDiv></BlankDiv>
+      </SectionDivider>
+      <SectionDivider>
         <BlankDiv></BlankDiv>
+      </SectionDivider>
+      <SectionDivider>
         <BlankDiv></BlankDiv>
       </SectionDivider>
     </Main>
@@ -24,16 +30,18 @@ export default Dashboard2;
 const Main = styled.div`
   width: 100vw;
   height: 100vh;
+  display: flex;
 `;
 
 const SectionDivider = styled.div`
-  display: flex;
-  > * {
-    width: 25%;
-    height: 100vh;
-  }
+  width: 25%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
 `;
 const BlankDiv = styled.div`
+  width: 100%;
+  height: 100%;
   background-color: grey;
 `;
 export async function getServerSideProps() {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
+import styled from "@emotion/styled";
 
 const GaugeTest = ({ data, style }) => {
   const [chartReady, setChartReady] = useState(false);
@@ -8,8 +9,10 @@ const GaugeTest = ({ data, style }) => {
     setChartReady(true);
   }, []);
 
+  console.log(data[1].uv);
+
   return (
-    <div style={{ backgroundColor: "yellow" }}>
+    <div style={{ backgroundColor: "yellow", width: "100%", height: "100%" }}>
       {chartReady && (
         <ResponsiveContainer width="100%" height="100%">
           <RadialBarChart
@@ -33,8 +36,20 @@ const GaugeTest = ({ data, style }) => {
           </RadialBarChart>
         </ResponsiveContainer>
       )}
+      <ChartLabel>
+        <p>{data[1].uv}%</p>
+      </ChartLabel>
     </div>
   );
 };
 
 export default GaugeTest;
+
+const ChartLabel = styled.div`
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  color: black;
+  transform: translateX(-50%);
+  font-size: 6vw;
+`;
