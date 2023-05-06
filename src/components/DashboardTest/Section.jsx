@@ -2,6 +2,33 @@ import { useEffect, useState } from "react";
 import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
 import styled from "@emotion/styled";
 
+const SectionBySensor = () => {
+  return (
+    <Main>
+      <TitleText>Humidity</TitleText>
+      <SensorValue>
+        32<span style={{ fontSize: "5vw" }}>%</span>
+      </SensorValue>
+      <p>2023. 04. 23 기준</p>
+      <p>먹다남은바질은 잘자라고 있습니다.</p>
+      <p>평균습도 : 65%</p>
+      <p>최고습도 : 95%</p>
+      <p>최저습도 : 35%</p>
+    </Main>
+  );
+};
+export default SectionBySensor;
+
+const Main = styled.div``;
+const TitleText = styled.p`
+  font-size: 5vw;
+`;
+const SensorValue = styled.p`
+  font-size: 10vw;
+`;
+
+/*
+
 const GaugeTest = ({ data, style }) => {
   const [chartReady, setChartReady] = useState(false);
 
@@ -53,3 +80,5 @@ const ChartLabel = styled.div`
   transform: translateX(-50%);
   font-size: 6vw;
 `;
+
+*/
