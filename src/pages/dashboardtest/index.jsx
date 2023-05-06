@@ -6,11 +6,12 @@ import GaugeTest from "@components/dashboardtest/gaugetest";
 const Dashboard2 = ({ data }) => {
   const [offset, setOffset] = useState(0);
   const [activeSectionNum, setActiveSectionNum] = useState(-1);
-  const [isSubsectionVisible, setIsSubsectionVisible] = useState([0, 0, 0, 0]);
+  const [showSubsection, setShowSubsection] = useState(false);
 
   const handleSpread = (sectionNum) => {
     setOffset(sectionNum);
     setActiveSectionNum(sectionNum);
+    setShowSubsection(true);
   };
 
   console.log(offset, activeSectionNum);
@@ -18,7 +19,11 @@ const Dashboard2 = ({ data }) => {
   return (
     <Main>
       <SectionWrapper offsetNum={offset}>
-        <MainSection activeSectionNum={activeSectionNum} offsetNum={offset}>
+        <MainSection
+          thisSectionNum={0}
+          activeSectionNum={activeSectionNum}
+          offsetNum={offset}
+        >
           <TitleArea>
             <UserNameText>정수아님의</UserNameText>
             <PlantNameText>먹다남은바질</PlantNameText>
@@ -53,39 +58,48 @@ const Dashboard2 = ({ data }) => {
           </ChartLabel>
           */}
         </MainSection>
-        <Subsection sectionNum={0} activeSectionNum={activeSectionNum}>
-          <h1>Section 1-2</h1>
-        </Subsection>
-        <MainSection activeSectionNum={activeSectionNum} offsetNum={offset}>
+
+        <MainSection
+          thisSectionNum={1}
+          activeSectionNum={activeSectionNum}
+          offsetNum={offset}
+        >
           <h1>Section 2</h1>
           <button onClick={() => handleSpread(1)}>클</button>
         </MainSection>
-        <Subsection sectionNum={1} activeSectionNum={activeSectionNum}>
-          <h1>Section 2-2</h1>
-        </Subsection>
-        <MainSection activeSectionNum={activeSectionNum} offsetNum={offset}>
+
+        <MainSection
+          thisSectionNum={2}
+          activeSectionNum={activeSectionNum}
+          offsetNum={offset}
+        >
           <h1>Section 3</h1>
           <button onClick={() => handleSpread(2)}>릭</button>
         </MainSection>
-        <Subsection sectionNum={2} activeSectionNum={activeSectionNum}>
-          <h1>Section 3-2</h1>
-        </Subsection>
-        <MainSection activeSectionNum={activeSectionNum} offsetNum={offset}>
+
+        <MainSection
+          thisSectionNum={3}
+          activeSectionNum={activeSectionNum}
+          offsetNum={offset}
+        >
           <h1>Section 4</h1>
           <button onClick={() => handleSpread(3)}>해봐요</button>
         </MainSection>
-        <Subsection sectionNum={3} activeSectionNum={activeSectionNum}>
-          <h1>Section 4-2</h1>
-        </Subsection>
-
-        <MainSection>Section 1</MainSection>
-        <MainSection>Section 2</MainSection>
-        <MainSection>Section 3</MainSection>
+        <MainSection style={{ zIndex: 0 }}>Section 1</MainSection>
+        <MainSection style={{ zIndex: 0 }}>Section 2</MainSection>
+        <MainSection style={{ zIndex: 0 }}>Section 3</MainSection>
       </SectionWrapper>
+      <Subsection
+        trigger={showSubsection}
+        thisSectionNum={activeSectionNum == -1 ? 0 : activeSectionNum}
+      >
+        <h1>Section 1-2</h1>
+      </Subsection>
     </Main>
   );
 };
 
+//------------------전체 레이아웃 스타일
 export default Dashboard2;
 const Main = styled.div`
   position: relative;
@@ -100,27 +114,27 @@ const SectionWrapper = styled.div`
   left: ${(props) => props.offsetNum * -25}%;
   flex-wrap: nowrap;
   display: flex;
-
-  transition: left 0.3s ease-in-out;
+  transition: left 0.25s ease-in-out;
 `;
 const MainSection = styled.div`
   position: relative;
   width: 25vw;
   height: 100vh;
   background-color: #ffffff;
-  z-index: 3;
+  z-index: ${({ thisSectionNum, activeSectionNum }) =>
+    thisSectionNum === activeSectionNum ? 3 : 1};
 `;
 const Subsection = styled.div`
   position: relative;
   top: 0;
-  left: ${({ sectionNum, activeSectionNum }) =>
-    sectionNum == activeSectionNum ? "0vw" : "0"};
-  width: 75vw;
+  left: ${({ trigger, thisSectionNum }) =>
+    trigger ? "0vw" : `-${100 + thisSectionNum * 25}vw`};
+  width: 100vw;
   height: 100vh;
   background-color: yellow;
-  z-index: 0;
-  display: ${({ sectionNum, activeSectionNum }) =>
-    sectionNum == activeSectionNum ? "block" : "none"};
+  z-index: 2;
+  display: block;
+  transition: left 0.7s ease-in-out 0.2s;
 `;
 //--------------------------------------
 
