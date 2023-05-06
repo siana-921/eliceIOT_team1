@@ -13,34 +13,47 @@ if (process.env.NODE_ENV === "production") {
   console.log(`DEV ${axios.defaults.baseURL}`);
 }
 
-export const controlFan = async (deviceID, actuatorSettings) => {
+export const controlFan = async (reqData) => {
   console.log("==============SET FAN==============");
-  console.log(deviceID);
+  console.log(reqData);
 
+  //post(api-endpoint, data, config object(include headers, timeout, baseURL, withCredentials... ))
   try {
-    await axios.post("/actuators", actuatorSettings);
+    await axios.post(`/actuators/${reqData.device_id}/fan`, reqData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   } catch (err) {
     console.log(err);
     return;
   }
 };
-export const controlLed = async (deviceID, actuatorSettings) => {
+export const controlLed = async (reqData) => {
   console.log("==============SET LED==============");
-  console.log(deviceID);
+  console.log(reqData);
 
   try {
-    await axios.post("/actuators", actuatorSettings);
+    await axios.post(`/actuators/${reqData.device_id}/led`, reqData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   } catch (err) {
     console.log(err);
     return;
   }
 };
-export const controlPump = async (deviceID, actuatorSettings) => {
+export const controlPump = async (reqData) => {
   console.log("==============SET PUMP==============");
-  console.log(deviceID);
+  console.log(reqData);
 
   try {
-    await axios.post("/actuators", actuatorSettings);
+    await axios.post(`/actuators/${reqData.device_id}/pump`, reqData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   } catch (err) {
     console.log(err);
     return;

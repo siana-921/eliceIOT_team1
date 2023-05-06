@@ -5,20 +5,20 @@ import Image from "next/image";
 /*최적 바질 생장 조건*/
 import optimalVal from "../../../../public/optimalGrowingConditions";
 
-const CardwithSquareImage = (props) => {
+const CardwithSquareImage = ({ cardProps }) => {
   //const [conditionMessage, setConditionMessage] = useState("");
-  const { max } = optimalVal[props.subject];
-  const { min } = optimalVal[props.subject];
+  const { max } = optimalVal[cardProps.subject];
+  const { min } = optimalVal[cardProps.subject];
 
   let message = "";
 
-  if (props.measuredValue < min) {
-    const diff = min - props.measuredValue;
+  if (cardProps.measuredValue < min) {
+    const diff = min - cardProps.measuredValue;
     message = `적정수치보다 ${
       Number.isInteger(diff) ? diff : diff.toFixed(1)
     } 부족합니다.`;
-  } else if (props.measuredValue > max) {
-    const diff = props.measuredValue - max;
+  } else if (cardProps.measuredValue > max) {
+    const diff = cardProps.measuredValue - max;
     message = `적정수치보다 ${
       Number.isInteger(diff) ? diff : diff.toFixed(1)
     } 초과합니다.`;
@@ -27,22 +27,24 @@ const CardwithSquareImage = (props) => {
   }
 
   return (
-    <Card size={props.size}>
-      <ImageWrapper size={props.size}>
+    <Card size={cardProps.size}>
+      <ImageWrapper size={cardProps.size}>
         <Image
-          src={`/images/${props.subject}.svg`}
-          width={props.size}
-          height={props.size}
+          src={`/images/${cardProps.subject}.svg`}
+          width={220}
+          height={220}
           priority={true}
           quality={100}
           alt="cardimage"
         ></Image>
       </ImageWrapper>
       <TextArea>
-        <StyledTitle>{props.subjectName}</StyledTitle>
-        <StyledText>현재 측정값 : {props.measuredValue}</StyledText>
+        <StyledTitle>{cardProps.subjectName}</StyledTitle>
+        <StyledText>현재 측정값 : {cardProps.measuredValue}</StyledText>
         <p>{message}</p>
-        <StyledButton>{props.buttonText}</StyledButton>
+        <StyledButton onClick={cardProps.onClickHandler}>
+          {cardProps.buttonText}
+        </StyledButton>
       </TextArea>
     </Card>
   );
@@ -55,8 +57,8 @@ const Card = styled.div`
   margin-bottom: 2rem;
 `;
 const ImageWrapper = styled.div`
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
+  width: 220px;
+  height: 220px;
   border-radius: 20px;
   background-color: #d9d9d9;
   overflow: hidden;
