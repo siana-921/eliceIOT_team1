@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { PieChart, Pie, Cell } from "recharts";
 import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
 
-const GaugeTest = ({ data }) => {
+const GaugeGraph = ({ data }) => {
   const [chartReady, setChartReady] = useState(false);
 
   useEffect(() => {
@@ -48,4 +47,4 @@ const GaugeTest = ({ data }) => {
   );
 };
 
-export default GaugeTest;
+export default GaugeGraph;
