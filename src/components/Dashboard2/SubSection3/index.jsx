@@ -9,7 +9,6 @@ const Main = styled.div`
   height: 100vh;
   display: flex;
   position: relative;
-  background-color: #00b7d8;
 `;
 
 export default SubSection3;

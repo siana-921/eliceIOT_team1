@@ -1,7 +1,12 @@
 import styled from "@emotion/styled";
+import Image from "next/image";
 
 const SubSection2 = () => {
-  return <Main>subsection2</Main>;
+  return (
+    <Main>
+      <Image src="/images/emoji_heart.png" width={300} height={300} />
+    </Main>
+  );
 };
 
 const Main = styled.div`
@@ -9,7 +14,6 @@ const Main = styled.div`
   height: 100vh;
   display: flex;
   position: relative;
-  background-color: #ffc658;
 `;
 
 export default SubSection2;
