@@ -30,9 +30,13 @@ const Dashboard2 = ({ data }) => {
     console.log(activatedSection);
     if (isAnySectionActivated) {
       setPopUpSection(activatedSection);
+      setSpreadSection(activatedSection);
+    } else {
+      setSpreadSection(0);
       setTimeout(() => {
-        setSpreadSection(activatedSection);
-      }, 100);
+        setPopUpSection(0);
+      }, 250);
+      setActivatedSection(0);
     }
   }, [isAnySectionActivated]);
 
@@ -43,6 +47,7 @@ const Dashboard2 = ({ data }) => {
         spreadSection={spreadSection}
         popUpSection={popUpSection}
         activatedSection={activatedSection}
+        isAnySectionActivated={isAnySectionActivated}
         onClick={() => {
           setIsAnySectionActivated(isAnySectionActivated ? false : true);
           setActivatedSection(1);
@@ -62,6 +67,7 @@ const Dashboard2 = ({ data }) => {
         spreadSection={spreadSection}
         popUpSection={popUpSection}
         activatedSection={activatedSection}
+        isAnySectionActivated={isAnySectionActivated}
         onClick={() => {
           setIsAnySectionActivated(isAnySectionActivated ? false : true);
           setActivatedSection(2);
@@ -123,6 +129,7 @@ const Main = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
+  background-color: black;
 `;
 
 const Section = styled.div`
