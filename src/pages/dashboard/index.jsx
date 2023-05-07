@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import Slider, { Range, handleRender } from "rc-slider";
+import "rc-slider/assets/index.css";
 
 import LodingComponent from "@/components/elements/loading";
 import GaugeGraph from "@/components/Dashboard2/elements/GaugeGraph";
@@ -40,6 +42,13 @@ const Dashboard2 = ({ data }) => {
     }
   }, [isAnySectionActivated]);
 
+  const handleSlider = (value) => {
+    console.log(value);
+  };
+  const handleSlideronClick = (event) => {
+    event.stopPropagation();
+  };
+
   return (
     <Main>
       <Section
@@ -57,17 +66,17 @@ const Dashboard2 = ({ data }) => {
       >
         <Contents>
           <MainContent fontColor="#ffffff">
-            <TitleArea>
+            <TitleWrapper>
               <UserNameText>정수아님의</UserNameText>
               <PlantNameText>먹다남은바질</PlantNameText>
-            </TitleArea>
-            <ContentsArea>
+            </TitleWrapper>
+            <ContentsWrapper>
               <SubTitleText>처음 키운날</SubTitleText>
               <p>2023년 4월 23일</p>
               <SubTitleText>현재상태</SubTitleText>
               <SubTitleText>알파고가 키운다(버튼)</SubTitleText>
               <SubTitleText>제어세부설정(버튼)</SubTitleText>
-            </ContentsArea>
+            </ContentsWrapper>
           </MainContent>
           <SubContent>
             <SubSecContentsComponent1 />
@@ -89,13 +98,29 @@ const Dashboard2 = ({ data }) => {
       >
         <Contents>
           <MainContent>
+            <BackTriangleWrapper>
+              <BackTriangleShape></BackTriangleShape>
+            </BackTriangleWrapper>
             <SensorNameText>Temperature</SensorNameText>
             <DataValueText>
               30<PercentText>%</PercentText>
             </DataValueText>
-            <BackTriangleWrapper>
-              <BackTriangleShape></BackTriangleShape>
-            </BackTriangleWrapper>
+            <SliderWrapper onClick={handleSlideronClick}>
+              <SlideTitle>목표 제어 습도</SlideTitle>
+              <Slider
+                min={0}
+                max={100}
+                defaultValue={50}
+                onChange={handleSlider}
+              />
+            </SliderWrapper>
+            <RandomMessageWrapper>
+              <RandomMsg>바질의 최적온도는 26도 입니다</RandomMsg>
+              <RandomMsg>바질은 여름보다 겨울 나기가 더 힘들어요</RandomMsg>
+              <RandomMsg>
+                바질의 적정온도는 15도 이상, 32도 이하입니다
+              </RandomMsg>
+            </RandomMessageWrapper>
           </MainContent>
           <SubContent>
             <SubSecContentsComponent2 />
@@ -161,6 +186,7 @@ const Dashboard2 = ({ data }) => {
 };
 
 export default Dashboard2;
+
 const Main = styled.div`
   position: relative;
   width: 100vw;
@@ -210,12 +236,15 @@ const SubContent = styled.div`
 `;
 //--------------------------------------
 
-//----------------섹션 내부 레이아웃
-const TitleArea = styled.div`
+//----------------섹션 내부 레이아웃 (Wrapper)
+const TitleWrapper = styled.div`
   padding-top: 7rem;
   padding-bottom: 1.5rem;
 `;
-const ContentsArea = styled.div``;
+const ContentsWrapper = styled.div``;
+const RandomMessageWrapper = styled.div`
+  padding: 1rem 1.3rem 1rem 1rem;
+`;
 //----------------------------------
 //----------------차트 관련 스타일
 const ChartLabel = styled.div`
@@ -265,6 +294,15 @@ const PercentText = styled.span`
   font-size: 5rem;
   font-weight: 300;
 `;
+const SlideTitle = styled.div`
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-bottom: 0.2rem;
+`;
+const RandomMsg = styled.p`
+  font-size: 1.1rem;
+  text-align: right;
+`;
 //--------------------------------
 
 //-------------------디자인 요소
@@ -285,6 +323,10 @@ const BackTriangleShape = styled.div`
   transform: rotate(45deg);
   background-color: #ffffff;
   z-index: -1;
+`;
+const SliderWrapper = styled.div`
+  width: 100%;
+  padding: 20px;
 `;
 //---------------------------------
 

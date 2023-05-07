@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
+import Slider from "rc-slider";
 
 const SubSection2 = () => {
   return (
