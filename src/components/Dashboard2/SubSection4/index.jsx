@@ -9,6 +9,7 @@ const Main = styled.div`
   height: 100vh;
   display: flex;
   position: relative;
+  background-color: #a7ed51;
 `;
 
 export default SubSection4;

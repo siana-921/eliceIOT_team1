@@ -11,7 +11,7 @@ import SubSecContentsComponent4 from "@components/Dashboard2/SubSection4/";
 
 const Dashboard2 = ({ data }) => {
   const [offset, setOffset] = useState(0);
-  const [activeSectionNum, setActiveSectionNum] = useState(-1);
+  const [activeSectionNum, setActiveSectionNum] = useState(0);
   const [showSubsection, setShowSubsection] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -21,7 +21,7 @@ const Dashboard2 = ({ data }) => {
       setActiveSectionNum(sectionNum);
       setShowSubsection(true);
     } else {
-      setActiveSectionNum(-1);
+      setActiveSectionNum(0);
       setShowSubsection(false);
       setOffset(0);
       console.log("초기화");
@@ -44,11 +44,12 @@ const Dashboard2 = ({ data }) => {
     <Main>
       {isLoaded ? (
         <>
-          <SectionWrapper offsetNum={offset}>
+          <SectionWrapper activeSectionNum={activeSectionNum}>
             <MainSection
               thisSectionNum={0}
               activeSectionNum={activeSectionNum}
-              offsetNum={offset}
+              fontColor={"#FFFFFF"}
+              bgColor={"#00a86b"}
               onClick={() => handleSpread(0)}
             >
               <TitleArea>
@@ -62,13 +63,13 @@ const Dashboard2 = ({ data }) => {
                 <SubTitleText>알파고가 키운다(버튼)</SubTitleText>
                 <SubTitleText>제어세부설정(버튼)</SubTitleText>
               </ContentsArea>
-              <GaugeGraph data={data}></GaugeGraph>
+              {/*<GaugeGraph data={data}></GaugeGraph>*/}
             </MainSection>
 
             <MainSection
               thisSectionNum={1}
               activeSectionNum={activeSectionNum}
-              offsetNum={offset}
+              bgColor={"#FFC658"}
               onClick={() => handleSpread(1)}
             >
               <SensorNameText>Temperature</SensorNameText>
@@ -83,7 +84,7 @@ const Dashboard2 = ({ data }) => {
             <MainSection
               thisSectionNum={2}
               activeSectionNum={activeSectionNum}
-              offsetNum={offset}
+              bgColor={"#00B7D8"}
               onClick={() => handleSpread(2)}
             >
               <SensorNameText>Humidity</SensorNameText>
@@ -98,7 +99,7 @@ const Dashboard2 = ({ data }) => {
             <MainSection
               thisSectionNum={3}
               activeSectionNum={activeSectionNum}
-              offsetNum={offset}
+              bgColor={"#A7ED51"}
               onClick={() => handleSpread(3)}
             >
               <SensorNameText>Light</SensorNameText>
@@ -109,9 +110,41 @@ const Dashboard2 = ({ data }) => {
                 <BackTriangleShape></BackTriangleShape>
               </BackTriangleWrapper>
             </MainSection>
-            <MainSection style={{ zIndex: 0 }}>Section 1</MainSection>
-            <MainSection style={{ zIndex: 0 }}>Section 2</MainSection>
-            <MainSection style={{ zIndex: 0 }}>Section 3</MainSection>
+
+            <MainSection style={{ zIndex: 0 }}>
+              <TitleArea>
+                <UserNameText>정수아님의</UserNameText>
+                <PlantNameText>먹다남은바질</PlantNameText>
+              </TitleArea>
+              <ContentsArea>
+                <SubTitleText>처음 키운날</SubTitleText>
+                <p>2023년 4월 23일</p>
+                <SubTitleText>현재상태</SubTitleText>
+                <SubTitleText>알파고가 키운다(버튼)</SubTitleText>
+                <SubTitleText>제어세부설정(버튼)</SubTitleText>
+              </ContentsArea>
+              <GaugeGraph data={data}></GaugeGraph>
+            </MainSection>
+
+            <MainSection bgColor={"#ffc658"} style={{ zIndex: 0 }}>
+              <SensorNameText>Temperature</SensorNameText>
+              <DataValueText>
+                30<PercentText>%</PercentText>
+              </DataValueText>
+              <BackTriangleWrapper>
+                <BackTriangleShape></BackTriangleShape>
+              </BackTriangleWrapper>
+            </MainSection>
+
+            <MainSection bgColor={"#00B7D8"} style={{ zIndex: 0 }}>
+              <SensorNameText>Humidity</SensorNameText>
+              <DataValueText>
+                60<PercentText>%</PercentText>
+              </DataValueText>
+              <BackTriangleWrapper>
+                <BackTriangleShape></BackTriangleShape>
+              </BackTriangleWrapper>
+            </MainSection>
           </SectionWrapper>
           <SubsectionContainer
             trigger={showSubsection}
@@ -136,12 +169,13 @@ const Main = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 `;
 const SubMain = styled.div``;
 const SectionWrapper = styled.div`
   position: absolute;
   top: 0;
-  left: ${(props) => props.offsetNum * -25}%;
+  left: ${(props) => props.activeSectionNum * -25}vw;
   flex-wrap: nowrap;
   display: flex;
   transition: left 0.25s ease-in-out;
@@ -150,7 +184,8 @@ const MainSection = styled.div`
   position: relative;
   width: 25vw;
   height: 100vh;
-  background-color: #ffffff;
+  background-color: ${({ bgColor }) => (bgColor ? bgColor : "#ffffff")};
+  color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   z-index: ${({ thisSectionNum, activeSectionNum }) =>
     thisSectionNum === activeSectionNum ? 3 : 1};
 `;
@@ -170,7 +205,8 @@ const SubsectionContainer = styled.div`
 
 //----------------섹션 내부 레이아웃
 const TitleArea = styled.div`
-  padding-top: 100px;
+  padding-top: 7rem;
+  padding-bottom: 1.5rem;
 `;
 const ContentsArea = styled.div``;
 //----------------------------------
@@ -201,10 +237,11 @@ const BarColor = styled.div`
 
 //----------------텍스트 스타일
 const UserNameText = styled.p`
-  font-size: 2rem;
+  font-size: 2.5rem;
 `;
 const PlantNameText = styled.p`
-  font-size: 4rem;
+  font-size: 4.5rem;
+  font-weight: 600;
 `;
 const SubTitleText = styled.p`
   font-size: 1.3rem;
@@ -239,7 +276,7 @@ const BackTriangleShape = styled.div`
   width: 35vw;
   height: 25vw;
   transform: rotate(45deg);
-  background-color: #d9d9d9;
+  background-color: #ffffff;
   z-index: -1;
 `;
 //---------------------------------
