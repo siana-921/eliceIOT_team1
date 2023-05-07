@@ -10,25 +10,11 @@ import SubSecContentsComponent3 from "@components/Dashboard2/SubSection3/";
 import SubSecContentsComponent4 from "@components/Dashboard2/SubSection4/";
 
 const Dashboard2 = ({ data }) => {
-  const [offset, setOffset] = useState(0);
-  const [activeSectionNum, setActiveSectionNum] = useState(0);
-  const [showSubsection, setShowSubsection] = useState(false);
+  const [activatedSection, setActivatedSection] = useState(0);
+  const [popUpSection, setPopUpSection] = useState(0);
+  const [spreadSection, setSpreadSection] = useState(0);
+  const [isAnySectionActivated, setIsAnySectionActivated] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const handleSpread = (sectionNum) => {
-    if (!showSubsection) {
-      setOffset(sectionNum);
-      setActiveSectionNum(sectionNum);
-      setShowSubsection(true);
-    } else {
-      setActiveSectionNum(0);
-      setShowSubsection(false);
-      setOffset(0);
-      console.log("초기화");
-    }
-  };
-
-  console.log(offset, activeSectionNum);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -40,166 +26,137 @@ const Dashboard2 = ({ data }) => {
     };
   }, []);
 
+  useEffect(() => {
+    console.log(activatedSection);
+    if (isAnySectionActivated) {
+      setPopUpSection(activatedSection);
+      setTimeout(() => {
+        setSpreadSection(activatedSection);
+      }, 100);
+    }
+  }, [isAnySectionActivated]);
+
   return (
     <Main>
-      {isLoaded ? (
-        <>
-          <SectionWrapper activeSectionNum={activeSectionNum}>
-            <MainSection
-              thisSectionNum={0}
-              activeSectionNum={activeSectionNum}
-              fontColor={"#FFFFFF"}
-              bgColor={"#00a86b"}
-              onClick={() => handleSpread(0)}
-            >
-              <TitleArea>
-                <UserNameText>정수아님의</UserNameText>
-                <PlantNameText>먹다남은바질</PlantNameText>
-              </TitleArea>
-              <ContentsArea>
-                <SubTitleText>처음 키운날</SubTitleText>
-                <p>2023년 4월 23일</p>
-                <SubTitleText>현재상태</SubTitleText>
-                <SubTitleText>알파고가 키운다(버튼)</SubTitleText>
-                <SubTitleText>제어세부설정(버튼)</SubTitleText>
-              </ContentsArea>
-              {/*<GaugeGraph data={data}></GaugeGraph>*/}
-            </MainSection>
-
-            <MainSection
-              thisSectionNum={1}
-              activeSectionNum={activeSectionNum}
-              bgColor={"#FFC658"}
-              onClick={() => handleSpread(1)}
-            >
-              <SensorNameText>Temperature</SensorNameText>
-              <DataValueText>
-                30<PercentText>%</PercentText>
-              </DataValueText>
-              <BackTriangleWrapper>
-                <BackTriangleShape></BackTriangleShape>
-              </BackTriangleWrapper>
-            </MainSection>
-
-            <MainSection
-              thisSectionNum={2}
-              activeSectionNum={activeSectionNum}
-              bgColor={"#00B7D8"}
-              onClick={() => handleSpread(2)}
-            >
-              <SensorNameText>Humidity</SensorNameText>
-              <DataValueText>
-                60<PercentText>%</PercentText>
-              </DataValueText>
-              <BackTriangleWrapper>
-                <BackTriangleShape></BackTriangleShape>
-              </BackTriangleWrapper>
-            </MainSection>
-
-            <MainSection
-              thisSectionNum={3}
-              activeSectionNum={activeSectionNum}
-              bgColor={"#A7ED51"}
-              onClick={() => handleSpread(3)}
-            >
-              <SensorNameText>Light</SensorNameText>
-              <DataValueText>
-                40<PercentText>%</PercentText>
-              </DataValueText>
-              <BackTriangleWrapper>
-                <BackTriangleShape></BackTriangleShape>
-              </BackTriangleWrapper>
-            </MainSection>
-
-            <MainSection style={{ zIndex: 0 }}>
-              <TitleArea>
-                <UserNameText>정수아님의</UserNameText>
-                <PlantNameText>먹다남은바질</PlantNameText>
-              </TitleArea>
-              <ContentsArea>
-                <SubTitleText>처음 키운날</SubTitleText>
-                <p>2023년 4월 23일</p>
-                <SubTitleText>현재상태</SubTitleText>
-                <SubTitleText>알파고가 키운다(버튼)</SubTitleText>
-                <SubTitleText>제어세부설정(버튼)</SubTitleText>
-              </ContentsArea>
-              <GaugeGraph data={data}></GaugeGraph>
-            </MainSection>
-
-            <MainSection bgColor={"#ffc658"} style={{ zIndex: 0 }}>
-              <SensorNameText>Temperature</SensorNameText>
-              <DataValueText>
-                30<PercentText>%</PercentText>
-              </DataValueText>
-              <BackTriangleWrapper>
-                <BackTriangleShape></BackTriangleShape>
-              </BackTriangleWrapper>
-            </MainSection>
-
-            <MainSection bgColor={"#00B7D8"} style={{ zIndex: 0 }}>
-              <SensorNameText>Humidity</SensorNameText>
-              <DataValueText>
-                60<PercentText>%</PercentText>
-              </DataValueText>
-              <BackTriangleWrapper>
-                <BackTriangleShape></BackTriangleShape>
-              </BackTriangleWrapper>
-            </MainSection>
-          </SectionWrapper>
-          <SubsectionContainer
-            trigger={showSubsection}
-            thisSectionNum={activeSectionNum == -1 ? 0 : activeSectionNum}
-          >
-            {activeSectionNum === 0 && <SubSecContentsComponent1 />}
-            {activeSectionNum === 1 && <SubSecContentsComponent2 />}
-            {activeSectionNum === 2 && <SubSecContentsComponent3 />}
-            {activeSectionNum === 3 && <SubSecContentsComponent4 />}
-          </SubsectionContainer>
-        </>
-      ) : (
-        <LodingComponent></LodingComponent>
-      )}
+      <Section
+        sectionIndex={1}
+        spreadSection={spreadSection}
+        popUpSection={popUpSection}
+        activatedSection={activatedSection}
+        onClick={() => {
+          setIsAnySectionActivated(isAnySectionActivated ? false : true);
+          setActivatedSection(1);
+        }}
+      >
+        <Contents>
+          <MainContent>
+            <h1>activesection:{activatedSection}</h1>
+            <h2>popupsection:{popUpSection}</h2>
+            <h3>spreadsection:{spreadSection}</h3>
+          </MainContent>
+          <SubContent></SubContent>
+        </Contents>
+      </Section>
+      <Section
+        sectionIndex={2}
+        spreadSection={spreadSection}
+        popUpSection={popUpSection}
+        activatedSection={activatedSection}
+        onClick={() => {
+          setIsAnySectionActivated(isAnySectionActivated ? false : true);
+          setActivatedSection(2);
+        }}
+      >
+        <Contents>
+          <MainContent style={{ backgroundColor: "green" }}>
+            <h1>activesection:{activatedSection}</h1>
+            <h2>popupsection:{popUpSection}</h2>
+            <h3>spreadsection:{spreadSection}</h3>
+          </MainContent>
+          <SubContent></SubContent>
+        </Contents>
+      </Section>
+      <Section
+        sectionIndex={3}
+        spreadSection={spreadSection}
+        popUpSection={popUpSection}
+        activatedSection={activatedSection}
+        onClick={() => {
+          setIsAnySectionActivated(isAnySectionActivated ? false : true);
+          setActivatedSection(3);
+        }}
+      >
+        <Contents>
+          <MainContent>
+            <h1>activesection:{activatedSection}</h1>
+            <h2>popupsection:{popUpSection}</h2>
+            <h3>spreadsection:{spreadSection}</h3>
+          </MainContent>
+          <SubContent></SubContent>
+        </Contents>
+      </Section>
+      <Section
+        sectionIndex={4}
+        spreadSection={spreadSection}
+        popUpSection={popUpSection}
+        activatedSection={activatedSection}
+        onClick={() => {
+          setIsAnySectionActivated(isAnySectionActivated ? false : true);
+          setActivatedSection(4);
+        }}
+      >
+        <Contents>
+          <MainContent style={{ backgroundColor: "blue" }}>
+            <h1>activesection:{activatedSection}</h1>
+            <h2>popupsection:{popUpSection}</h2>
+            <h3>spreadsection:{spreadSection}</h3>
+          </MainContent>
+          <SubContent></SubContent>
+        </Contents>
+      </Section>
     </Main>
   );
 };
 
-//------------------전체 레이아웃 스타일
 export default Dashboard2;
 const Main = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
 `;
-const SubMain = styled.div``;
-const SectionWrapper = styled.div`
+
+const Section = styled.div`
   position: absolute;
   top: 0;
-  left: ${(props) => props.activeSectionNum * -25}vw;
-  flex-wrap: nowrap;
-  display: flex;
-  transition: left 0.25s ease-in-out;
-`;
-const MainSection = styled.div`
-  position: relative;
-  width: 25vw;
+  left: ${({ sectionIndex, activatedSection }) =>
+    sectionIndex == activatedSection ? 0 : `${25 * sectionIndex - 25}vw`};
+  width: ${({ sectionIndex, spreadSection }) =>
+    sectionIndex == spreadSection ? "100vw" : "25vw"};
   height: 100vh;
-  background-color: ${({ bgColor }) => (bgColor ? bgColor : "#ffffff")};
-  color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
-  z-index: ${({ thisSectionNum, activeSectionNum }) =>
-    thisSectionNum === activeSectionNum ? 3 : 1};
+  z-index: ${({ sectionIndex, popUpSection }) =>
+    sectionIndex == popUpSection ? 3 : 1};
+  overflow: hidden;
+  transition: width 0.25s ease-in-out, left 0.5s ease-in-out;
 `;
-const SubsectionContainer = styled.div`
-  position: relative;
-  top: 0;
-  left: ${({ trigger, thisSectionNum }) =>
-    trigger ? "0vw" : `-${100 + thisSectionNum * 25}vw`};
+
+const Contents = styled.div`
   width: 100vw;
   height: 100vh;
-  z-index: 2;
-  display: block;
-  transition: left 0.7s ease-in-out 0.2s;
-  background-color: #ffffff;
+  background-color: green;
+  display: flex;
+  flex-wrap: nowrap;
+`;
+
+const MainContent = styled.div`
+  width: 25vw;
+  height: 100vh;
+  background-color: red;
+`;
+
+const SubContent = styled.div`
+  width: 75vw;
+  height: 100vh;
+  background-color: yellow;
 `;
 //--------------------------------------
 

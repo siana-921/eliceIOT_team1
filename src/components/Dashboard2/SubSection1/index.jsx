@@ -54,10 +54,10 @@ export default SubSection1;
 
 const Main = styled.div`
   position: relative;
-  width: 100vw;
+  width: 75vw;
   height: 100vh;
   display: flex;
-  padding-left: 25vw;
+  padding-left: 0vw;
 `;
 const ContentWrapper = styled.div`
   width: ${({ width }) => (width ? `${width}px` : "1fr")};
