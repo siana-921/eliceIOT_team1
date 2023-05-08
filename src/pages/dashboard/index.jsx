@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import axios from "axios";
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_DEV_API_ROOT;
 
 import LodingComponent from "@/components/elements/loading";
 
@@ -277,32 +279,35 @@ const SliderWrapper = styled.div`
 //---------------------------------
 
 export async function getServerSideProps() {
-  const data = [
-    {
-      name: "temp",
-      uv: 23,
-      fill: "#ffc658",
-    },
-    {
-      name: "mois",
-      uv: 60,
-      fill: "#D88C4F",
-    },
-    {
-      name: "humid",
-      uv: 33,
-      fill: "#00B7D8",
-    },
-    {
-      name: "ilum",
-      uv: 80,
-      fill: "#A7ED51",
-    },
+  const deviceID = "unit002"; //임시 하드코딩 !!
+
+  /*
+  const dataval = await getSensorAccData();
+
+  async function getSensorAccData() {
+    console.log("==============GET DATA==============");
+    console.log(deviceID);
+
+    try {
+      const res = await axios.get(`/sensors/${deviceID}`);
+      console.log(res.data);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+      return;
+    }
+  }
+  */
+
+  const dummydata = [
+    { key: 1, content: "abc" },
+    { key: 2, content: "ccc" },
+    { key: 3, content: "ddd" },
   ];
 
   return {
     props: {
-      data,
+      dummydata,
     },
   };
 }
