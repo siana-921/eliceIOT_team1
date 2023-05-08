@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 async function createUser() {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
-    body: JSON.stringify({ name, email, password, phone, id }),
+    body: JSON.stringify({ name, email, password, phoneNumber, id }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -27,7 +27,7 @@ const Signup = (props) => {
   const nameInputRef = useRef(null);
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
-  const phonenumberInputRef = useRef(null);
+  const phoneNumberInputRef = useRef(null);
   const idInputRef = useRef(null);
 
   const { status } = useSession();
@@ -39,7 +39,7 @@ const Signup = (props) => {
     const enteredName = nameInputRef.current?.value;
     const enteredEmail = emailInputRef.current?.value;
     const enteredPassword = passwordInputRef.current?.value;
-    const enteredPhoneNumber = phonenumberInputRef.current?.value;
+    const enteredPhoneNumber = phoneNumberInputRef.current?.value;
     const enteredId = idInputRef.current?.value;
 
     try {
@@ -52,12 +52,12 @@ const Signup = (props) => {
       );
       console.log(result);
       setFormStatus(`Sign up Success: ${result.message}`);
-      router.replace("/login");
+      //router.replace("/login");
     } catch (error) {
-      console.log(err);
+      console.log(error);
       setFormStatus(`Error Occured: ${error.message}`);
     }
-  } // end of submitHandler function
+  }
 
   if (status === "authenticated") {
     router.replace("/");
@@ -103,12 +103,18 @@ const Signup = (props) => {
             type="number"
             placeholder="Phone Number"
             required
-            ref={phonenumberInputRef}
+            ref={phoneNumberInputRef}
           />
         </div>
         <div>
           <label htmlFor="id">ID</label>
-          <input id="id" type="id" placeholder="ID" required ref={idInputRef} />
+          <input
+            id="id"
+            type="text"
+            placeholder="ID"
+            required
+            ref={idInputRef}
+          />
         </div>
         <div>
           <label htmlFor="password">Password</label>

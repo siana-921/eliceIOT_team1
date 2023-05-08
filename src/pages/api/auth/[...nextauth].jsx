@@ -22,6 +22,16 @@ export default NextAuth({
           type: "password",
           placeholder: "Enter your Password",
         },
+        phoneNumber: {
+          label: "PhoneNumber",
+          type: "phoneNumber",
+          placeholder: "Enter your Phone Number",
+        },
+        id: {
+          label: "id",
+          type: "id",
+          placeholder: "Enter your ID",
+        },
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
