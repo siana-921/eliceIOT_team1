@@ -8,10 +8,15 @@ function SimpleTable(props) {
     <table width="100%">
       <thead>
         <tr>
-          <TableHead>Column 1</TableHead>
-          <TableHead width="130px">Column 2</TableHead>
-          <TableHead width="230px">Column 3</TableHead>
-          <TableHead>Column 4</TableHead>
+          <td
+            colSpan="4"
+            style={{ borderBottom: "solid 3px", display: "flex" }}
+          >
+            <TableHead>일자</TableHead>
+            <TableHead>시간</TableHead>
+            <TableHead>측정값</TableHead>
+            <TableHead>변화량</TableHead>
+          </td>
         </tr>
       </thead>
       <tbody>
@@ -29,6 +34,6 @@ function SimpleTable(props) {
 }
 
 const TableHead = styled.th`
-  padding-bottom: 10px;
+  padding: 10px;
 `;
 export default SimpleTable;
