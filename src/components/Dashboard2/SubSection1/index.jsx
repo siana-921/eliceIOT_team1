@@ -5,7 +5,7 @@ import Content1 from "@components/dashboard2/Subsection1/Content1";
 import Content2 from "@components/dashboard2/Subsection1/Content2";
 import Content3 from "@components/dashboard2/Subsection1/Content3";
 
-const SubSection1 = () => {
+const SubSection1Contents = () => {
   const [contentOneWidth, setContentOneWidth] = useState(0);
   const [contentOneHeight, setContentOneHeight] = useState(0);
 
@@ -50,14 +50,14 @@ const SubSection1 = () => {
   );
 };
 
-export default SubSection1;
+export default SubSection1Contents;
 
 const Main = styled.div`
   position: relative;
-  width: 100vw;
+  width: 75vw;
   height: 100vh;
   display: flex;
-  padding-left: 25vw;
+  padding-left: 0vw;
 `;
 const ContentWrapper = styled.div`
   width: ${({ width }) => (width ? `${width}px` : "1fr")};

@@ -1,15 +1,14 @@
 import styled from "@emotion/styled";
 
-const SubSection3 = () => {
+const SubSection3Contents = () => {
   return <Main>subsection3</Main>;
 };
 
 const Main = styled.div`
-  width: 100vw;
+  width: 75vw;
   height: 100vh;
   display: flex;
   position: relative;
-  background-color: #00b7d8;
 `;
 
-export default SubSection3;
+export default SubSection3Contents;
