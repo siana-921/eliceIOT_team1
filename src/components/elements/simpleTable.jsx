@@ -8,15 +8,18 @@ function SimpleTable(props) {
     <table width="100%">
       <thead>
         <tr>
-          <td
-            colSpan="4"
-            style={{ borderBottom: "solid 3px", display: "flex" }}
-          >
+          <th>
             <TableHead>일자</TableHead>
+          </th>
+          <th>
             <TableHead>시간</TableHead>
+          </th>
+          <th>
             <TableHead>측정값</TableHead>
+          </th>
+          <th>
             <TableHead>변화량</TableHead>
-          </td>
+          </th>
         </tr>
       </thead>
       <tbody>
