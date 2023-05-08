@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req, res) {
-  rea = NextApiRequest;
+  req = NextApiRequest;
   res = NextApiResponse;
 
   if (req.method !== "POST") {

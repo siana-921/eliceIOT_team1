@@ -52,7 +52,7 @@ const Signup = (props) => {
       );
       console.log(result);
       setFormStatus(`Sign up Success: ${result.message}`);
-      //router.replace("/login");
+      router.replace("/login");
     } catch (error) {
       console.log(error);
       setFormStatus(`Error Occured: ${error.message}`);
