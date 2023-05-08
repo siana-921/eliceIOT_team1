@@ -1,0 +1,6 @@
+{
+  "airHumidity": { "min": 50, "max": 60 },
+  "airTemperature": { "min": 23, "max": 28 },
+  "illuminance": { "min": 1000, "max": 2000 },
+  "soilMoisture": { "min": 60, "max": 80 }
+}
