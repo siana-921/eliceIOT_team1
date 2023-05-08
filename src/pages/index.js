@@ -1,7 +1,5 @@
 import Link from "next/link";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import Image from "next/image";
 
 export default function Home() {
   return (
@@ -16,11 +14,11 @@ export default function Home() {
         <MainPageText>바질을 키우는 가장 스마트한 방법</MainPageText>
         <MainPageLogo src="/images/logo.png" alt="logo" />
         <MainPageButtonDiv>
-          <Link href="/controller">
-            <MainPageButton>Controller</MainPageButton>
+          <Link href="/login">
+            <MainPageButton>로그인</MainPageButton>
           </Link>
-          <Link href="/dashboard">
-            <MainPageButton>Dashboard</MainPageButton>
+          <Link href="/join">
+            <MainPageButton>회원가입</MainPageButton>
           </Link>
         </MainPageButtonDiv>
       </MainPageContents>
@@ -79,7 +77,7 @@ const MainPageButton = styled.button`
   height: 3.5rem;
   width: 15rem;
   font-style: normal;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   line-height: 2.3rem;
   color: #ffffff;
   margin: 10px;
