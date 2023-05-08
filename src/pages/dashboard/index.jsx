@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import Slider, { Range, handleRender } from "rc-slider";
-import "rc-slider/assets/index.css";
 
 import LodingComponent from "@/components/elements/loading";
-import GaugeGraph from "@/components/Dashboard2/elements/GaugeGraph";
 
-import SubSecContentsComponent1 from "@components/Dashboard2/SubSection1/";
-import SubSecContentsComponent2 from "@components/Dashboard2/SubSection2/";
-import SubSecContentsComponent3 from "@components/Dashboard2/SubSection3/";
-import SubSecContentsComponent4 from "@components/Dashboard2/SubSection4/";
+import MainSection1Content from "@components/Dashboard2/MainSection/MainSection1";
+import MainSection2Content from "@components/Dashboard2/MainSection/MainSection2";
+import MainSection3Content from "@components/Dashboard2/MainSection/MainSection3";
+import MainSection4Content from "@components/Dashboard2/MainSection/MainSection4";
+
+import SubSection1Contents from "@components/Dashboard2/SubSection1/";
+import SubSection2Contents from "@components/Dashboard2/SubSection2/";
+import SubSection3Contents from "@components/Dashboard2/SubSection3/";
+import SubSection4Contents from "@components/Dashboard2/SubSection4/";
 
 const Dashboard2 = ({ data }) => {
   const [activatedSection, setActivatedSection] = useState(0);
@@ -18,6 +20,7 @@ const Dashboard2 = ({ data }) => {
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  //로딩페이지 설정-----------------------------------------------------//
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoaded(true);
@@ -27,7 +30,9 @@ const Dashboard2 = ({ data }) => {
       clearTimeout(timeout);
     };
   }, []);
+  //--------------------------------------------------------------------//
 
+  //section onClick시 트랜지션 동작에 필요한 상태 세팅------------------//
   useEffect(() => {
     console.log(activatedSection);
     if (isAnySectionActivated) {
@@ -41,13 +46,7 @@ const Dashboard2 = ({ data }) => {
       setActivatedSection(0);
     }
   }, [isAnySectionActivated]);
-
-  const handleSlider = (value) => {
-    console.log(value);
-  };
-  const handleSlideronClick = (event) => {
-    event.stopPropagation();
-  };
+  //--------------------------------------------------------------------//
 
   return (
     <Main>
@@ -66,20 +65,10 @@ const Dashboard2 = ({ data }) => {
       >
         <Contents>
           <MainContent fontColor="#ffffff">
-            <TitleWrapper>
-              <UserNameText>정수아님의</UserNameText>
-              <PlantNameText>먹다남은바질</PlantNameText>
-            </TitleWrapper>
-            <ContentsWrapper>
-              <SubTitleText>처음 키운날</SubTitleText>
-              <p>2023년 4월 23일</p>
-              <SubTitleText>현재상태</SubTitleText>
-              <SubTitleText>알파고가 키운다(버튼)</SubTitleText>
-              <SubTitleText>제어세부설정(버튼)</SubTitleText>
-            </ContentsWrapper>
+            <MainSection1Content />
           </MainContent>
           <SubContent>
-            <SubSecContentsComponent1 />
+            <SubSection1Contents />
           </SubContent>
         </Contents>
       </Section>
@@ -98,32 +87,10 @@ const Dashboard2 = ({ data }) => {
       >
         <Contents>
           <MainContent>
-            <BackTriangleWrapper>
-              <BackTriangleShape></BackTriangleShape>
-            </BackTriangleWrapper>
-            <SensorNameText>Temperature</SensorNameText>
-            <DataValueText>
-              30<PercentText>%</PercentText>
-            </DataValueText>
-            <SliderWrapper onClick={handleSlideronClick}>
-              <SlideTitle>목표 제어 습도</SlideTitle>
-              <Slider
-                min={0}
-                max={100}
-                defaultValue={50}
-                onChange={handleSlider}
-              />
-            </SliderWrapper>
-            <RandomMessageWrapper>
-              <RandomMsg>바질의 최적온도는 26도 입니다</RandomMsg>
-              <RandomMsg>바질은 여름보다 겨울 나기가 더 힘들어요</RandomMsg>
-              <RandomMsg>
-                바질의 적정온도는 15도 이상, 32도 이하입니다
-              </RandomMsg>
-            </RandomMessageWrapper>
+            <MainSection2Content />
           </MainContent>
           <SubContent>
-            <SubSecContentsComponent2 />
+            <SubSection2Contents />
           </SubContent>
         </Contents>
       </Section>
@@ -141,16 +108,10 @@ const Dashboard2 = ({ data }) => {
       >
         <Contents>
           <MainContent>
-            <SensorNameText>Humidity</SensorNameText>
-            <DataValueText>
-              60<PercentText>%</PercentText>
-            </DataValueText>
-            <BackTriangleWrapper>
-              <BackTriangleShape></BackTriangleShape>
-            </BackTriangleWrapper>
+            <MainSection3Content />
           </MainContent>
           <SubContent>
-            <SubSecContentsComponent3 />
+            <SubSection3Contents />
           </SubContent>
         </Contents>
       </Section>
@@ -168,16 +129,10 @@ const Dashboard2 = ({ data }) => {
       >
         <Contents>
           <MainContent>
-            <SensorNameText>Light</SensorNameText>
-            <DataValueText>
-              40<PercentText>%</PercentText>
-            </DataValueText>
-            <BackTriangleWrapper>
-              <BackTriangleShape></BackTriangleShape>
-            </BackTriangleWrapper>
+            <MainSection4Content />
           </MainContent>
           <SubContent>
-            <SubSecContentsComponent4 />
+            <SubSection4Contents />
           </SubContent>
         </Contents>
       </Section>
@@ -272,16 +227,7 @@ const BarColor = styled.div`
 //--------------------------------
 
 //----------------텍스트 스타일
-const UserNameText = styled.p`
-  font-size: 2.5rem;
-`;
-const PlantNameText = styled.p`
-  font-size: 4.5rem;
-  font-weight: 600;
-`;
-const SubTitleText = styled.p`
-  font-size: 1.3rem;
-`;
+
 const DataValueText = styled.p`
   font-size: 10rem;
   margin-top: -1.2rem;
