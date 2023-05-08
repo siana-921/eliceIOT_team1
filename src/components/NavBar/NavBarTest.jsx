@@ -35,7 +35,7 @@ export default function NavBarTest() {
         <LinkDiv>
           <LinkStyled href="/api/auth/signin">Login</LinkStyled>
           <LinkStyledSpan>|</LinkStyledSpan>
-          <LinkStyled href="#">Signup</LinkStyled>
+          <LinkStyled href="/signup">Signup</LinkStyled>
         </LinkDiv>
       )}
       ;
