@@ -3,11 +3,11 @@ import UserProfile from "../../components/MyPage/UserProfile";
 import PlantSettings from "../../components/MyPage/PlantSettings";
 import NavBar from "../../components/NavBar/NavBar";
 import styled from "@emotion/styled";
-
+import NavBarTest from "@/components/NavBar/NavBarTest";
 const MyPage = () => {
   return (
     <Main>
-      <NavBar />
+      <NavBarTest />
       <UserProfileWrapper>
         <UserProfile></UserProfile>
       </UserProfileWrapper>

@@ -10,28 +10,33 @@ export default function NavBarTest() {
   const [menuToggle, setMenuToggle] = useState(false);
   const { data: session, status } = useSession();
 
+  if (status === "authenticated") console.log("session", session);
+
   return (
     <NavigationBar>
       <LogoLinkA href="/">
         <Image src={img} width={300} alt="logo" />
       </LogoLinkA>
+      {/* <LinkDiv>
+        <LinkStyled href="/dashboard">Dashboard</LinkStyled>
+        <LinkStyledSpan>|</LinkStyledSpan>
+        <LinkStyled href="/controller">Controller</LinkStyled>
+        <LinkStyledSpan>|</LinkStyledSpan>
+        <LinkStyled href="/">Profile</LinkStyled>
+        <LinkStyledSpan>|</LinkStyledSpan>
+      </LinkDiv> */}
       {status === "authenticated" ? (
         <LinkDiv>
-          <LinkStyled href="/dashboard">Dashboard</LinkStyled>
-          <LinkStyledSpan>|</LinkStyledSpan>
-          <LinkStyled href="/controller">Controller</LinkStyled>
-          <LinkStyledSpan>|</LinkStyledSpan>
-          <LinkStyled href="/">Profile</LinkStyled>
-          <LinkStyledSpan>|</LinkStyledSpan>
           <LinkStyled href="#" onClick={() => signOut()}>
             Log out
           </LinkStyled>
         </LinkDiv>
       ) : (
-        <>
+        <LinkDiv>
+          <LinkStyled href="/api/auth/signin">Login</LinkStyled>
           <LinkStyledSpan>|</LinkStyledSpan>
-          <LinkStyled href="/">Profile</LinkStyled>
-        </>
+          <LinkStyled href="#">Signup</LinkStyled>
+        </LinkDiv>
       )}
       ;
     </NavigationBar>

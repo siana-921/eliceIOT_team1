@@ -24,18 +24,25 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-        const user = { id: 1, name: "J Smith", email: "jsmith@example.com" };
-
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
+        if (
+          credentials.username === "testuser" &&
+          credentials.password === "test"
+        ) {
+          const user = {
+            id: 1,
+            name: "test user",
+            email: "testuser@example.com",
+          };
           return user;
-        } else {
-          // If you return null or false then the credentials will be rejected
-          return null;
-          // You can also Reject this callback with an Error or with a URL:
-          // throw new Error("error message") // Redirect to error page
-          // throw "/path/to/redirect"        // Redirect to a URL
         }
+        // Any object returned will be saved in `user` property of the JWT
+        return null;
+
+        // If you return null or false then the credentials will be rejected
+
+        // You can also Reject this callback with an Error or with a URL:
+        // throw new Error("error message") // Redirect to error page
+        // throw "/path/to/redirect"        // Redirect to a URL
       },
     }),
   ],
