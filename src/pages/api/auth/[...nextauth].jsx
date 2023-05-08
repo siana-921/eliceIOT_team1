@@ -11,6 +11,7 @@ export default NextAuth({
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
+        email: { label: "email", type: "email", placeholder: "user@email.com" },
         username: {
           label: "ID",
           type: "text",
@@ -25,6 +26,7 @@ export default NextAuth({
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
         if (
+          credentials.email === "testuser@email.com" &&
           credentials.username === "testuser" &&
           credentials.password === "test"
         ) {
