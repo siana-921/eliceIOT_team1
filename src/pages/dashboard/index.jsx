@@ -16,10 +16,10 @@ import SubSection3Contents from "@components/Dashboard2/SubSection3/";
 import SubSection4Contents from "@components/Dashboard2/SubSection4/";
 
 const Dashboard2 = ({ data }) => {
-  const [activatedSection, setActivatedSection] = useState(0);
-  const [popUpSection, setPopUpSection] = useState(0);
-  const [spreadSection, setSpreadSection] = useState(0);
-  const [isAnySectionActivated, setIsAnySectionActivated] = useState(false);
+  const [activatedSection, setActivatedSection] = useState(1);
+  const [popUpSection, setPopUpSection] = useState(1);
+  const [spreadSection, setSpreadSection] = useState(1);
+  const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
   //로딩페이지 설정-----------------------------------------------------//
@@ -148,7 +148,7 @@ const Main = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-color: black;
+  background-color: #ffffff;
 `;
 
 const Section = styled.div`
@@ -162,13 +162,14 @@ const Section = styled.div`
   z-index: ${({ sectionIndex, popUpSection }) =>
     sectionIndex == popUpSection ? 3 : 1};
   overflow: hidden;
-  transition: width 0.25s ease-in-out, left 0.5s ease-in-out;
+
   color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : "#FFFFFF")};
   background-image: ${({ bgGradient, bgColor }) =>
     bgGradient
       ? `linear-gradient(to top right, ${bgGradient}, ${bgColor})`
       : bgColor};
+  transition: width 0.25s ease-in-out, left 0.25s ease-in-out;
 `;
 
 const Contents = styled.div`
@@ -183,6 +184,10 @@ const MainContent = styled.div`
   height: 100vh;
   color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : "transparent")};
+  &:hover {
+    background-color: #248968;
+    color: #fff;
+  }
 `;
 
 const SubContent = styled.div`
@@ -279,7 +284,7 @@ const SliderWrapper = styled.div`
 //---------------------------------
 
 export async function getServerSideProps() {
-  const deviceID = "unit002"; //임시 하드코딩 !!
+  const myDeviceID = "unit002"; //임시 하드코딩 !!
 
   /*
   const dataval = await getSensorAccData();

@@ -61,8 +61,8 @@ const MainSection2Content = () => {
             <Area
               type="monotone"
               dataKey="uv"
-              stroke="#FF7C00"
-              fill="#FFA700"
+              stroke="rgba(0,0,0,0.3)"
+              fill="rgba(0,0,0,0.1)"
             />
           </AreaChart>
         </ResponsiveContainer>
