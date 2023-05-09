@@ -30,10 +30,12 @@ async function handler(req, res) {
   }
 
   const existingUser = await prisma.user.findUnique({
-    where: { id: id },
+    where: { id: id }, //{user model의 id : request body에서 유저가 보낸 id}
     select: {
-      email: true,
+      id: true,
       fullname: true,
+      phone: true,
+      email: true,
     },
   });
 
@@ -44,13 +46,15 @@ async function handler(req, res) {
 
   const hashedPassword = await hashPassword(password);
 
-  const result = {
-    id: 1,
-    fullname: fullname,
-    email: email,
-    phone: phone,
-    password: hashedPassword,
-  };
+  const result = await prisma.user.create({
+    data: {
+      id: id,
+      fullname: fullname,
+      email: email,
+      phone: phone,
+      password: hashedPassword,
+    },
+  });
 
   if (result) {
     res.status(201).json({ message: "Created user!", error: false });
