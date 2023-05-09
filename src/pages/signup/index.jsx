@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 import styled from "@emotion/styled";
 
-async function createUser() {
+async function createUser(fullname, email, password, phone, id) {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
     body: JSON.stringify({ fullname, email, password, phone, id }),
@@ -52,7 +52,7 @@ const Signup = (props) => {
       );
       console.log(result);
       setFormStatus(`Sign up Success: ${result.message}`);
-      router.replace("/login");
+      // router.replace("/login");
     } catch (error) {
       console.log(error);
       setFormStatus(`Error Occured: ${error.message}`);

@@ -23,7 +23,7 @@ export default NextAuth({
             id: 1,
             email: "testuser@example.com",
             number: "01012345678",
-            name: "testusername",
+            fullname: "testname",
           };
           return user;
         }
