@@ -7,9 +7,7 @@ const SubSection2Contents = () => {
   return (
     <Main>
       <GridContainer>
-        <GridItem1>
-          <Table data={[]}></Table>
-        </GridItem1>
+        <GridItem1></GridItem1>
         <GridItem2>Item 2</GridItem2>
         <GridItem3>Item 3</GridItem3>
         <GridItem4>Item 4</GridItem4>

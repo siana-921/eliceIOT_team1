@@ -17,6 +17,11 @@ const MainSection1Content = () => {
         <SubTitleText>현재상태</SubTitleText>
         <SubTitleText>아무말ㅣㅑㅈ덜미쟈더</SubTitleText>
       </ContentsWrapper>
+      <NavWrapper>
+        <NavText>내식물</NavText>
+        <NavText>내정보</NavText>
+        <NavText>로그아웃</NavText>
+      </NavWrapper>
     </Main>
   );
 };
@@ -55,6 +60,14 @@ const Profileimage = styled.div`
   border-radius: 50%;
   background-color: #ffffff;
 `;
+const NavWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 3rem;
+  background-color: black;
+  display: flex;
+`;
 //----------------------------------
 
 //---------------------텍스트 스타일
@@ -67,5 +80,10 @@ const PlantNameText = styled.p`
 `;
 const SubTitleText = styled.p`
   font-size: 1.3rem;
+`;
+const NavText = styled.div`
+  padding: 1rem;
+  width: 33%;
+  text-align: center;
 `;
 //----------------------------------
