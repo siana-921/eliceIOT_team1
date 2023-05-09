@@ -1,7 +1,17 @@
 import styled from "@emotion/styled";
+import { useRecoilState } from "recoil";
+import { allDeviceSensorState } from "@store/atoms";
+import { oneDeviceSensorState } from "@store/atoms";
 
 const SubSection4Contents = () => {
-  return <Main>subsection4</Main>;
+  const [allDeviceSensorData, setAllDeviceSensorData] =
+    useRecoilState(allDeviceSensorState);
+  const [oneDeviceSensorData, setOneDeviceSensorData] =
+    useRecoilState(oneDeviceSensorState);
+
+  console.log(allDeviceSensorData);
+
+  return <Main></Main>;
 };
 
 const Main = styled.div`
