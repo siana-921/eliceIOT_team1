@@ -22,8 +22,8 @@ export default NextAuth({
           const user = {
             id: 1,
             email: "testuser@example.com",
-            phoneNumber: "01012345678",
-            username: "testusername",
+            number: "01012345678",
+            name: "testusername",
           };
           return user;
         }
