@@ -20,7 +20,7 @@ export default NextAuth({
       async authorize(credentials, req) {
         if (credentials.id === "testuser" && credentials.password === "test") {
           const user = {
-            id: 1,
+            id: "testid",
             email: "testuser@example.com",
             number: "01012345678",
             fullname: "testname",

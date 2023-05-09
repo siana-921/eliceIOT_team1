@@ -1,4 +1,5 @@
 import { hashPassword } from "../../../../lib/auth";
+import { PrismaClient } from "@prisma/client";
 
 async function handler(req, res) {
   let prisma = new PrismaClient();
@@ -34,8 +35,8 @@ async function handler(req, res) {
     select: {
       id: true,
       fullname: true,
-      phone: true,
       email: true,
+      phone: true,
     },
   });
 
