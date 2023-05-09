@@ -1,5 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
-
 async function handler(req, res) {
   req = NextApiRequest;
   res = NextApiResponse;

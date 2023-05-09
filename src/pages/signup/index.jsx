@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 async function createUser() {
   const response = await fetch("/api/auth/signup", {
     method: "POST",
-    body: JSON.stringify({ name, email, password, phoneNumber, id }),
+    body: JSON.stringify({ fullname, email, password, phone, id }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -24,10 +24,10 @@ async function createUser() {
 const Signup = (props) => {
   const [formStatus, setFormStatus] = useState(null);
 
-  const nameInputRef = useRef(null);
+  const fullnameInputRef = useRef(null);
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
-  const phoneNumberInputRef = useRef(null);
+  const phoneInputRef = useRef(null);
   const idInputRef = useRef(null);
 
   const { status } = useSession();
@@ -36,10 +36,10 @@ const Signup = (props) => {
   async function submitHandler(event) {
     event.preventDefault();
 
-    const enteredName = nameInputRef.current?.value;
+    const enteredName = fullnameInputRef.current?.value;
     const enteredEmail = emailInputRef.current?.value;
     const enteredPassword = passwordInputRef.current?.value;
-    const enteredPhoneNumber = phoneNumberInputRef.current?.value;
+    const enteredPhoneNumber = phoneInputRef.current?.value;
     const enteredId = idInputRef.current?.value;
 
     try {
@@ -83,14 +83,14 @@ const Signup = (props) => {
             type="text"
             placeholder="Name"
             required
-            ref={nameInputRef}
+            ref={fullnameInputRef}
           />
         </div>
         <div>
           <label htmlFor="email">Email</label>
           <input
             id="email"
-            type="text"
+            type="email"
             placeholder="Email"
             required
             ref={emailInputRef}
@@ -99,11 +99,11 @@ const Signup = (props) => {
         <div>
           <label htmlFor="number">Phone Number</label>
           <input
-            id="phoneNumber"
-            type="number"
+            id="phone"
+            type="tel"
             placeholder="Phone Number"
             required
-            ref={phoneNumberInputRef}
+            ref={phoneInputRef}
           />
         </div>
         <div>
