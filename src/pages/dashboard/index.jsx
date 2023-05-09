@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import axios from "axios";
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_DEV_API_ROOT;
+import { useRecoilState } from "recoil";
+import { allDeviceSensorState } from "@store/atoms";
+import { oneDeviceSensorState } from "@store/atoms";
 
 import LodingComponent from "@/components/elements/loading";
 
@@ -15,12 +17,23 @@ import SubSection2Contents from "@components/Dashboard2/SubSection2/";
 import SubSection3Contents from "@components/Dashboard2/SubSection3/";
 import SubSection4Contents from "@components/Dashboard2/SubSection4/";
 
-const Dashboard2 = ({ data }) => {
+const Dashboard2 = (props) => {
   const [activatedSection, setActivatedSection] = useState(1);
   const [popUpSection, setPopUpSection] = useState(1);
   const [spreadSection, setSpreadSection] = useState(1);
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [allDeviceSensorData, setAllDeviceSensorData] =
+    useRecoilState(allDeviceSensorState);
+  const [oneDeviceSensorData, setOneDeviceSensorData] =
+    useRecoilState(oneDeviceSensorState);
+  //FETCH한 데이터를 RECOIL에 저장--------------------------------------//
+
+  useEffect(() => {
+    setAllDeviceSensorData(props.allDeviceSensorData);
+    setOneDeviceSensorData(props.oneDeviceSensorData);
+  }, [props.allDeviceSensorData, props.oneDeviceSensorData]);
+  //--------------------------------------------------------------------//
 
   //로딩페이지 설정-----------------------------------------------------//
   useEffect(() => {
@@ -36,7 +49,6 @@ const Dashboard2 = ({ data }) => {
 
   //section onClick시 트랜지션 동작에 필요한 상태 세팅------------------//
   useEffect(() => {
-    console.log(activatedSection);
     if (isAnySectionActivated) {
       setPopUpSection(activatedSection);
       setSpreadSection(activatedSection);
@@ -198,121 +210,30 @@ const SubContent = styled.div`
 `;
 //--------------------------------------
 
-//----------------섹션 내부 레이아웃 (Wrapper)
-const TitleWrapper = styled.div`
-  padding-top: 7rem;
-  padding-bottom: 1.5rem;
-`;
-const ContentsWrapper = styled.div``;
-const RandomMessageWrapper = styled.div`
-  padding: 1rem 1.3rem 1rem 1rem;
-`;
-//----------------------------------
-//----------------차트 관련 스타일
-const ChartLabel = styled.div`
-  position: absolute;
-  bottom: 5vh;
-  right: 2vw;
-  padding: 10px;
-  z-index: 10;
-  > div {
-    display: flex;
-    padding: 0.1rem;
-    > span {
-      padding-right: 0.3rem;
-      font-size: 1.7rem;
-      font-weight: 600;
-    }
-  }
-`;
-const BarColor = styled.div`
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background-color: ${({ color }) => (color ? color : "grey")};
-`;
-//--------------------------------
-
-//----------------텍스트 스타일
-
-const DataValueText = styled.p`
-  font-size: 10rem;
-  margin-top: -1.2rem;
-`;
-const SensorNameText = styled.p`
-  font-size: 3rem;
-  font-weight: 200;
-`;
-const PercentText = styled.span`
-  font-size: 5rem;
-  font-weight: 300;
-`;
-const SlideTitle = styled.div`
-  font-size: 1.2rem;
-  font-weight: 600;
-  padding-bottom: 0.2rem;
-`;
-const RandomMsg = styled.p`
-  font-size: 1.1rem;
-  text-align: right;
-`;
-//--------------------------------
-
-//-------------------디자인 요소
-const BackTriangleWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  width: 25vw;
-  height: 100vh;
-  overflow: hidden;
-  pointer-events: none;
-`;
-const BackTriangleShape = styled.div`
-  position: absolute;
-  top: -18vw;
-  left: -18vw;
-  width: 35vw;
-  height: 25vw;
-  transform: rotate(45deg);
-  background-color: #ffffff;
-  z-index: -1;
-`;
-const SliderWrapper = styled.div`
-  width: 100%;
-  padding: 20px;
-`;
-//---------------------------------
-
 export async function getServerSideProps() {
-  const myDeviceID = "unit002"; //임시 하드코딩 !!
+  const device_id = "unit002"; //임시 하드코딩 !!
+  axios.defaults.baseURL = process.env.NEXT_PUBLIC_PROD_API_ROOT;
 
-  /*
-  const dataval = await getSensorAccData();
+  console.log(device_id);
 
-  async function getSensorAccData() {
-    console.log("==============GET DATA==============");
-    console.log(deviceID);
-
-    try {
-      const res = await axios.get(`/sensors/${deviceID}`);
-      console.log(res.data);
-      return res.data;
-    } catch (err) {
-      console.log(err);
-      return;
-    }
+  try {
+    console.log(`=========GET ALL DEVICE SENSOR LOG DATA=========`);
+    const allDeviceSensorData = await axios.get("/sensors");
+    console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
+    const oneDeviceSensorData = await axios.get(`/sensors/${device_id}`);
+    return {
+      props: {
+        allDeviceSensorData: allDeviceSensorData.data,
+        oneDeviceSensorData: oneDeviceSensorData.data,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      props: {
+        allDeviceSensorData: null,
+        oneDeviceSensorData: null,
+      },
+    };
   }
-  */
-
-  const dummydata = [
-    { key: 1, content: "abc" },
-    { key: 2, content: "ccc" },
-    { key: 3, content: "ddd" },
-  ];
-
-  return {
-    props: {
-      dummydata,
-    },
-  };
 }
