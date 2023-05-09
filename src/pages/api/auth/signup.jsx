@@ -24,7 +24,8 @@ async function handler(req, res) {
     !passwordRegex.test(password.trim())
   ) {
     res.status(422).json({
-      message: "비밀번호는 8자 이상 16 이하로 입력하셔야 합니당근 ",
+      message:
+        "비밀번호는 숫자,영어대소문자,특수문자를 포함한 8자 이상 16자로 작성해주세요.",
       error: true,
     });
     return;
