@@ -6,45 +6,16 @@ import Content2 from "@components/dashboard2/Subsection1/Content2";
 import Content3 from "@components/dashboard2/Subsection1/Content3";
 
 const SubSection1Contents = () => {
-  const [contentOneWidth, setContentOneWidth] = useState(0);
-  const [contentOneHeight, setContentOneHeight] = useState(0);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setContentOneWidth(window.innerWidth * 0.23);
-      setContentOneHeight(window.innerHeight);
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  console.log(contentOneWidth);
   return (
-    <Main name="SubSection1Main" width={contentOneWidth}>
-      <ContentWrapper name="Content1Wrapper" width={contentOneWidth}>
-        <Content1
-          data={data}
-          width={contentOneWidth}
-          height={contentOneHeight}
-        ></Content1>
+    <Main name="SubSection1Main">
+      <ContentWrapper name="Content1Wrapper">
+        <Content1 data={data}></Content1>
       </ContentWrapper>
-      <ContentWrapper name="Content1Wrapper" width={contentOneWidth}>
-        <Content1
-          data={data}
-          width={contentOneWidth}
-          height={contentOneHeight}
-        ></Content1>
+      <ContentWrapper name="Content1Wrapper">
+        <Content1 data={data}></Content1>
       </ContentWrapper>{" "}
-      <ContentWrapper name="Content1Wrapper" width={contentOneWidth}>
-        <Content1
-          data={data}
-          width={contentOneWidth}
-          height={contentOneHeight}
-        ></Content1>
+      <ContentWrapper name="Content1Wrapper">
+        <Content1 data={data}></Content1>
       </ContentWrapper>
     </Main>
   );
@@ -60,7 +31,7 @@ const Main = styled.div`
   padding-left: 0vw;
 `;
 const ContentWrapper = styled.div`
-  width: ${({ width }) => (width ? `${width}px` : "1fr")};
+  width: 33%;
   height: 100vh;
   overflow: hidden;
 `;
