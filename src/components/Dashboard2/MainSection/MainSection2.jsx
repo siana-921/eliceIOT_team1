@@ -1,6 +1,15 @@
 import styled from "@emotion/styled";
 import Slider, { Range, handleRender } from "rc-slider";
 import "rc-slider/assets/index.css";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const MainSection2Content = () => {
   //슬라이더 래퍼 영역 클릭시 부모 요소(section)에 onclick이벤트 전달 방지
@@ -35,6 +44,29 @@ const MainSection2Content = () => {
         <RandomMsg>바질은 여름보다 겨울 나기가 더 힘들어요</RandomMsg>
         <RandomMsg>바질의 적정온도는 15도 이상, 32도 이하입니다</RandomMsg>
       </RandomMessageWrapper>
+
+      <ChartWrapper>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            width={200}
+            height={60}
+            data={data}
+            margin={{
+              top: 5,
+              right: 0,
+              left: 0,
+              bottom: 5,
+            }}
+          >
+            <Area
+              type="monotone"
+              dataKey="uv"
+              stroke="rgba(0,0,0,0.3)"
+              fill="rgba(0,0,0,0.1)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </ChartWrapper>
     </Main>
   );
 };
@@ -46,6 +78,8 @@ width: 100%
 height: 100%
 overflow: hidden
 font-size: calc(1vw + 1vh);
+display: relative;
+
 `;
 
 //----------------섹션 내부 레이아웃 (Wrapper)
@@ -53,6 +87,14 @@ const RandomMessageWrapper = styled.div`
   padding: 1rem 1.3rem 1rem 1rem;
 `;
 const SensorNameTextWrapper = styled.div``;
+const ChartWrapper = styled.div`
+  width: 25vw;
+  height: 25vh;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: -10px;
+`;
+
 //----------------------------------
 
 //-------------------디자인 요소
@@ -114,3 +156,38 @@ const DataValueNote = styled.div`
   font-size: 0.95rem;
 `;
 //--------------------------------
+
+const data = [
+  {
+    name: "sunday",
+    uv: 87,
+  },
+  {
+    name: "monday",
+    uv: 55,
+  },
+  {
+    name: "thusday",
+    uv: 78,
+  },
+  {
+    name: "wednesday",
+    uv: 46,
+  },
+  {
+    name: "friday",
+    uv: 64,
+  },
+  {
+    name: "saterday",
+    uv: 48,
+  },
+  {
+    name: "temp",
+    uv: 62,
+  },
+  {
+    name: "temp",
+    uv: 46,
+  },
+];

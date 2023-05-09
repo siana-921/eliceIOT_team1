@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { allDeviceSensorState } from "@store/atoms";
+import { oneDeviceSensorState } from "@store/atoms";
 
 import LodingComponent from "@/components/elements/loading";
 
@@ -13,12 +17,23 @@ import SubSection2Contents from "@components/Dashboard2/SubSection2/";
 import SubSection3Contents from "@components/Dashboard2/SubSection3/";
 import SubSection4Contents from "@components/Dashboard2/SubSection4/";
 
-const Dashboard2 = ({ data }) => {
-  const [activatedSection, setActivatedSection] = useState(0);
-  const [popUpSection, setPopUpSection] = useState(0);
-  const [spreadSection, setSpreadSection] = useState(0);
-  const [isAnySectionActivated, setIsAnySectionActivated] = useState(false);
+const Dashboard2 = (props) => {
+  const [activatedSection, setActivatedSection] = useState(1);
+  const [popUpSection, setPopUpSection] = useState(1);
+  const [spreadSection, setSpreadSection] = useState(1);
+  const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [allDeviceSensorData, setAllDeviceSensorData] =
+    useRecoilState(allDeviceSensorState);
+  const [oneDeviceSensorData, setOneDeviceSensorData] =
+    useRecoilState(oneDeviceSensorState);
+  //FETCH한 데이터를 RECOIL에 저장--------------------------------------//
+
+  useEffect(() => {
+    setAllDeviceSensorData(props.allDeviceSensorData);
+    setOneDeviceSensorData(props.oneDeviceSensorData);
+  }, [props.allDeviceSensorData, props.oneDeviceSensorData]);
+  //--------------------------------------------------------------------//
 
   //로딩페이지 설정-----------------------------------------------------//
   useEffect(() => {
@@ -34,7 +49,6 @@ const Dashboard2 = ({ data }) => {
 
   //section onClick시 트랜지션 동작에 필요한 상태 세팅------------------//
   useEffect(() => {
-    console.log(activatedSection);
     if (isAnySectionActivated) {
       setPopUpSection(activatedSection);
       setSpreadSection(activatedSection);
@@ -146,7 +160,7 @@ const Main = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-color: black;
+  background-color: #ffffff;
 `;
 
 const Section = styled.div`
@@ -160,13 +174,14 @@ const Section = styled.div`
   z-index: ${({ sectionIndex, popUpSection }) =>
     sectionIndex == popUpSection ? 3 : 1};
   overflow: hidden;
-  transition: width 0.25s ease-in-out, left 0.5s ease-in-out;
+
   color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : "#FFFFFF")};
   background-image: ${({ bgGradient, bgColor }) =>
     bgGradient
       ? `linear-gradient(to top right, ${bgGradient}, ${bgColor})`
       : bgColor};
+  transition: width 0.25s ease-in-out, left 0.25s ease-in-out;
 `;
 
 const Contents = styled.div`
@@ -181,6 +196,10 @@ const MainContent = styled.div`
   height: 100vh;
   color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : "transparent")};
+  &:hover {
+    background-color: #248968;
+    color: #fff;
+  }
 `;
 
 const SubContent = styled.div`
@@ -191,118 +210,30 @@ const SubContent = styled.div`
 `;
 //--------------------------------------
 
-//----------------섹션 내부 레이아웃 (Wrapper)
-const TitleWrapper = styled.div`
-  padding-top: 7rem;
-  padding-bottom: 1.5rem;
-`;
-const ContentsWrapper = styled.div``;
-const RandomMessageWrapper = styled.div`
-  padding: 1rem 1.3rem 1rem 1rem;
-`;
-//----------------------------------
-//----------------차트 관련 스타일
-const ChartLabel = styled.div`
-  position: absolute;
-  bottom: 5vh;
-  right: 2vw;
-  padding: 10px;
-  z-index: 10;
-  > div {
-    display: flex;
-    padding: 0.1rem;
-    > span {
-      padding-right: 0.3rem;
-      font-size: 1.7rem;
-      font-weight: 600;
-    }
-  }
-`;
-const BarColor = styled.div`
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background-color: ${({ color }) => (color ? color : "grey")};
-`;
-//--------------------------------
-
-//----------------텍스트 스타일
-
-const DataValueText = styled.p`
-  font-size: 10rem;
-  margin-top: -1.2rem;
-`;
-const SensorNameText = styled.p`
-  font-size: 3rem;
-  font-weight: 200;
-`;
-const PercentText = styled.span`
-  font-size: 5rem;
-  font-weight: 300;
-`;
-const SlideTitle = styled.div`
-  font-size: 1.2rem;
-  font-weight: 600;
-  padding-bottom: 0.2rem;
-`;
-const RandomMsg = styled.p`
-  font-size: 1.1rem;
-  text-align: right;
-`;
-//--------------------------------
-
-//-------------------디자인 요소
-const BackTriangleWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  width: 25vw;
-  height: 100vh;
-  overflow: hidden;
-  pointer-events: none;
-`;
-const BackTriangleShape = styled.div`
-  position: absolute;
-  top: -18vw;
-  left: -18vw;
-  width: 35vw;
-  height: 25vw;
-  transform: rotate(45deg);
-  background-color: #ffffff;
-  z-index: -1;
-`;
-const SliderWrapper = styled.div`
-  width: 100%;
-  padding: 20px;
-`;
-//---------------------------------
-
 export async function getServerSideProps() {
-  const data = [
-    {
-      name: "temp",
-      uv: 23,
-      fill: "#ffc658",
-    },
-    {
-      name: "mois",
-      uv: 60,
-      fill: "#D88C4F",
-    },
-    {
-      name: "humid",
-      uv: 33,
-      fill: "#00B7D8",
-    },
-    {
-      name: "ilum",
-      uv: 80,
-      fill: "#A7ED51",
-    },
-  ];
+  const device_id = "unit002"; //임시 하드코딩 !!
+  axios.defaults.baseURL = process.env.NEXT_PUBLIC_PROD_API_ROOT;
 
-  return {
-    props: {
-      data,
-    },
-  };
+  console.log(device_id);
+
+  try {
+    console.log(`=========GET ALL DEVICE SENSOR LOG DATA=========`);
+    const allDeviceSensorData = await axios.get("/sensors");
+    console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
+    const oneDeviceSensorData = await axios.get(`/sensors/${device_id}`);
+    return {
+      props: {
+        allDeviceSensorData: allDeviceSensorData.data,
+        oneDeviceSensorData: oneDeviceSensorData.data,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      props: {
+        allDeviceSensorData: null,
+        oneDeviceSensorData: null,
+      },
+    };
+  }
 }
