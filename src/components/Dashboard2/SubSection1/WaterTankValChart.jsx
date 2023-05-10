@@ -7,7 +7,6 @@ const data = [
   { name: "data", value: 70 },
 ];
 const COLORS = ["#E4E4E4", "#8884D8"];
-const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
   cx,
   cy,
@@ -19,10 +18,6 @@ const renderCustomizedLabel = ({
   payload,
 }) => {
   if (payload.name === "data") {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
     return (
       <text
         x={cx}

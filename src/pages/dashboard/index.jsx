@@ -30,8 +30,6 @@ const Dashboard2 = (props) => {
   const [oneDeviceSensorData, setOneDeviceSensorData] =
     useRecoilState(oneDeviceSensorAtom);
 
-  const { gray, yellow, lime, green, turquoise, navy, lavender, deepgreen } =
-    colorCode;
   //FETCH한 데이터를 RECOIL에 저장--------------------------------------//
   //컴포넌트가 다시 렌더링되어 새로운 props가 올때마다 useEffect가 반응해서 recoil에 저장..
   useEffect(() => {
@@ -75,8 +73,8 @@ const Dashboard2 = (props) => {
         popUpSection={popUpSection}
         activatedSection={activatedSection}
         isAnySectionActivated={isAnySectionActivated}
-        bgColor={green}
-        bgGradient="#248968"
+        bgColor={colorCode.lime}
+        bgGradient={colorCode.green}
         onClick={() => {
           setIsAnySectionActivated(isAnySectionActivated ? false : true);
           setActivatedSection(1);
@@ -118,8 +116,8 @@ const Dashboard2 = (props) => {
         spreadSection={spreadSection}
         popUpSection={popUpSection}
         activatedSection={activatedSection}
-        bgColor="#B7DF00"
-        bgGradient="#B7D700"
+        bgColor={colorCode.paleorange}
+        bgGradient={colorCode.orange}
         onClick={() => {
           setIsAnySectionActivated(isAnySectionActivated ? false : true);
           setActivatedSection(3);

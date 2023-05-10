@@ -59,6 +59,7 @@ const Profileimage = styled.div`
   height: 80%;
   border-radius: 50%;
   background-color: #ffffff;
+  box-shadow: -2.3vh 2.3vh 4vh rgba(0, 0, 0, 0.15);
 `;
 const NavWrapper = styled.div`
   position: absolute;
