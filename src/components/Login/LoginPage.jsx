@@ -1,4 +1,4 @@
-import Login from "../../components/Login/Login";
+import Login from "./Login";
 import { json, redirect } from "react-router-dom";
 
 export default function LoginPage() {
