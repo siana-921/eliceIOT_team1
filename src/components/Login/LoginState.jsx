@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import MyPage from "@/pages/myPage";
+import LoginPage from "@/pages/login";
 
 export default function LoginState() {
   const [user, setUser] = useState(null);
@@ -28,6 +30,7 @@ export default function LoginState() {
           <button onClick={() => console.log("로그인")}>로그인</button>
         </>
       )}
+      {user.isLogin ? <MyPage /> : <LoginPage />}
     </>
   );
 }

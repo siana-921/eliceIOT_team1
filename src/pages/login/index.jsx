@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { axiosInstance } from "@/api/base";
 import Link from "next/link";
-import LoginState from "@/components/Login/LoginState";
 
 export default function LoginPage() {
   const [id, setId] = useState("");
@@ -39,15 +38,14 @@ export default function LoginPage() {
       return alert("ID를 입력하세요.");
     } else if (!password) {
       return alert("Password를 입력하세요.");
-    } else {
-      let body = {
-        id: id,
-        password: password,
-      };
     }
+    let body = {
+      id: id,
+      password: password,
+    };
 
-    axios
-      .post("Endpoint", body)
+    axiosInstance
+      .post(`/user/sign_in`, body)
       .then((res) => {
         console.log(res.data);
         handleResponse(res.data);
@@ -77,7 +75,6 @@ export default function LoginPage() {
         <Link href="/signup">가입하러 가기</Link>
         {msg}
       </form>
-      {user.isLogin ? <LoginState /> : <LoginPage />}
     </>
   );
 }
