@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom } from "recoil";
 
 export const allDeviceSensorState = atom({
   key: "allDeviceSensorState",
@@ -20,17 +20,5 @@ export const loginState = atom({
     password: "",
     loading: false,
     msg: "",
-  },
-});
-
-// 로그인 액션 처리를 위한 selector
-export const loginAction = selector({
-  key: "loginAction",
-  get: ({ get }) => {
-    const login = get(loginState);
-    // 로그인 액션을 처리하는 비동기 함수를 반환하도록 구현해야 합니다.
-    return async () => {
-      // 로그인 액션 처리
-    };
   },
 });

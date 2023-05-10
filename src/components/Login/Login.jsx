@@ -1,5 +1,6 @@
 import { useRecoilState } from "recoil";
 import { loginState, loginAction } from "../../store/atoms";
+import Link from "next/link";
 
 function Login() {
   const [login, setLogin] = useRecoilState(loginState);
@@ -24,33 +25,29 @@ function Login() {
       setLogin((prev) => ({
         ...prev,
         loading: true,
+        msg: "로그인 성공",
       }));
-
-      // 로그인 과정
-      loginAction(login.id, login.password)
-        .then((response) => {
-          // 로그인 성공
-          setLogin((prev) => ({
-            ...prev,
-            loading: false,
-            msg: "로그인 성공",
-          }));
-        })
-        .catch((error) => {
-          // 로그인 실패
-          setLogin((prev) => ({
-            ...prev,
-            loading: false,
-            msg: "로그인 실패",
-          }));
-        });
     }
+  };
+
+  const LoginFunc = (e) => {
+    e.preventDefault();
+
+    const { id, password } = login;
+
+    if (!id) {
+      return alert("ID를 입력하세요.");
+    } else if (!password) {
+      return alert("Password를 입력하세요.");
+    }
+
+    handleLogin();
   };
 
   return (
     <div>
       <h2>Login</h2>
-      <form>
+      <form onSubmit={LoginFunc}>
         <label>Username:</label>
         <input type="text" value={login.id} onChange={handleIdChange} />
         <label>Password:</label>
@@ -60,8 +57,11 @@ function Login() {
           onChange={handlePasswordChange}
         />
         <button onClick={handleLogin}>Login</button>
-        {login.loading && <div>Loading...</div>}
         {login.msg && <div>{login.msg}</div>}
+        <label>회원가입이 되어 있지 않다면?</label>
+        <Link a href="/join">
+          회원가입하기
+        </Link>
       </form>
     </div>
   );
