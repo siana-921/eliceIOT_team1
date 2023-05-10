@@ -1,122 +1,80 @@
-import styled from "@emotion/styled";
+import React, { useState, useEffect } from "react";
+import { axiosInstance } from "@/api/base";
+import Link from "next/link";
 
-export default function Login() {
+export default function LoginPage() {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  useEffect(() => {
+    if (msg && loading) {
+      setTimeout(() => {
+        setMsg("");
+        setLoading(false);
+      }, 1500);
+    }
+  }, [msg, loading]);
+
+  const handleResponse = (data) => {
+    if (data.code === 200) {
+      console.log("로그인");
+      setMsg("");
+    } else if (data.code === 400) {
+      setMsg("ID, Password가 비어있습니다.");
+    } else if (data.code === 401) {
+      setMsg("존재하지 않는 ID입니다.");
+    } else if (data.code === 402) {
+      setMsg("Password가 틀립니다.");
+    } else {
+      setMsg("알 수 없는 오류가 발생했습니다.");
+    }
+  };
+
+  const LoginFunc = (e) => {
+    e.preventDefault();
+    if (!id) {
+      return alert("ID를 입력하세요.");
+    } else if (!password) {
+      return alert("Password를 입력하세요.");
+    }
+    let body = {
+      id: id,
+      password: password,
+    };
+
+    axiosInstance
+      .post(`/user/sign_in`, body)
+      .then((res) => {
+        console.log(res.data);
+        handleResponse(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        setMsg("API 호출에 실패했습니다.");
+      });
+    setLoading(true);
+  };
   return (
-    <LoginPageMain>
-      <LoginPageGIF
-        src="/images/backgroundVideo.mp4"
-        loop
-        autoPlay
-        muted
-      ></LoginPageGIF>
-      <LoginPageInputArea>
-        <h1>LOGIN</h1>
-        {/* <LoginPageBoarder /> */}
-        <LoginPageInputDiv>
-          <label>아이디</label>
-          <input placeholder="아이디를 입력해주세요." />
-          <label>비밀번호</label>
-          <input placeholder="비밀번호를 입력해주세요." />
-        </LoginPageInputDiv>
-        <LoginButtonDiv>
-          <button>로그인</button>
-          <button>회원가입</button>
-        </LoginButtonDiv>
-      </LoginPageInputArea>
-    </LoginPageMain>
+    <>
+      <h1>Login</h1>
+      <form onSubmit={LoginFunc} method="post">
+        <label htmlFor="id">ID</label>
+        <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
+        <label htmlFor="password">Password : </label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit" disabled={loading}>
+          로그인
+        </button>
+        <p>가입이 되지 않았다면?</p>
+        <Link href="/signup">가입하러 가기</Link>
+        {msg}
+      </form>
+    </>
   );
 }
-
-const LoginPageMain = styled.main`
-  position: relative;
-`;
-
-const LoginPageGIF = styled.video`
-  width: 100%;
-  height: 100vh;
-  object-fit: cover;
-  z-index: -1;
-`;
-
-const LoginPageInputArea = styled.form`
-  background-color: #ffffff;
-
-  // background: rgba(0, 0, 0, 0.1);
-  // backdrop-filter: blur(5px);
-
-  position: absolute;
-  top: 10%;
-  left: 32%;
-  width: 40rem;
-  height: 47rem;
-  display: flex;
-
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  border: 0.1rem solid;
-  box-shadow: 0.5rem 0.5rem 0.125rem 0.0625rem #ffffff;
-  border-radius: 1rem;
-
-  & h1 {
-    margin: 3rem;
-
-    font-weight: 800;
-    font-size: 5rem;
-    color: #e4e4e4;
-  }
-`;
-
-const LoginPageBoarder = styled.div`
-  width: 80%;
-
-  border-bottom: 0.8rem solid #000000;
-  margin: 1rem;
-`;
-
-const LoginPageInputDiv = styled.div`
-  width: 70%;
-  align-items: center;
-  justify-content: center;
-  margin: 2rem;
-
-  & label {
-    margin: 0.5rem;
-    font-size: 1.3rem;
-    font-weight: 500;
-  }
-
-  & input {
-    margin: 0.8rem;
-    width: 100%;
-    height: 30%;
-    border: none;
-    border-bottom: 0.1rem solid grey;
-    font-size: 0.9rem;
-  }
-  & input:focus {
-    outline: none;
-    border: 2px solid #00a86b;
-    border-radius: 0.5rem;
-  }
-`;
-
-const LoginButtonDiv = styled.div`
-  display: flex;
-
-  & button {
-    height: 3rem;
-    width: 14rem;
-    margin: 5rem 0.5rem;
-    background-color: #00a86b;
-    border: none;
-    border-radius: 1rem;
-    color: #ffffff;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #e4e4e4;
-    }
-  }
-`;

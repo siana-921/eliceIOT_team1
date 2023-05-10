@@ -54,7 +54,6 @@ const Signup = (props) => {
       setFormStatus(`Sign up Success: ${result.message}`);
       // router.replace("/login");
     } catch (error) {
-      console.log(enteredName);
       console.log(error);
       setFormStatus(`Error Occured: ${error.message}`);
     }
