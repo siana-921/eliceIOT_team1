@@ -1,39 +1,68 @@
-import React, { useState } from "react";
+import { useRecoilState } from "recoil";
+import { loginState, loginAction } from "../../store/atoms";
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [login, setLogin] = useRecoilState(loginState);
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+  const handleIdChange = (e) => {
+    setLogin((prev) => ({
+      ...prev,
+      id: e.target.value,
+    }));
   };
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+    setLogin((prev) => ({
+      ...prev,
+      password: e.target.value,
+    }));
   };
 
   const handleLogin = () => {
-    console.log("Username:", username);
-    console.log("Password:", password);
-    // 로그인 처리 및 서버와의 통신을 추가해야 합니다.
+    // Recoil로 로그인 액션 처리
+    if (login.id && login.password) {
+      setLogin((prev) => ({
+        ...prev,
+        loading: true,
+      }));
+
+      // 로그인 과정
+      loginAction(login.id, login.password)
+        .then((response) => {
+          // 로그인 성공
+          setLogin((prev) => ({
+            ...prev,
+            loading: false,
+            msg: "로그인 성공",
+          }));
+        })
+        .catch((error) => {
+          // 로그인 실패
+          setLogin((prev) => ({
+            ...prev,
+            loading: false,
+            msg: "로그인 실패",
+          }));
+        });
+    }
   };
 
   return (
     <div>
       <h2>Login</h2>
-      <div>
+      <form>
         <label>Username:</label>
-        <input type="text" value={username} onChange={handleUsernameChange} />
-      </div>
-      <div>
+        <input type="text" value={login.id} onChange={handleIdChange} />
         <label>Password:</label>
         <input
           type="password"
-          value={password}
+          value={login.password}
           onChange={handlePasswordChange}
         />
-      </div>
-      <button onClick={handleLogin}>Login</button>
+        <button onClick={handleLogin}>Login</button>
+        {login.loading && <div>Loading...</div>}
+        {login.msg && <div>{login.msg}</div>}
+      </form>
     </div>
   );
 }
