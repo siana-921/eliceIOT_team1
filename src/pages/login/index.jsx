@@ -1,122 +1,132 @@
-import styled from "@emotion/styled";
+import Login from "@/components/Login/Login";
 
-export default function Login() {
+export default function LoginPage() {
   return (
-    <LoginPageMain>
-      <LoginPageGIF
-        src="/images/backgroundVideo.mp4"
-        loop
-        autoPlay
-        muted
-      ></LoginPageGIF>
-      <LoginPageInputArea>
-        <h1>LOGIN</h1>
-        {/* <LoginPageBoarder /> */}
-        <LoginPageInputDiv>
-          <label>아이디</label>
-          <input placeholder="아이디를 입력해주세요." />
-          <label>비밀번호</label>
-          <input placeholder="비밀번호를 입력해주세요." />
-        </LoginPageInputDiv>
-        <LoginButtonDiv>
-          <button>로그인</button>
-          <button>회원가입</button>
-        </LoginButtonDiv>
-      </LoginPageInputArea>
-    </LoginPageMain>
+    <div>
+      <Login />
+    </div>
   );
 }
 
-const LoginPageMain = styled.main`
-  position: relative;
-`;
+// import styled from "@emotion/styled";
 
-const LoginPageGIF = styled.video`
-  width: 100%;
-  height: 100vh;
-  object-fit: cover;
-  z-index: -1;
-`;
+// export default function Login() {
+//   return (
+//     <LoginPageMain>
+//       <LoginPageGIF
+//         src="/images/backgroundVideo.mp4"
+//         loop
+//         autoPlay
+//         muted
+//       ></LoginPageGIF>
+//       <LoginPageInputArea>
+//         <h1>LOGIN</h1>
+//         {/* <LoginPageBoarder /> */}
+//         <LoginPageInputDiv>
+//           <label>아이디</label>
+//           <input placeholder="아이디를 입력해주세요." />
+//           <label>비밀번호</label>
+//           <input placeholder="비밀번호를 입력해주세요." />
+//         </LoginPageInputDiv>
+//         <LoginButtonDiv>
+//           <button>로그인</button>
+//           <button>회원가입</button>
+//         </LoginButtonDiv>
+//       </LoginPageInputArea>
+//     </LoginPageMain>
+//   );
+// }
 
-const LoginPageInputArea = styled.form`
-  background-color: #ffffff;
+// const LoginPageMain = styled.main`
+//   position: relative;
+// `;
 
-  // background: rgba(0, 0, 0, 0.1);
-  // backdrop-filter: blur(5px);
+// const LoginPageGIF = styled.video`
+//   width: 100%;
+//   height: 100vh;
+//   object-fit: cover;
+//   z-index: -1;
+// `;
 
-  position: absolute;
-  top: 10%;
-  left: 32%;
-  width: 40rem;
-  height: 47rem;
-  display: flex;
+// const LoginPageInputArea = styled.form`
+//   background-color: #ffffff;
 
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+//   // background: rgba(0, 0, 0, 0.1);
+//   // backdrop-filter: blur(5px);
 
-  border: 0.1rem solid;
-  box-shadow: 0.5rem 0.5rem 0.125rem 0.0625rem #ffffff;
-  border-radius: 1rem;
+//   position: absolute;
+//   top: 10%;
+//   left: 32%;
+//   width: 40rem;
+//   height: 47rem;
+//   display: flex;
 
-  & h1 {
-    margin: 3rem;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
 
-    font-weight: 800;
-    font-size: 5rem;
-    color: #e4e4e4;
-  }
-`;
+//   border: 0.1rem solid;
+//   box-shadow: 0.5rem 0.5rem 0.125rem 0.0625rem #ffffff;
+//   border-radius: 1rem;
 
-const LoginPageBoarder = styled.div`
-  width: 80%;
+//   & h1 {
+//     margin: 3rem;
 
-  border-bottom: 0.8rem solid #000000;
-  margin: 1rem;
-`;
+//     font-weight: 800;
+//     font-size: 5rem;
+//     color: #e4e4e4;
+//   }
+// `;
 
-const LoginPageInputDiv = styled.div`
-  width: 70%;
-  align-items: center;
-  justify-content: center;
-  margin: 2rem;
+// const LoginPageBoarder = styled.div`
+//   width: 80%;
 
-  & label {
-    margin: 0.5rem;
-    font-size: 1.3rem;
-    font-weight: 500;
-  }
+//   border-bottom: 0.8rem solid #000000;
+//   margin: 1rem;
+// `;
 
-  & input {
-    margin: 0.8rem;
-    width: 100%;
-    height: 30%;
-    border: none;
-    border-bottom: 0.1rem solid grey;
-    font-size: 0.9rem;
-  }
-  & input:focus {
-    outline: none;
-    border: 2px solid #00a86b;
-    border-radius: 0.5rem;
-  }
-`;
+// const LoginPageInputDiv = styled.div`
+//   width: 70%;
+//   align-items: center;
+//   justify-content: center;
+//   margin: 2rem;
 
-const LoginButtonDiv = styled.div`
-  display: flex;
+//   & label {
+//     margin: 0.5rem;
+//     font-size: 1.3rem;
+//     font-weight: 500;
+//   }
 
-  & button {
-    height: 3rem;
-    width: 14rem;
-    margin: 5rem 0.5rem;
-    background-color: #00a86b;
-    border: none;
-    border-radius: 1rem;
-    color: #ffffff;
-    cursor: pointer;
+//   & input {
+//     margin: 0.8rem;
+//     width: 100%;
+//     height: 30%;
+//     border: none;
+//     border-bottom: 0.1rem solid grey;
+//     font-size: 0.9rem;
+//   }
+//   & input:focus {
+//     outline: none;
+//     border: 2px solid #00a86b;
+//     border-radius: 0.5rem;
+//   }
+// `;
 
-    &:hover {
-      background-color: #e4e4e4;
-    }
-  }
-`;
+// const LoginButtonDiv = styled.div`
+//   display: flex;
+
+//   & button {
+//     height: 3rem;
+//     width: 14rem;
+//     margin: 5rem 0.5rem;
+//     background-color: #00a86b;
+//     border: none;
+//     border-radius: 1rem;
+//     color: #ffffff;
+//     cursor: pointer;
+
+//     &:hover {
+//       background-color: #e4e4e4;
+//     }
+//   }
+// `;
