@@ -58,20 +58,8 @@ const data = [
   },
 ];
 
-const OptimalRateChart = () => {
+const DayAndNightTempChart = () => {
   const colorCode = useRecoilValue(colorCodeAtom);
-  const {
-    gray,
-    yellow,
-    lime,
-    green,
-    turquoise,
-    navy,
-    lavender,
-    deepgreen,
-    marine,
-    orange,
-  } = colorCode;
   return (
     <Main>
       <ResponsiveContainer width="100%" height="100%">
@@ -80,7 +68,7 @@ const OptimalRateChart = () => {
           height={300}
           data={data}
           margin={{
-            top: 5,
+            top: 20,
             right: 30,
             left: 20,
             bottom: 5,
@@ -89,30 +77,18 @@ const OptimalRateChart = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <Tooltip />
-          <Legend
-            wrapperStyle={{
-              position: "absolute",
-              width: "100%",
-              height: "0%",
-              right: 0,
-              top: 0,
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          />
-          <Bar dataKey="pv" fill={lime} />
-          <Bar dataKey="uv" fill={green} />
+          <Bar dataKey="pv" stackId="a" fill={colorCode.palelavender} />
+          <Bar dataKey="amt" stackId="a" fill={colorCode.yellow} />
+          <Bar dataKey="uv" fill={colorCode.gray} />
         </BarChart>
       </ResponsiveContainer>
     </Main>
   );
 };
 
-export default OptimalRateChart;
+export default DayAndNightTempChart;
 
 const Main = styled.div`
   width: 100%;
   height: 67%;
-  padding: 1vh;
-  margin-top: 1vh;
 `;

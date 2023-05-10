@@ -23,5 +23,10 @@ export const colorCodeAtom = atom({
     deepgreen: "#199269",
     lavender: "#8884D8",
     orange: "#FF8000",
+    palelavender: "#B6A2E0",
+    paleyellow: "#FFEB66",
+    paleorange: "#FFB366",
+    palegreen: "#C1DC70",
+    paleblue: "#66D4E8",
   },
 });

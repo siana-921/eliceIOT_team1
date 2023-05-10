@@ -6,9 +6,10 @@ import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAl
 import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart";
 import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart";
 import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart";
-import OptimalRateChart from "@/components/Dashboard2/SubSection1/OptimalRateChart";
+import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart";
 
 const SubSection1Contents = ({}) => {
+  console.log();
   return (
     <Main name="SubSection1Main">
       <Grid>
@@ -17,7 +18,7 @@ const SubSection1Contents = ({}) => {
         </Item1>
         <Item2>
           <DotsChart></DotsChart>
-          <OptimalRateChart></OptimalRateChart>
+          <DayAndNightTempChart></DayAndNightTempChart>
         </Item2>
         <Item3>
           <MaxAndMinTitle>최고조도 | 최저조도</MaxAndMinTitle>

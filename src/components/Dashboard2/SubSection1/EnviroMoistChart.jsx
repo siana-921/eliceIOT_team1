@@ -94,8 +94,6 @@ const EnviroMoistChart = () => {
         }}
       >
         <CartesianGrid stroke="#f5f5f5" />
-        <XAxis dataKey="name" scale="band" />
-        <YAxis />
         <Tooltip />
         <Bar dataKey="moisture" barSize={20} fill="#C1DC70" />
         <Line type="monotone" dataKey="temp" stroke={orange} />
