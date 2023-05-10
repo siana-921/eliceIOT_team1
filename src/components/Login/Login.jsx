@@ -1,70 +1,37 @@
-import { useRecoilState } from "recoil";
-import { loginState, loginAction } from "../../store/atoms";
-import Link from "next/link";
+import React from "react";
+import {
+  Form,
+  Link,
+  useSearchParams,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 
-function Login() {
-  const [login, setLogin] = useRecoilState(loginState);
-
-  const handleIdChange = (e) => {
-    setLogin((prev) => ({
-      ...prev,
-      id: e.target.value,
-    }));
-  };
-
-  const handlePasswordChange = (e) => {
-    setLogin((prev) => ({
-      ...prev,
-      password: e.target.value,
-    }));
-  };
-
-  const handleLogin = () => {
-    // Recoil로 로그인 액션 처리
-    if (login.id && login.password) {
-      setLogin((prev) => ({
-        ...prev,
-        loading: true,
-        msg: "로그인 성공",
-      }));
-    }
-  };
-
-  const LoginFunc = (e) => {
-    e.preventDefault();
-
-    const { id, password } = login;
-
-    if (!id) {
-      return alert("ID를 입력하세요.");
-    } else if (!password) {
-      return alert("Password를 입력하세요.");
-    }
-
-    handleLogin();
-  };
+export default function LoginForm() {
+  const [searchParams] = useSearchParams();
+  const isLogin = searchParams.get("mode") === "login";
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={LoginFunc}>
-        <label>Username:</label>
-        <input type="text" value={login.id} onChange={handleIdChange} />
-        <label>Password:</label>
-        <input
-          type="password"
-          value={login.password}
-          onChange={handlePasswordChange}
-        />
-        <button onClick={handleLogin}>Login</button>
-        {login.msg && <div>{login.msg}</div>}
-        <label>회원가입이 되어 있지 않다면?</label>
-        <Link a href="/join">
-          회원가입하기
-        </Link>
-      </form>
-    </div>
+    <Router>
+      <Routes>
+        <Form method="post" className={classes.form}>
+          <h1>{isLogin ? "Log in" : "Create a new user"}</h1>
+          <p>
+            <label htmlFor="email">Email</label>
+            <input id="email" type="email" name="email" required />
+          </p>
+          <p>
+            <label htmlFor="image">Password</label>
+            <input id="password" type="password" name="password" required />
+          </p>
+          <div className={classes.actions}>
+            <Link to={`?mode=${isLogin ? "signup" : "login"}`}>
+              {isLogin ? "Create new user" : "Login"}
+            </Link>
+            <button>Save</button>
+          </div>
+        </Form>
+      </Routes>
+    </Router>
   );
 }
-
-export default Login;
