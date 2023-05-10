@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { allDeviceSensorState } from "@store/atoms";
-import { oneDeviceSensorState } from "@store/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { colorCodeAtom } from "@store/atoms";
+import { allDeviceSensorAtom } from "@store/atoms";
+import { oneDeviceSensorAtom } from "@store/atoms";
 
 import LodingComponent from "@/components/elements/loading";
 
@@ -23,12 +24,16 @@ const Dashboard2 = (props) => {
   const [spreadSection, setSpreadSection] = useState(1);
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
+  const colorCode = useRecoilValue(colorCodeAtom);
   const [allDeviceSensorData, setAllDeviceSensorData] =
-    useRecoilState(allDeviceSensorState);
+    useRecoilState(allDeviceSensorAtom);
   const [oneDeviceSensorData, setOneDeviceSensorData] =
-    useRecoilState(oneDeviceSensorState);
-  //FETCH한 데이터를 RECOIL에 저장--------------------------------------//
+    useRecoilState(oneDeviceSensorAtom);
 
+  const { gray, yellow, lime, green, turquoise, navy, lavender, deepgreen } =
+    colorCode;
+  //FETCH한 데이터를 RECOIL에 저장--------------------------------------//
+  //컴포넌트가 다시 렌더링되어 새로운 props가 올때마다 useEffect가 반응해서 recoil에 저장..
   useEffect(() => {
     setAllDeviceSensorData(props.allDeviceSensorData);
     setOneDeviceSensorData(props.oneDeviceSensorData);
@@ -70,7 +75,7 @@ const Dashboard2 = (props) => {
         popUpSection={popUpSection}
         activatedSection={activatedSection}
         isAnySectionActivated={isAnySectionActivated}
-        bgColor="#00a86b"
+        bgColor={green}
         bgGradient="#248968"
         onClick={() => {
           setIsAnySectionActivated(isAnySectionActivated ? false : true);
@@ -82,7 +87,7 @@ const Dashboard2 = (props) => {
             <MainSection1Content />
           </MainContent>
           <SubContent>
-            <SubSection1Contents />
+            {activatedSection == 1 && <SubSection1Contents />}
           </SubContent>
         </Contents>
       </Section>
@@ -104,7 +109,7 @@ const Dashboard2 = (props) => {
             <MainSection2Content />
           </MainContent>
           <SubContent>
-            <SubSection2Contents />
+            {activatedSection == 2 && <SubSection2Contents />}
           </SubContent>
         </Contents>
       </Section>
@@ -125,7 +130,7 @@ const Dashboard2 = (props) => {
             <MainSection3Content />
           </MainContent>
           <SubContent>
-            <SubSection3Contents />
+            {activatedSection == 3 && <SubSection3Contents />}
           </SubContent>
         </Contents>
       </Section>
@@ -146,7 +151,7 @@ const Dashboard2 = (props) => {
             <MainSection4Content />
           </MainContent>
           <SubContent>
-            <SubSection4Contents />
+            {activatedSection == 4 && <SubSection4Contents />}
           </SubContent>
         </Contents>
       </Section>
@@ -197,7 +202,7 @@ const MainContent = styled.div`
   color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : "transparent")};
   &:hover {
-    background-color: #248968;
+    background-color: #8884d8;
     color: #fff;
   }
 `;
@@ -217,6 +222,7 @@ export async function getServerSideProps() {
   console.log(device_id);
 
   try {
+    //전체 디바이스의 전체 센서 데이터를 가져오는것은 테스트에만 사용하고 이후에는 getServerSideProps에서 제외하도록 하기(너무 큼)
     console.log(`=========GET ALL DEVICE SENSOR LOG DATA=========`);
     const allDeviceSensorData = await axios.get("/sensors");
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);

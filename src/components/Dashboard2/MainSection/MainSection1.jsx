@@ -15,7 +15,7 @@ const MainSection1Content = () => {
         <SubTitleText>처음 키운날</SubTitleText>
         <p>2023년 4월 23일</p>
         <SubTitleText>현재상태</SubTitleText>
-        <SubTitleText>아무말ㅣㅑㅈ덜미쟈더</SubTitleText>
+        <SubTitleText>자동제어가 되고있는지 여부</SubTitleText>
       </ContentsWrapper>
       <NavWrapper>
         <NavText>내식물</NavText>
