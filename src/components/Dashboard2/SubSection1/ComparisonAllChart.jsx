@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-
+import { useRecoilState, useRecoilValue } from "recoil";
+import { colorCodeAtom } from "@store/atoms";
 import {
   AreaChart,
   Area,
@@ -10,39 +11,23 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+const ComparisonAllChart = ({ data, width, height }) => {
+  const colorCode = useRecoilValue(colorCodeAtom);
+  const {
+    gray,
+    yellow,
+    lime,
+    green,
+    turquoise,
+    navy,
+    lavender,
+    deepgreen,
+    marine,
+    orange,
+  } = colorCode;
 
-const Content1 = ({ data, width, height }) => {
   return (
     <Main>
-      <SensorTitleText>
-        <p>빛</p>
-      </SensorTitleText>
-      <ResponsiveContainer width="100%" height="22%">
-        <AreaChart
-          width={width}
-          height={height * 0.19}
-          data={data}
-          syncId="anyId"
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Area
-            type="monotone"
-            dataKey="light"
-            stroke="#8884d8"
-            fill="#8884d8"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-
       <SensorTitleText>
         <p>온도</p>
       </SensorTitleText>
@@ -63,17 +48,12 @@ const Content1 = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area
-            type="monotone"
-            dataKey="temp"
-            stroke="#82ca9d"
-            fill="#82ca9d"
-          />
+          <Area type="monotone" dataKey="light" stroke={orange} fill={orange} />
         </AreaChart>
       </ResponsiveContainer>
 
       <SensorTitleText>
-        <p>대기습도</p>
+        <p>조도</p>
       </SensorTitleText>
       <ResponsiveContainer width="100%" height="22%">
         <AreaChart
@@ -92,12 +72,7 @@ const Content1 = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area
-            type="monotone"
-            dataKey="humid"
-            stroke="#82ca9d"
-            fill="#82ca9d"
-          />
+          <Area type="monotone" dataKey="temp" stroke={yellow} fill={yellow} />
         </AreaChart>
       </ResponsiveContainer>
 
@@ -121,29 +96,48 @@ const Content1 = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area
-            type="monotone"
-            dataKey="mois"
-            stroke="#82ca9d"
-            fill="#82ca9d"
-          />
+          <Area type="monotone" dataKey="humid" stroke={lime} fill={lime} />
+        </AreaChart>
+      </ResponsiveContainer>
+
+      <SensorTitleText>
+        <p>대기습도</p>
+      </SensorTitleText>
+      <ResponsiveContainer width="100%" height="22%">
+        <AreaChart
+          width={width}
+          height={height * 0.19}
+          data={data}
+          syncId="anyId"
+          margin={{
+            top: 10,
+            right: 30,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Area type="monotone" dataKey="mois" stroke={marine} fill={marine} />
         </AreaChart>
       </ResponsiveContainer>
     </Main>
   );
 };
-export default Content1;
+export default ComparisonAllChart;
 
 const Main = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 102%;
   position: relative;
   padding: 1rem 0 1rem 0;
 `;
 const SensorTitleText = styled.div`
   width: 100%;
   height: 3%;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   text-align: right;
   padding-right: 2rem;
   font-weight: 400;

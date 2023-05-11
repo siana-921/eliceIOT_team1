@@ -1,0 +1,62 @@
+{
+  "basil": {
+    "temp_min": "18",
+    "temp_max": "24",
+    "moist_min": "50",
+    "moist_max": "60",
+    "humid_min": "40",
+    "humid_max": "50",
+    "light_min": "10000",
+    "light_max": "20000"
+  },
+  "broccoli": {
+    "temp_min": "15",
+    "temp_max": "21",
+    "moist_min": "60",
+    "moist_max": "70",
+    "humid_min": "40",
+    "humid_max": "60",
+    "light_min": "10000",
+    "light_max": "20000"
+  },
+  "carrot": {
+    "temp_min": "10",
+    "temp_max": "20",
+    "moist_min": "50",
+    "moist_max": "70",
+    "humid_min": "70",
+    "humid_max": "80",
+    "light_min": "10000",
+    "light_max": "15000"
+  },
+  "onion": {
+    "temp_min": "13",
+    "temp_max": "24",
+    "moist_min": "50",
+    "moist_max": "60",
+    "humid_min": "65",
+    "humid_max": "70",
+    "light_min": "10000",
+    "light_max": "20000"
+  },
+  "rosemary": {
+    "temp_min": "18",
+    "temp_max": "24",
+    "moist_min": "40",
+    "moist_max": "60",
+    "humid_min": "30",
+    "humid_max": "50",
+    "light_min": "15000",
+    "light_max": "20000"
+  },
+  "lettuce": {
+    "temp_min": "16",
+    "temp_max": "21",
+    "moist_min": "80",
+    "moist_max": "90",
+    "humid_min": "40",
+    "humid_max": "60",
+    "light_min": "10000",
+    "light_max": "15000"
+  }
+}

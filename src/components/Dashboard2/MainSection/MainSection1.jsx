@@ -15,7 +15,7 @@ const MainSection1Content = () => {
         <SubTitleText>처음 키운날</SubTitleText>
         <p>2023년 4월 23일</p>
         <SubTitleText>현재상태</SubTitleText>
-        <SubTitleText>아무말ㅣㅑㅈ덜미쟈더</SubTitleText>
+        <SubTitleText>자동제어가 되고있는지 여부</SubTitleText>
       </ContentsWrapper>
       <NavWrapper>
         <NavText>내식물</NavText>
@@ -59,6 +59,7 @@ const Profileimage = styled.div`
   height: 80%;
   border-radius: 50%;
   background-color: #ffffff;
+  box-shadow: -2.3vh 2.3vh 4vh rgba(0, 0, 0, 0.15);
 `;
 const NavWrapper = styled.div`
   position: absolute;
