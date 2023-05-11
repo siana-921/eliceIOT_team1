@@ -17,19 +17,18 @@ export default function LoginPage() {
     }
   }, [msg, loading]);
 
-  const handleResponse = (data) => {
-    if (data.code === 200) {
+  const handleResponse = (res) => {
+    if (res.code === 200) {
       console.log("로그인");
       setMsg(" 로그인 완료 ! ");
-    } else if (data.code === 400) {
+    } else if (res.code === 400) {
       setMsg("ID, Password가 비어있습니다.");
-    } else if (data.code === 401) {
+    } else if (res.code === 401) {
       setMsg("존재하지 않는 ID입니다.");
-    } else if (data.code === 402) {
+    } else if (res.code === 402) {
       setMsg("Password가 틀립니다.");
     } else {
-      setMsg("알 수 없는 오류가 발생했습니다." + data.code);
-      console.log(data.code);
+      setMsg("알 수 없는 오류가 발생했습니다." + res);
     }
   };
 
@@ -50,8 +49,8 @@ export default function LoginPage() {
     axiosInstance
       .post(`/user/sign_in`, body)
       .then((res) => {
-        console.log(res.data);
-        handleResponse(res.data);
+        console.log(res);
+        handleResponse(res);
         setLoading(false);
       })
       .catch((error) => {
