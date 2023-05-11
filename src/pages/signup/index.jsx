@@ -1,6 +1,5 @@
 import { axiosInstance } from "@/api/base";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 import styled from "@emotion/styled";
 
@@ -47,8 +46,8 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    axios
-      .post(`http://localhost:3000/pages/api/signup`, body)
+    axiosInstance
+      .post(`/user/sign_up`, body)
       .then((res) => {
         console.log(res);
         alert(res);
@@ -69,29 +68,13 @@ export default function SignupPage() {
         <label htmlFor="id">ID</label>
         <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
         <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <label htmlFor="fullname">Name</label>
-        <input
-          type="text"
-          value={fullname}
-          onChange={(e) => setFullname(e.target.value)}
-        />
+        <input type="text" value={fullname} onChange={(e) => setFullname(e.target.value)} />
         <label htmlFor="email">Email</label>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         <label htmlFor="phone">Phone Number</label>
-        <input
-          type="number"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
+        <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)} />
         <button type="submit" disabled={loading}>
           Join
         </button>
