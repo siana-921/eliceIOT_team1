@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/api/base";
 import React, { useState, useEffect } from "react";
+// import axios from "axios";
 
 import styled from "@emotion/styled";
 
@@ -11,6 +12,7 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [created_at, setCreated] = useState("");
 
   useEffect(() => {
     if (msg && loading) {
@@ -47,10 +49,11 @@ export default function SignupPage() {
     setLoading(true);
 
     axiosInstance
-      .post(`/user/sign_up`, body)
+      .post(`user/sign_up`, body) // 요청코드
       .then((res) => {
         console.log(res);
         alert(res);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -74,7 +77,9 @@ export default function SignupPage() {
         <label htmlFor="email">Email</label>
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         <label htmlFor="phone">Phone Number</label>
-        <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+        {/* <label htmlFor="created_at">CreatedAt</label>
+        <input type="text" value={created_at} onChange={(e) => setCreated(e.target.value)} /> */}
         <button type="submit" disabled={loading}>
           Join
         </button>
