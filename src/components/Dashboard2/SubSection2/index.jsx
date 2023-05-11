@@ -1,34 +1,56 @@
 import styled from "@emotion/styled";
-import Slider from "rc-slider";
 import Switch from "react-switch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import Table from "@components/elements/simpleTable";
 import ActuatorLogTable from "../elements/ActuatorLogTable";
 
 const SubSection2Contents = () => {
   const [autoControlOn, setAutoControlOn] = useState(true);
+  const [isValueMode, setIsValueMode] = useState(true);
 
-  const handleChange = (checked) => {
+  const handleAutoControlOnOff = (checked) => {
     setAutoControlOn(checked);
   };
-  const handleClick = (e) => {
-    e.stopPropagation();
+  const handleRadioChange = (e) => {
+    console.log(e.target.id);
+    if (e.target.id === "setValueMode") {
+      setIsValueMode(true);
+    } else if (e.target.id === "setTimeMode") {
+      setIsValueMode(false);
+    }
   };
-  console.log(autoControlOn);
+
+  useEffect(() => {
+    console.log("뭔가 리렌더링");
+    console.log(autoControlOn);
+    console.log(isValueMode);
+  }, [autoControlOn, isValueMode]);
+
   return (
     <Main>
       <GridContainer>
         <Item1>
           <TitleText>자동제어</TitleText>
-          <MessageText>
-            <div>현재 자동제어가 동작하고 있습니다.</div>
-          </MessageText>
+          <MessageText>현재 자동제어가 동작하고 있습니다.</MessageText>
           <p>자동제어 시작일자 : 2222/22/22 33:33:33</p>
-          <ToggleButton onClick={handleClick}>
+          <RadioInput
+            type="radio"
+            name="autoContolSet"
+            id="setValueMode"
+            checked={isValueMode}
+            onChange={handleRadioChange}
+          ></RadioInput>
+          <RadioInput
+            type="radio"
+            name="autoContolSet"
+            id="setTimeMode"
+            checked={!isValueMode}
+            onChange={handleRadioChange}
+          ></RadioInput>
+          <ToggleButton>
             <label>
               <Switch
-                onChange={handleChange}
+                onChange={handleAutoControlOnOff}
                 checked={autoControlOn}
                 onColor="#00b7d8"
                 offColor="#B8B8B8"
@@ -41,31 +63,23 @@ const SubSection2Contents = () => {
         <Item2>
           <TitleText>자동제어 설정</TitleText>
           {autoControlOn ? (
-            <AutoControlSettings>
-              <RadioWrapper>
-                <StyledRadio name="valueBasedControl" className="On">
-                  <div>자동제어 동작 중에는 설정할 수 없습니다</div>
-                </StyledRadio>
-                <StyledRadio name="timeBasedControl" className="On">
-                  <div>자동제어 동작 중에는 설정할 수 없습니다</div>
-                </StyledRadio>
-              </RadioWrapper>
-            </AutoControlSettings>
+            <RadioWrapper>
+              <StyledRadio id="valueBasedControl" className="autoControlOn">
+                <div>자동제어 동작 중에는 설정할 수 없습니다</div>
+              </StyledRadio>
+              <StyledRadio id="timeBasedControl" className="autoControlOn">
+                <div>자동제어 동작 중에는 설정할 수 없습니다</div>
+              </StyledRadio>
+            </RadioWrapper>
           ) : (
-            <AutoControlSettings>
-              <RadioWrapper>
-                <input type="radio" id="setValueMode"></input>
-                <StyledRadio
-                  name="valueBasedControl"
-                  className="Off"
-                  for="setValueMode"
-                  onClick={handleClick}
-                ></StyledRadio>
-                <StyledRadio name="timeBasedControl" className="Off">
-                  <input type="radio" id="setTimeMode"></input>
-                </StyledRadio>
-              </RadioWrapper>
-            </AutoControlSettings>
+            <RadioWrapper>
+              <StyledRadio id="valueBasedControl" className="autoControlOff" isValueMode={isValueMode}>
+                <RadioLabel htmlFor="setValueMode">목표 수치로 제어</RadioLabel>
+              </StyledRadio>
+              <StyledRadio id="timeBasedControl" className="autoControlOff" isValueMode={!isValueMode}>
+                <RadioLabel htmlFor="setTimeMode">예약 시간 제어</RadioLabel>
+              </StyledRadio>
+            </RadioWrapper>
           )}
         </Item2>
         <Item3>
@@ -113,6 +127,8 @@ const Item1 = styled.div`
 const Item2 = styled.div`
   grid-column: 1 / 4;
   grid-row: 3 / 7;
+  display: flex;
+  flex-direction: column;
 `;
 const Item3 = styled.div`
   grid-column: 4 / 6;
@@ -125,8 +141,9 @@ const Item4 = styled.div`
 //--------------------------------------//
 
 //---------------텍스트-----------------//
-const TitleText = styled.h2`
+const TitleText = styled.div`
   font-size: 3vw;
+  font-weight: 700;
 `;
 const SmallTitleText = styled.h2`
   font-size: 2vw;
@@ -138,15 +155,8 @@ const MessageText = styled.p`
 //--------------------------------------//
 
 //---------------Wrapper-----------------//
-const AutoControlSettings = styled.div`
-  position: relative;
-  width: 100%;
-  height: 88%;
-`;
-const RadioWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
+const RadioWrapper = styled.label`
+  flex: 1;
   display: flex;
   padding-top: 1rem;
   flex-direction: column;
@@ -181,11 +191,11 @@ const StyledRadio = styled.div`
   border-radius: 20px;
   background-color: #e4e4e4;
   border: 2px solid #dcdcdc;
-  &.Off {
-    background-color: #ffcc00;
+  &.autoControlOff {
+    background-color: ${({ isValueMode }) => (isValueMode ? "#8884D8" : "#E4E4E4")};
     border: none;
   }
-  &.On {
+  &.autoControlOn {
     > div {
       height: 100%;
       display: flex;
@@ -195,3 +205,13 @@ const StyledRadio = styled.div`
   }
 `;
 //--------------------------------------//
+
+const RadioInput = styled.input`
+  display: none;
+`;
+const RadioLabel = styled.label`
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+`;

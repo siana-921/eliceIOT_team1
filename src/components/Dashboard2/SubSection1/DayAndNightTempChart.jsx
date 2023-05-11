@@ -1,60 +1,50 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { colorCodeAtom } from "@store/atoms";
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import styled from "@emotion/styled";
 
 const data = [
   {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
+    name: "Day 1",
+    day: 4320,
+    night: 2400,
+    optimal: 3000,
   },
   {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
+    name: "Day 2",
+    day: 3000,
+    night: 1398,
+    optimal: 2210,
   },
   {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
+    name: "Day 3",
+    day: 2000,
+    night: 980,
+    optimal: 2290,
   },
   {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
+    name: "Day 4",
+    day: 4780,
+    night: 2308,
+    optimal: 2000,
   },
   {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
+    name: "Day 5",
+    day: 3890,
+    night: 900,
+    optimal: 2181,
   },
   {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
+    name: "Day 6",
+    day: 2390,
+    night: 1800,
+    optimal: 2500,
   },
   {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
+    name: "Day 7",
+    day: 3490,
+    night: 2300,
+    optimal: 3400,
   },
 ];
 
@@ -77,9 +67,9 @@ const DayAndNightTempChart = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <Tooltip />
-          <Bar dataKey="pv" stackId="a" fill={colorCode.palelavender} />
-          <Bar dataKey="amt" stackId="a" fill={colorCode.yellow} />
-          <Bar dataKey="uv" fill={colorCode.gray} />
+          <Bar dataKey="day" stackId="a" fill={colorCode.yellow} />
+          <Bar dataKey="night" stackId="b" fill={colorCode.palelavender} />
+          <Bar dataKey="optimal" fill={colorCode.gray} />
         </BarChart>
       </ResponsiveContainer>
     </Main>

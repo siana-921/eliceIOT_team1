@@ -50,8 +50,8 @@ export default function LoginPage() {
     axiosInstance
       .post(`/user/sign_in`, body)
       .then((res) => {
-        console.log(res.data);
-        handleResponse(res.data);
+        console.log(res);
+        handleResponse(res);
         setLoading(false);
       })
       .catch((error) => {
@@ -67,11 +67,7 @@ export default function LoginPage() {
         <label htmlFor="id">ID</label>
         <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
         <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <button type="submit" disabled={loading}>
           로그인
         </button>

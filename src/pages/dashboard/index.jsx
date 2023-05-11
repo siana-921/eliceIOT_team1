@@ -25,10 +25,8 @@ const Dashboard2 = (props) => {
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const colorCode = useRecoilValue(colorCodeAtom);
-  const [allDeviceSensorData, setAllDeviceSensorData] =
-    useRecoilState(allDeviceSensorAtom);
-  const [oneDeviceSensorData, setOneDeviceSensorData] =
-    useRecoilState(oneDeviceSensorAtom);
+  const [allDeviceSensorData, setAllDeviceSensorData] = useRecoilState(allDeviceSensorAtom);
+  const [oneDeviceSensorData, setOneDeviceSensorData] = useRecoilState(oneDeviceSensorAtom);
 
   //FETCH한 데이터를 RECOIL에 저장--------------------------------------//
   //컴포넌트가 다시 렌더링되어 새로운 props가 올때마다 useEffect가 반응해서 recoil에 저장..
@@ -65,6 +63,12 @@ const Dashboard2 = (props) => {
   }, [isAnySectionActivated]);
   //--------------------------------------------------------------------//
 
+  //onClick->펼치기-트리거----------------------------------------------//
+  const handleMainContentClick = (num) => {
+    setIsAnySectionActivated(isAnySectionActivated ? false : true);
+    setActivatedSection(num);
+  };
+  //
   return (
     <Main>
       <Section
@@ -75,18 +79,17 @@ const Dashboard2 = (props) => {
         isAnySectionActivated={isAnySectionActivated}
         bgColor={colorCode.lime}
         bgGradient={colorCode.green}
-        onClick={() => {
-          setIsAnySectionActivated(isAnySectionActivated ? false : true);
-          setActivatedSection(1);
-        }}
       >
         <Contents>
-          <MainContent fontColor="#ffffff">
+          <MainContent
+            fontColor="#ffffff"
+            onClick={() => {
+              handleMainContentClick(1);
+            }}
+          >
             <MainSection1Content />
           </MainContent>
-          <SubContent>
-            {activatedSection == 1 && <SubSection1Contents />}
-          </SubContent>
+          <SubContent>{activatedSection == 1 && <SubSection1Contents />}</SubContent>
         </Contents>
       </Section>
       <Section
@@ -97,18 +100,16 @@ const Dashboard2 = (props) => {
         isAnySectionActivated={isAnySectionActivated}
         bgColor="#ffdd00"
         bgGradient="#FFBF00"
-        onClick={() => {
-          setIsAnySectionActivated(isAnySectionActivated ? false : true);
-          setActivatedSection(2);
-        }}
       >
         <Contents>
-          <MainContent>
+          <MainContent
+            onClick={() => {
+              handleMainContentClick(2);
+            }}
+          >
             <MainSection2Content />
           </MainContent>
-          <SubContent>
-            {activatedSection == 2 && <SubSection2Contents />}
-          </SubContent>
+          <SubContent>{activatedSection == 2 && <SubSection2Contents />}</SubContent>
         </Contents>
       </Section>
       <Section
@@ -118,18 +119,16 @@ const Dashboard2 = (props) => {
         activatedSection={activatedSection}
         bgColor={colorCode.paleorange}
         bgGradient={colorCode.orange}
-        onClick={() => {
-          setIsAnySectionActivated(isAnySectionActivated ? false : true);
-          setActivatedSection(3);
-        }}
       >
         <Contents>
-          <MainContent>
+          <MainContent
+            onClick={() => {
+              handleMainContentClick(3);
+            }}
+          >
             <MainSection3Content />
           </MainContent>
-          <SubContent>
-            {activatedSection == 3 && <SubSection3Contents />}
-          </SubContent>
+          <SubContent>{activatedSection == 3 && <SubSection3Contents />}</SubContent>
         </Contents>
       </Section>
       <Section
@@ -139,18 +138,16 @@ const Dashboard2 = (props) => {
         activatedSection={activatedSection}
         bgColor="#00B7D8"
         bgGradient="#00B3D8"
-        onClick={() => {
-          setIsAnySectionActivated(isAnySectionActivated ? false : true);
-          setActivatedSection(4);
-        }}
       >
         <Contents>
-          <MainContent>
+          <MainContent
+            onClick={() => {
+              handleMainContentClick(4);
+            }}
+          >
             <MainSection4Content />
           </MainContent>
-          <SubContent>
-            {activatedSection == 4 && <SubSection4Contents />}
-          </SubContent>
+          <SubContent>{activatedSection == 4 && <SubSection4Contents />}</SubContent>
         </Contents>
       </Section>
     </Main>
@@ -171,19 +168,15 @@ const Section = styled.div`
   top: 0;
   left: ${({ sectionIndex, activatedSection }) =>
     sectionIndex == activatedSection ? 0 : `${25 * sectionIndex - 25}vw`};
-  width: ${({ sectionIndex, spreadSection }) =>
-    sectionIndex == spreadSection ? "100vw" : "25vw"};
+  width: ${({ sectionIndex, spreadSection }) => (sectionIndex == spreadSection ? "100vw" : "25vw")};
   height: 100vh;
-  z-index: ${({ sectionIndex, popUpSection }) =>
-    sectionIndex == popUpSection ? 3 : 1};
+  z-index: ${({ sectionIndex, popUpSection }) => (sectionIndex == popUpSection ? 3 : 1)};
   overflow: hidden;
 
   color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : "#FFFFFF")};
   background-image: ${({ bgGradient, bgColor }) =>
-    bgGradient
-      ? `linear-gradient(to top right, ${bgGradient}, ${bgColor})`
-      : bgColor};
+    bgGradient ? `linear-gradient(to top right, ${bgGradient}, ${bgColor})` : bgColor};
   transition: width 0.25s ease-in-out, left 0.25s ease-in-out;
 `;
 
