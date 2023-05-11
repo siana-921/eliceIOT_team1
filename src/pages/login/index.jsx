@@ -47,9 +47,8 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    // axiosInstance
-    axios
-      .post(`http://localhost:3000/pages/api/login`, body)
+    axiosInstance
+      .post(`/user/sign_in`, body)
       .then((res) => {
         console.log(res);
         handleResponse(res);
