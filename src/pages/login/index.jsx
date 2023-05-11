@@ -68,11 +68,7 @@ export default function LoginPage() {
         <label htmlFor="id">ID</label>
         <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
         <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <button type="submit" disabled={loading}>
           로그인
         </button>
