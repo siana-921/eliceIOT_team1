@@ -1,5 +1,5 @@
 import { axiosInstance } from "@/api/base";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import styled from "@emotion/styled";
 
@@ -9,20 +9,31 @@ export default function SignupPage() {
   const [fullname, setFullname] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState("");
+
+  useEffect(() => {
+    if (msg && loading) {
+      setTimeout(() => {
+        setMsg("");
+        setLoading(false);
+      }, 3000);
+    }
+  }, [msg, loading]);
 
   function SignupFunc(e) {
     e.preventDefault();
 
     if (!id) {
-      return alert("ID를 입력하세요.");
+      return setMsg("ID를 입력하세요.");
     } else if (!password) {
-      return alert("Password를 입력하세요.");
+      return setMsg("Password를 입력하세요.");
     } else if (!fullname) {
-      return alert("이름을 입력하세요.");
+      return setMsg("이름을 입력하세요.");
     } else if (!email) {
-      return alert("이메일를 입력하세요.");
+      return setMsg("이메일를 입력하세요.");
     } else if (!phone) {
-      return alert("휴대폰번호를 입력하세요.");
+      return setMsg("휴대폰번호를 입력하세요.");
     }
 
     let body = {
@@ -43,6 +54,7 @@ export default function SignupPage() {
         console.log(error);
         alert(error);
       });
+    setLoading(true);
   }
 
   return (
@@ -59,7 +71,7 @@ export default function SignupPage() {
         />
         <label htmlFor="fullname">Name</label>
         <input
-          type="fullname"
+          type="text"
           value={fullname}
           onChange={(e) => setFullname(e.target.value)}
         />
