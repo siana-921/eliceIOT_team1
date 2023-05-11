@@ -13,7 +13,7 @@ export default function LoginPage() {
       setTimeout(() => {
         setMsg("");
         setLoading(false);
-      }, 1500);
+      }, 3000);
     }
   }, [msg, loading]);
 
