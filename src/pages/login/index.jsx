@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { axiosInstance } from "@/api/base";
+// import { axiosInstance } from "@/api/base";
 import Link from "next/link";
+import axios from "axios";
 
 export default function LoginPage() {
   const [id, setId] = useState("");
@@ -17,19 +18,18 @@ export default function LoginPage() {
     }
   }, [msg, loading]);
 
-  const handleResponse = (data) => {
-    if (data.code === 200) {
+  const handleResponse = (res) => {
+    if (res.code === 200) {
       console.log("로그인");
       setMsg(" 로그인 완료 ! ");
-    } else if (data.code === 400) {
+    } else if (res.code === 400) {
       setMsg("ID, Password가 비어있습니다.");
-    } else if (data.code === 401) {
+    } else if (res.code === 401) {
       setMsg("존재하지 않는 ID입니다.");
-    } else if (data.code === 402) {
+    } else if (res.code === 402) {
       setMsg("Password가 틀립니다.");
     } else {
-      setMsg("알 수 없는 오류가 발생했습니다." + data.code);
-      console.log(data.code);
+      setMsg("알 수 없는 오류가 발생했습니다." + res);
     }
   };
 
@@ -47,11 +47,12 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    axiosInstance
-      .post(`/user/sign_in`, body)
+    // axiosInstance
+    axios
+      .post(`http://localhost:3000/pages/api/login`, body)
       .then((res) => {
-        console.log(res.data);
-        handleResponse(res.data);
+        console.log(res);
+        handleResponse(res);
         setLoading(false);
       })
       .catch((error) => {
@@ -78,7 +79,6 @@ export default function LoginPage() {
         <p>아직 가입을 하지 않았다면?</p>
         <Link href="/signup">가입하러 가기</Link>
         {msg}
-        {console.log("아이디:", id, " ", "패스워드", password)}
       </form>
     </>
   );
