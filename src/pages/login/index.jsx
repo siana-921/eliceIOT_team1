@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-// import { axiosInstance } from "@/api/base";
+import { axiosInstance } from "@/api/base";
 import Link from "next/link";
-import axios from "axios";
+// import axios from "axios";
 
 export default function LoginPage() {
   const [id, setId] = useState("");
@@ -22,6 +22,7 @@ export default function LoginPage() {
     if (res.code === 200) {
       console.log("로그인");
       setMsg(" 로그인 완료 ! ");
+      window.location.href = "/myPage";
     } else if (res.code === 400) {
       setMsg("ID, Password가 비어있습니다.");
     } else if (res.code === 401) {
