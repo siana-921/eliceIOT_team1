@@ -1,190 +1,97 @@
-import React, { useState, useRef } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { axiosInstance } from "@/api/base";
+import React, { useState } from "react";
 
 import styled from "@emotion/styled";
 
-async function createUser(fullname, email, password, phone, id) {
-  const response = await fetch("/api/auth/signup", {
-    method: "POST",
-    body: JSON.stringify({ fullname, email, password, phone, id }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export default function SignupPage() {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
 
-  const data = await response.json();
+  function SignupFunc(e) {
+    e.preventDefault();
 
-  if (!response.ok) {
-    throw new Error(data.message || "Something went wrong!");
-  }
-  return data;
-}
-
-const Signup = (props) => {
-  const [formStatus, setFormStatus] = useState(null);
-
-  const fullnameInputRef = useRef(null);
-  const emailInputRef = useRef(null);
-  const passwordInputRef = useRef(null);
-  const phoneInputRef = useRef(null);
-  const idInputRef = useRef(null);
-
-  const { status } = useSession();
-  const router = useRouter();
-
-  async function submitHandler(event) {
-    event.preventDefault();
-
-    const enteredName = fullnameInputRef.current?.value;
-    const enteredEmail = emailInputRef.current?.value;
-    const enteredPassword = passwordInputRef.current?.value;
-    const enteredPhoneNumber = phoneInputRef.current?.value;
-    const enteredId = idInputRef.current?.value;
-
-    try {
-      const result = await createUser(
-        enteredName,
-        enteredEmail,
-        enteredPassword,
-        enteredPhoneNumber,
-        enteredId
-      );
-      console.log(result);
-      setFormStatus(`Sign up Success: ${result.message}`);
-      router.replace("/login");
-    } catch (error) {
-      console.log(error);
-      setFormStatus(`Error Occured: ${error.message}`);
+    if (!id) {
+      return alert("ID를 입력하세요.");
+    } else if (!password) {
+      return alert("Password를 입력하세요.");
+    } else if (!fullname) {
+      return alert("이름을 입력하세요.");
+    } else if (!email) {
+      return alert("이메일를 입력하세요.");
+    } else if (!phone) {
+      return alert("휴대폰번호를 입력하세요.");
     }
-  }
 
-  if (status === "authenticated") {
-    router.replace("/");
-    return (
-      <div>
-        <h1>Sign Up</h1>
-        <div>You are already signed up.</div>
-        <div>Now redirect to main page.</div>
-      </div>
-    );
+    let body = {
+      id,
+      password,
+      fullname,
+      email,
+      phone,
+    };
+
+    axiosInstance
+      .post(`/user/sign_up`, body)
+      .then((res) => {
+        console.log(res.data);
+        alert(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
   }
 
   return (
-    <div>
-      <div>
-        <h1>Sign Up</h1>
-      </div>
-      <form onSubmit={submitHandler}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
-            id="name"
-            type="text"
-            placeholder="Name"
-            required
-            ref={fullnameInputRef}
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="Email"
-            required
-            ref={emailInputRef}
-          />
-        </div>
-        <div>
-          <label htmlFor="number">Phone Number</label>
-          <input
-            id="phone"
-            type="tel"
-            placeholder="Phone Number"
-            required
-            ref={phoneInputRef}
-          />
-        </div>
-        <div>
-          <label htmlFor="id">ID</label>
-          <input
-            id="id"
-            type="text"
-            placeholder="ID"
-            required
-            ref={idInputRef}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            required
-            ref={passwordInputRef}
-          />
-          <p>
-            {/* Please choose a password. */}
-            {formStatus}
-          </p>
-        </div>
-        <div>
-          <button type="submit">Sign Up</button>
-        </div>
-      </form>
-    </div>
+    <SingupPageDiv>
+      <h1>Join</h1>
+      <SignupPageForm onSubmit={SignupFunc} method="post">
+        <label htmlFor="id">ID</label>
+        <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <label htmlFor="fullname">Name</label>
+        <input
+          type="fullname"
+          value={fullname}
+          onChange={(e) => setFullname(e.target.value)}
+        />
+        <label htmlFor="email">Email</label>
+        <input
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <label htmlFor="phone">Phone Number</label>
+        <input
+          type="number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+        <button type="submit">Join</button>
+      </SignupPageForm>
+    </SingupPageDiv>
   );
-};
+}
 
-export default Signup;
+const SingupPageDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  & h1 {
+    text-align: center;
+  }
+`;
 
-// export default function Join() {
-//   return (
-//     <JoinPageMain>
-//       <JoinPageGIF
-//         src="/images/backgroundVideo.mp4"
-//         loop
-//         autoPlay
-//         muted
-//       ></JoinPageGIF>
-
-//       <JoinPageInput>
-//         <h1>Join</h1>
-//         <p>아이디</p>
-//         <input placeholder="아이디를 입력해주세요." />
-//         <p>비밀번호</p>
-//         <input placeholder="비밀번호를 입력해주세요!" />
-//         <button>회원가입</button>
-//       </JoinPageInput>
-//     </JoinPageMain>
-//   );
-// }
-
-// const JoinPageMain = styled.main`
-//   position: relative;
-//   width: 100%;
-//   height: 100vh;
-// `;
-
-// const JoinPageGIF = styled.video`
-//   width: 100%;
-//   height: 100vh;
-//   object-fit: cover;
-//   z-index: -1;
-// `;
-
-// const JoinPageInput = styled.div`
-//   background-color: #ffffff;
-
-//   position: absolute;
-//   top: 10%;
-//   left: 33%;
-//   width: 584px;
-//   height: 752px;
-
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-// `;
+const SignupPageForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
