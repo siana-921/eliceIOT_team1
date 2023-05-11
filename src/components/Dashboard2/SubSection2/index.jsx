@@ -1,25 +1,63 @@
 import styled from "@emotion/styled";
 import Slider from "rc-slider";
+import Switch from "react-switch";
+import { useState } from "react";
 
 import Table from "@components/elements/simpleTable";
 import ActuatorLogTable from "../elements/ActuatorLogTable";
 
 const SubSection2Contents = () => {
+  const [autoControlOn, setAutoControlOn] = useState(true);
+
+  const handleChange = (checked) => {
+    setAutoControlOn(checked);
+  };
+  const handleClick = (e) => {
+    e.stopPropagation();
+  };
+  console.log(autoControlOn);
   return (
     <Main>
       <GridContainer>
         <Item1>
           <TitleText>자동제어</TitleText>
-          <MessageText>현재 자동제어가 동작하고 있습니다.</MessageText>
+          <MessageText>
+            <div>현재 자동제어가 동작하고 있습니다.</div>
+          </MessageText>
           <p>자동제어 시작일자 : 2222/22/22 33:33:33</p>
-          <ToggleButton>오른쪽위에토글버튼..</ToggleButton>
+          <ToggleButton onClick={handleClick}>
+            <label>
+              <Switch
+                onChange={handleChange}
+                checked={autoControlOn}
+                onColor="#00b7d8"
+                offColor="#B8B8B8"
+                checkedIcon={false}
+                uncheckedIcon={false}
+              ></Switch>
+            </label>
+          </ToggleButton>
         </Item1>
         <Item2>
           <TitleText>자동제어 설정</TitleText>
-          <RadioWrapper>
-            <StyledRadio name="valueBasedControl"></StyledRadio>
-            <StyledRadio name="timeBasedControl"></StyledRadio>
-          </RadioWrapper>
+          {autoControlOn ? (
+            <AutoControlSettings>
+              <ErrorMessage>
+                <p>자동제어 동작 중에는 설정할 수 없습니다</p>
+              </ErrorMessage>
+              <RadioWrapper>
+                <StyledRadio name="valueBasedControl" className="On"></StyledRadio>
+                <StyledRadio name="timeBasedControl" className="On"></StyledRadio>
+              </RadioWrapper>
+            </AutoControlSettings>
+          ) : (
+            <AutoControlSettings>
+              <RadioWrapper>
+                <StyledRadio name="valueBasedControl" className="Off"></StyledRadio>
+                <StyledRadio name="timeBasedControl" className="Off"></StyledRadio>
+              </RadioWrapper>
+            </AutoControlSettings>
+          )}
         </Item2>
         <Item3>
           <SmallTitleText>즉시 제어</SmallTitleText>
@@ -46,6 +84,7 @@ const Main = styled.div`
   padding: 20px 20px 20px 0;
 `;
 
+//---------------그리드-----------------//
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -53,7 +92,7 @@ const GridContainer = styled.div`
   width: 100%;
   height: 100%;
   > * {
-    border: solid 1px #000;
+    border: solid 0px #000;
     padding: 1.2vw;
   }
 `;
@@ -74,7 +113,9 @@ const Item4 = styled.div`
   grid-column: 4 / 6;
   grid-row: 3 / 7;
 `;
+//--------------------------------------//
 
+//---------------텍스트-----------------//
 const TitleText = styled.h2`
   font-size: 3vw;
 `;
@@ -85,19 +126,45 @@ const MessageText = styled.p`
   font-size: 2vw;
   padding-bottom: 3px;
 `;
-const RadioWrapper = styled.div`
+const ErrorMessage = styled.div`
   width: 100%;
   height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+  font-size: 1vw;
+  z-index: 10;
+  margin-top: 0.5rem;
 `;
-const StyledRadio = styled.div`
-  width: 100%;
-  height: 38%;
-  margin-top: 3%;
-  border-radius: 20px;
-  background-color: gray;
-`;
+//--------------------------------------//
 
-const ToggleButton = styled.button`
+//---------------Wrapper-----------------//
+const AutoControlSettings = styled.div`
+  position: relative;
+  width: 100%;
+  height: 88%;
+`;
+const RadioWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding-top: 1rem;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+const ControlBtnWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 78%;
+  margin-top: 2%;
+`;
+//----------------------------------------//
+
+//---------------동작요소-----------------//
+const ToggleButton = styled.div`
   position: absolute;
   top: 0;
   right: 0;
@@ -111,9 +178,15 @@ const ControlBtn = styled.button`
   border-radius: 0;
   border: none;
 `;
-const ControlBtnWrapper = styled.div`
-  display: flex;
+const StyledRadio = styled.div`
   width: 100%;
-  height: 78%;
-  margin-top: 2%;
+  height: 48%;
+  border-radius: 20px;
+  background-color: #e4e4e4;
+  border: 2px solid #dcdcdc;
+  &.Off {
+    background-color: #ffcc00;
+    border: none;
+  }
 `;
+//--------------------------------------//

@@ -4,14 +4,15 @@ import { colorCodeAtom } from "@store/atoms";
 import { useTable } from "react-table";
 import React, { useMemo } from "react";
 
-import ActuatorLog from "@data/testingdata/actuatorLog";
+import ActuatorLog from "../../../data/testingdata/actuatorLog";
 
 const ActuatorLogTable = () => {
   const columns = React.useMemo(
     () => [
       {
         Header: "날짜",
-        accessor: "created_at",
+        accessor: (row) =>
+          new Intl.DateTimeFormat("ko-KR").format(row.created_at),
       },
       {
         Header: "액츄에이터 종류",
@@ -24,31 +25,33 @@ const ActuatorLogTable = () => {
     ],
     []
   );
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, ActuatorLog });
+    useTable({ columns, data: ActuatorLog });
+
   const colorCode = useRecoilValue(colorCodeAtom);
 
   return (
     <Main>
       <table {...getTableProps()}>
-        <thead>
+        <TableHead>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <TitleRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
-            </tr>
+            </TitleRow>
           ))}
-        </thead>
+        </TableHead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
+          {rows.slice(0, 10).map((row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <BodyRow {...row.getRowProps()}>
                 {row.cells.map((cell) => (
                   <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                 ))}
-              </tr>
+              </BodyRow>
             );
           })}
         </tbody>
@@ -62,4 +65,19 @@ export default ActuatorLogTable;
 const Main = styled.div`
   width: 100%;
   height: 100%;
+  table {
+    width: 100%;
+    text-align: center;
+  }
+`;
+const TableHead = styled.thead`
+  font-size: 1.3vw;
+  font-weight: 600;
+  border-bottom: solid 1px #000000;
+`;
+const TitleRow = styled.tr`
+  height: 50px;
+`;
+const BodyRow = styled.tr`
+  height: 20px;
 `;
