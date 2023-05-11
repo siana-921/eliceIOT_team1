@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { axiosInstance } from "@/api/base";
+// import { axiosInstance } from "@/api/base";
 import Link from "next/link";
+import axios from "axios";
 
 export default function LoginPage() {
   const [id, setId] = useState("");
@@ -46,8 +47,9 @@ export default function LoginPage() {
 
     setLoading(true);
 
-    axiosInstance
-      .post(`/user/sign_in`, body)
+    // axiosInstance
+    axios
+      .post(`http://localhost:3000/pages/api/login`, body)
       .then((res) => {
         console.log(res);
         handleResponse(res);
@@ -77,7 +79,6 @@ export default function LoginPage() {
         <p>아직 가입을 하지 않았다면?</p>
         <Link href="/signup">가입하러 가기</Link>
         {msg}
-        {console.log("아이디:", id, " ", "패스워드", password)}
       </form>
     </>
   );

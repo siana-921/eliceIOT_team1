@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/api/base";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import styled from "@emotion/styled";
 
@@ -10,7 +11,7 @@ export default function SignupPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (msg && loading) {
@@ -25,15 +26,15 @@ export default function SignupPage() {
     e.preventDefault();
 
     if (!id) {
-      return setMsg("ID를 입력하세요.");
+      return alert("ID를 입력하세요.");
     } else if (!password) {
-      return setMsg("Password를 입력하세요.");
+      return alert("Password를 입력하세요.");
     } else if (!fullname) {
-      return setMsg("이름을 입력하세요.");
+      return alert("이름을 입력하세요.");
     } else if (!email) {
-      return setMsg("이메일를 입력하세요.");
+      return alert("이메일를 입력하세요.");
     } else if (!phone) {
-      return setMsg("휴대폰번호를 입력하세요.");
+      return alert("휴대폰번호를 입력하세요.");
     }
 
     let body = {
@@ -44,15 +45,20 @@ export default function SignupPage() {
       phone,
     };
 
-    axiosInstance
-      .post(`/user/sign_up`, body)
+    setLoading(true);
+
+    axios
+      .post(`http://localhost:3000/pages/api/signup`, body)
       .then((res) => {
-        console.log(res.data);
-        alert(res.data);
+        console.log(res);
+        alert(res);
       })
       .catch((error) => {
         console.log(error);
         alert(error);
+      })
+      .finally(() => {
+        setLoading(false); // 수정: 요청 완료 후 loading을 false로 설정
       });
     setLoading(true);
   }
@@ -87,7 +93,10 @@ export default function SignupPage() {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
-        <button type="submit">Join</button>
+        <button type="submit" disabled={loading}>
+          Join
+        </button>
+        {msg}
       </SignupPageForm>
     </SingupPageDiv>
   );
