@@ -1,4 +1,4 @@
-import Login from "../../components/Login/Login";
+import Login from "./Login";
 import { json, redirect } from "react-router-dom";
 
 export default function LoginPage() {
@@ -15,7 +15,7 @@ export async function action({ request }) {
 
   const data = await request.formData();
   const authData = {
-    email: data.get("email"),
+    id: data.get("id"),
     password: data.get("password"),
   };
 
