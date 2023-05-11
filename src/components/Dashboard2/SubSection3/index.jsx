@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 const SubSection3Contents = () => {
-  return <Main>subsection3</Main>;
+  return <Main></Main>;
 };
 
 const Main = styled.div`
