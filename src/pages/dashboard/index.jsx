@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { allDeviceSensorState } from "@store/atoms";
-import { oneDeviceSensorState } from "@store/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { colorCodeAtom } from "@store/atoms";
+import { allDeviceSensorAtom } from "@store/atoms";
+import { oneDeviceSensorAtom } from "@store/atoms";
 
 import LodingComponent from "@/components/elements/loading";
 
@@ -23,12 +24,12 @@ const Dashboard2 = (props) => {
   const [spreadSection, setSpreadSection] = useState(1);
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [allDeviceSensorData, setAllDeviceSensorData] =
-    useRecoilState(allDeviceSensorState);
-  const [oneDeviceSensorData, setOneDeviceSensorData] =
-    useRecoilState(oneDeviceSensorState);
-  //FETCH한 데이터를 RECOIL에 저장--------------------------------------//
+  const colorCode = useRecoilValue(colorCodeAtom);
+  const [allDeviceSensorData, setAllDeviceSensorData] = useRecoilState(allDeviceSensorAtom);
+  const [oneDeviceSensorData, setOneDeviceSensorData] = useRecoilState(oneDeviceSensorAtom);
 
+  //FETCH한 데이터를 RECOIL에 저장--------------------------------------//
+  //컴포넌트가 다시 렌더링되어 새로운 props가 올때마다 useEffect가 반응해서 recoil에 저장..
   useEffect(() => {
     setAllDeviceSensorData(props.allDeviceSensorData);
     setOneDeviceSensorData(props.oneDeviceSensorData);
@@ -62,6 +63,12 @@ const Dashboard2 = (props) => {
   }, [isAnySectionActivated]);
   //--------------------------------------------------------------------//
 
+  //onClick->펼치기-트리거----------------------------------------------//
+  const handleMainContentClick = (num) => {
+    setIsAnySectionActivated(isAnySectionActivated ? false : true);
+    setActivatedSection(num);
+  };
+  //
   return (
     <Main>
       <Section
@@ -70,20 +77,19 @@ const Dashboard2 = (props) => {
         popUpSection={popUpSection}
         activatedSection={activatedSection}
         isAnySectionActivated={isAnySectionActivated}
-        bgColor="#00a86b"
-        bgGradient="#248968"
-        onClick={() => {
-          setIsAnySectionActivated(isAnySectionActivated ? false : true);
-          setActivatedSection(1);
-        }}
+        bgColor={colorCode.lime}
+        bgGradient={colorCode.green}
       >
         <Contents>
-          <MainContent fontColor="#ffffff">
+          <MainContent
+            fontColor="#ffffff"
+            onClick={() => {
+              handleMainContentClick(1);
+            }}
+          >
             <MainSection1Content />
           </MainContent>
-          <SubContent>
-            <SubSection1Contents />
-          </SubContent>
+          <SubContent>{activatedSection == 1 && <SubSection1Contents />}</SubContent>
         </Contents>
       </Section>
       <Section
@@ -94,18 +100,16 @@ const Dashboard2 = (props) => {
         isAnySectionActivated={isAnySectionActivated}
         bgColor="#ffdd00"
         bgGradient="#FFBF00"
-        onClick={() => {
-          setIsAnySectionActivated(isAnySectionActivated ? false : true);
-          setActivatedSection(2);
-        }}
       >
         <Contents>
-          <MainContent>
+          <MainContent
+            onClick={() => {
+              handleMainContentClick(2);
+            }}
+          >
             <MainSection2Content />
           </MainContent>
-          <SubContent>
-            <SubSection2Contents />
-          </SubContent>
+          <SubContent>{activatedSection == 2 && <SubSection2Contents />}</SubContent>
         </Contents>
       </Section>
       <Section
@@ -113,20 +117,18 @@ const Dashboard2 = (props) => {
         spreadSection={spreadSection}
         popUpSection={popUpSection}
         activatedSection={activatedSection}
-        bgColor="#B7DF00"
-        bgGradient="#B7D700"
-        onClick={() => {
-          setIsAnySectionActivated(isAnySectionActivated ? false : true);
-          setActivatedSection(3);
-        }}
+        bgColor={colorCode.paleorange}
+        bgGradient={colorCode.orange}
       >
         <Contents>
-          <MainContent>
+          <MainContent
+            onClick={() => {
+              handleMainContentClick(3);
+            }}
+          >
             <MainSection3Content />
           </MainContent>
-          <SubContent>
-            <SubSection3Contents />
-          </SubContent>
+          <SubContent>{activatedSection == 3 && <SubSection3Contents />}</SubContent>
         </Contents>
       </Section>
       <Section
@@ -136,18 +138,16 @@ const Dashboard2 = (props) => {
         activatedSection={activatedSection}
         bgColor="#00B7D8"
         bgGradient="#00B3D8"
-        onClick={() => {
-          setIsAnySectionActivated(isAnySectionActivated ? false : true);
-          setActivatedSection(4);
-        }}
       >
         <Contents>
-          <MainContent>
+          <MainContent
+            onClick={() => {
+              handleMainContentClick(4);
+            }}
+          >
             <MainSection4Content />
           </MainContent>
-          <SubContent>
-            <SubSection4Contents />
-          </SubContent>
+          <SubContent>{activatedSection == 4 && <SubSection4Contents />}</SubContent>
         </Contents>
       </Section>
     </Main>
@@ -168,19 +168,15 @@ const Section = styled.div`
   top: 0;
   left: ${({ sectionIndex, activatedSection }) =>
     sectionIndex == activatedSection ? 0 : `${25 * sectionIndex - 25}vw`};
-  width: ${({ sectionIndex, spreadSection }) =>
-    sectionIndex == spreadSection ? "100vw" : "25vw"};
+  width: ${({ sectionIndex, spreadSection }) => (sectionIndex == spreadSection ? "100vw" : "25vw")};
   height: 100vh;
-  z-index: ${({ sectionIndex, popUpSection }) =>
-    sectionIndex == popUpSection ? 3 : 1};
+  z-index: ${({ sectionIndex, popUpSection }) => (sectionIndex == popUpSection ? 3 : 1)};
   overflow: hidden;
 
   color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : "#FFFFFF")};
   background-image: ${({ bgGradient, bgColor }) =>
-    bgGradient
-      ? `linear-gradient(to top right, ${bgGradient}, ${bgColor})`
-      : bgColor};
+    bgGradient ? `linear-gradient(to top right, ${bgGradient}, ${bgColor})` : bgColor};
   transition: width 0.25s ease-in-out, left 0.25s ease-in-out;
 `;
 
@@ -197,7 +193,7 @@ const MainContent = styled.div`
   color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : "transparent")};
   &:hover {
-    background-color: #248968;
+    background-color: #8884d8;
     color: #fff;
   }
 `;
@@ -217,6 +213,7 @@ export async function getServerSideProps() {
   console.log(device_id);
 
   try {
+    //전체 디바이스의 전체 센서 데이터를 가져오는것은 테스트에만 사용하고 이후에는 getServerSideProps에서 제외하도록 하기(너무 큼)
     console.log(`=========GET ALL DEVICE SENSOR LOG DATA=========`);
     const allDeviceSensorData = await axios.get("/sensors");
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
