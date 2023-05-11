@@ -38,11 +38,11 @@ export default function SignupPage() {
     }
 
     let body = {
-      id,
-      password,
-      fullname,
-      email,
-      phone,
+      id: id,
+      password: password,
+      fullname: fullname,
+      email: email,
+      phone: phone,
     };
 
     setLoading(true);
@@ -60,7 +60,6 @@ export default function SignupPage() {
       .finally(() => {
         setLoading(false);
       });
-    setLoading(true);
   }
 
   return (
@@ -110,7 +109,7 @@ const SingupPageDiv = styled.div`
   }
 `;
 
-const SignupPageForm = styled.div`
+const SignupPageForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
