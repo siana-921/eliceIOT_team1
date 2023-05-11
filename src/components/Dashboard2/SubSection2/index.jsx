@@ -42,19 +42,28 @@ const SubSection2Contents = () => {
           <TitleText>자동제어 설정</TitleText>
           {autoControlOn ? (
             <AutoControlSettings>
-              <ErrorMessage>
-                <p>자동제어 동작 중에는 설정할 수 없습니다</p>
-              </ErrorMessage>
               <RadioWrapper>
-                <StyledRadio name="valueBasedControl" className="On"></StyledRadio>
-                <StyledRadio name="timeBasedControl" className="On"></StyledRadio>
+                <StyledRadio name="valueBasedControl" className="On">
+                  <div>자동제어 동작 중에는 설정할 수 없습니다</div>
+                </StyledRadio>
+                <StyledRadio name="timeBasedControl" className="On">
+                  <div>자동제어 동작 중에는 설정할 수 없습니다</div>
+                </StyledRadio>
               </RadioWrapper>
             </AutoControlSettings>
           ) : (
             <AutoControlSettings>
               <RadioWrapper>
-                <StyledRadio name="valueBasedControl" className="Off"></StyledRadio>
-                <StyledRadio name="timeBasedControl" className="Off"></StyledRadio>
+                <input type="radio" id="setValueMode"></input>
+                <StyledRadio
+                  name="valueBasedControl"
+                  className="Off"
+                  for="setValueMode"
+                  onClick={handleClick}
+                ></StyledRadio>
+                <StyledRadio name="timeBasedControl" className="Off">
+                  <input type="radio" id="setTimeMode"></input>
+                </StyledRadio>
               </RadioWrapper>
             </AutoControlSettings>
           )}
@@ -126,18 +135,6 @@ const MessageText = styled.p`
   font-size: 2vw;
   padding-bottom: 3px;
 `;
-const ErrorMessage = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: red;
-  font-size: 1vw;
-  z-index: 10;
-  margin-top: 0.5rem;
-`;
 //--------------------------------------//
 
 //---------------Wrapper-----------------//
@@ -187,6 +184,14 @@ const StyledRadio = styled.div`
   &.Off {
     background-color: #ffcc00;
     border: none;
+  }
+  &.On {
+    > div {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 `;
 //--------------------------------------//

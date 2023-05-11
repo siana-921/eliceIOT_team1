@@ -28,5 +28,16 @@ export const colorCodeAtom = atom({
     paleorange: "#FFB366",
     palegreen: "#C1DC70",
     paleblue: "#66D4E8",
+  }
+});
+
+// 로그인 상태를 관리하는 atom
+export const loginState = atom({
+  key: "loginState",
+  default: {
+    id: "",
+    password: "",
+    loading: false,
+    msg: "",
   },
 });
