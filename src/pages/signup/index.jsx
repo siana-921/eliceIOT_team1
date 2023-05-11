@@ -58,7 +58,7 @@ export default function SignupPage() {
         alert(error);
       })
       .finally(() => {
-        setLoading(false); // 수정: 요청 완료 후 loading을 false로 설정
+        setLoading(false);
       });
     setLoading(true);
   }
@@ -96,7 +96,7 @@ export default function SignupPage() {
         <button type="submit" disabled={loading}>
           Join
         </button>
-        {msg}
+        {msg}{" "}
       </SignupPageForm>
     </SingupPageDiv>
   );
