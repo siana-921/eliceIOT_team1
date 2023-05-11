@@ -1,31 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { colorCodeAtom } from "@store/atoms";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { colorCode } from "@store/constValue";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 const ComparisonAllChart = ({ data, width, height }) => {
-  const colorCode = useRecoilValue(colorCodeAtom);
-  const {
-    gray,
-    yellow,
-    lime,
-    green,
-    turquoise,
-    navy,
-    lavender,
-    deepgreen,
-    marine,
-    orange,
-  } = colorCode;
-
   return (
     <Main>
       <SensorTitleText>
@@ -48,7 +26,7 @@ const ComparisonAllChart = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="light" stroke={orange} fill={orange} />
+          <Area type="monotone" dataKey="light" stroke={colorCode.orange} fill={colorCode.orange} />
         </AreaChart>
       </ResponsiveContainer>
 
@@ -72,7 +50,7 @@ const ComparisonAllChart = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="temp" stroke={yellow} fill={yellow} />
+          <Area type="monotone" dataKey="temp" stroke={colorCode.yellow} fill={colorCode.yellow} />
         </AreaChart>
       </ResponsiveContainer>
 
@@ -96,7 +74,7 @@ const ComparisonAllChart = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="humid" stroke={lime} fill={lime} />
+          <Area type="monotone" dataKey="humid" stroke={colorCode.lime} fill={colorCode.lime} />
         </AreaChart>
       </ResponsiveContainer>
 
@@ -120,7 +98,7 @@ const ComparisonAllChart = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="mois" stroke={marine} fill={marine} />
+          <Area type="monotone" dataKey="mois" stroke={colorCode.marine} fill={colorCode.marine} />
         </AreaChart>
       </ResponsiveContainer>
     </Main>

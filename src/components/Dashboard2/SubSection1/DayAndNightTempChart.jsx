@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { colorCodeAtom } from "@store/atoms";
+import { colorCode } from "@store/constValue";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import styled from "@emotion/styled";
 
@@ -49,7 +49,6 @@ const data = [
 ];
 
 const DayAndNightTempChart = () => {
-  const colorCode = useRecoilValue(colorCodeAtom);
   return (
     <Main>
       <ResponsiveContainer width="100%" height="100%">

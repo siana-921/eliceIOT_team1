@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import axios from "axios";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { colorCodeAtom } from "@store/atoms";
+import { colorCode } from "@store/constValue";
 import { allDeviceSensorAtom } from "@store/atoms";
 import { oneDeviceSensorAtom } from "@store/atoms";
 
@@ -24,7 +24,6 @@ const Dashboard2 = (props) => {
   const [spreadSection, setSpreadSection] = useState(1);
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
-  const colorCode = useRecoilValue(colorCodeAtom);
   const [allDeviceSensorData, setAllDeviceSensorData] = useRecoilState(allDeviceSensorAtom);
   const [oneDeviceSensorData, setOneDeviceSensorData] = useRecoilState(oneDeviceSensorAtom);
 
@@ -33,7 +32,8 @@ const Dashboard2 = (props) => {
   useEffect(() => {
     setAllDeviceSensorData(props.allDeviceSensorData);
     setOneDeviceSensorData(props.oneDeviceSensorData);
-  }, [props.allDeviceSensorData, props.oneDeviceSensorData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   //--------------------------------------------------------------------//
 
   //로딩페이지 설정-----------------------------------------------------//
@@ -60,7 +60,7 @@ const Dashboard2 = (props) => {
       }, 250);
       setActivatedSection(0);
     }
-  }, [isAnySectionActivated]);
+  }, [activatedSection, isAnySectionActivated]);
   //--------------------------------------------------------------------//
 
   //onClick->펼치기-트리거----------------------------------------------//
@@ -209,19 +209,17 @@ const SubContent = styled.div`
 export async function getServerSideProps() {
   const device_id = "unit002"; //임시 하드코딩 !!
   axios.defaults.baseURL = process.env.NEXT_PUBLIC_PROD_API_ROOT;
-
+  const today = new Date();
+  const startDate = new Date(today.getTime() - 29 * 24 * 60 * 60 * 1000);
   console.log(device_id);
+  console.log(startDate);
 
   try {
-    //전체 디바이스의 전체 센서 데이터를 가져오는것은 테스트에만 사용하고 이후에는 getServerSideProps에서 제외하도록 하기(너무 큼)
-    console.log(`=========GET ALL DEVICE SENSOR LOG DATA=========`);
-    const allDeviceSensorData = await axios.get("/sensors");
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
-    const oneDeviceSensorData = await axios.get(`/sensors/${device_id}`);
+    const sensorData = await axios.get(`/sensors/${device_id}=`);
     return {
       props: {
-        allDeviceSensorData: allDeviceSensorData.data,
-        oneDeviceSensorData: oneDeviceSensorData.data,
+        sensorData: sensorData.data,
       },
     };
   } catch (err) {

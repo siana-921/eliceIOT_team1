@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { colorCodeAtom } from "@store/atoms";
+import { colorCode } from "@store/constValue";
 
 const data = [
   {
@@ -66,20 +66,6 @@ const data = [
 ];
 
 const EnviroMoistChart = () => {
-  const colorCode = useRecoilValue(colorCodeAtom);
-  const {
-    gray,
-    yellow,
-    lime,
-    green,
-    turquoise,
-    navy,
-    lavender,
-    deepgreen,
-    marine,
-    orange,
-  } = colorCode;
-
   return (
     <ResponsiveContainer width="100%" height="100%">
       <ComposedChart
@@ -96,9 +82,9 @@ const EnviroMoistChart = () => {
         <CartesianGrid stroke="#f5f5f5" />
         <Tooltip />
         <Bar dataKey="moisture" barSize={20} fill="#C1DC70" />
-        <Line type="monotone" dataKey="temp" stroke={orange} />
-        <Line type="monotone" dataKey="light" stroke={yellow} />
-        <Line type="monotone" dataKey="humid" stroke={marine} />
+        <Line type="monotone" dataKey="temp" stroke={colorCode.orange} />
+        <Line type="monotone" dataKey="light" stroke={colorCode.yellow} />
+        <Line type="monotone" dataKey="humid" stroke={colorCode.marine} />
       </ComposedChart>
     </ResponsiveContainer>
   );
