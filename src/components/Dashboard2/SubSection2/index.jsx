@@ -1,12 +1,15 @@
 import styled from "@emotion/styled";
 import Switch from "react-switch";
 import { useState, useEffect } from "react";
-
+import { useRecoilValue } from "recoil";
+import { autoControlStateAtom } from "@store/atoms";
 import ActuatorLogTable from "../elements/ActuatorLogTable";
 
 const SubSection2Contents = () => {
   const [autoControlOn, setAutoControlOn] = useState(true);
   const [isValueMode, setIsValueMode] = useState(true);
+
+  const autoControlState = useRecoilValue(autoControlStateAtom);
 
   const handleAutoControlOnOff = (checked) => {
     setAutoControlOn(checked);
@@ -25,7 +28,11 @@ const SubSection2Contents = () => {
       <GridContainer>
         <Item1>
           <TitleText>자동제어</TitleText>
-          <MessageText>현재 자동제어가 동작하고 있습니다.</MessageText>
+          <MessageText>
+            {autoControlState.status
+              ? "현재 자동제어가 동작하고 있습니다"
+              : "현재 자동제어가 동작하고 있지 않습니다"}
+          </MessageText>
           <p>자동제어 시작일자 : 2222/22/22 33:33:33</p>
           <RadioInput
             type="radio"
