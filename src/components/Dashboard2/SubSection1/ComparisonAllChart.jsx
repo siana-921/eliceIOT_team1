@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRecoilValue } from "recoil";
-import { sensorDataAtom } from "@/store/atoms";
+import { sensorDataAtom } from "@store/atoms";
 import { colorCode } from "@store/constValue";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 

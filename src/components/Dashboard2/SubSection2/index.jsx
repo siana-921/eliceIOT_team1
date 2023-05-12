@@ -20,12 +20,6 @@ const SubSection2Contents = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("뭔가 리렌더링");
-    console.log(autoControlOn);
-    console.log(isValueMode);
-  }, [autoControlOn, isValueMode]);
-
   return (
     <Main>
       <GridContainer>
@@ -73,10 +67,18 @@ const SubSection2Contents = () => {
             </RadioWrapper>
           ) : (
             <RadioWrapper>
-              <StyledRadio id="valueBasedControl" className="autoControlOff" isValueMode={isValueMode}>
+              <StyledRadio
+                id="valueBasedControl"
+                className="autoControlOff"
+                isValueMode={isValueMode}
+              >
                 <RadioLabel htmlFor="setValueMode">목표 수치로 제어</RadioLabel>
               </StyledRadio>
-              <StyledRadio id="timeBasedControl" className="autoControlOff" isValueMode={!isValueMode}>
+              <StyledRadio
+                id="timeBasedControl"
+                className="autoControlOff"
+                isValueMode={!isValueMode}
+              >
                 <RadioLabel htmlFor="setTimeMode">예약 시간 제어</RadioLabel>
               </StyledRadio>
             </RadioWrapper>

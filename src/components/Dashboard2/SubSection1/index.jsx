@@ -12,7 +12,6 @@ import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNigh
 
 const SubSection1Contents = () => {
   const sensorData = useRecoilValue(sensorDataAtom);
-  console.log(sensorData);
   const result = sensorData.reduce(
     (acc, cur) => {
       acc.temp.max = Math.max(acc.temp.max, cur.temp);
@@ -32,7 +31,7 @@ const SubSection1Contents = () => {
       moisture: { max: -Infinity, min: Infinity },
     }
   );
-  console.log(result);
+
   return (
     <Main name="SubSection1Main">
       <Grid>

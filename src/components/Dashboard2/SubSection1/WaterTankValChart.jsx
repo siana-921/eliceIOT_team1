@@ -27,6 +27,7 @@ const WaterTankValChart = () => {
   const sensorData = useRecoilValue(sensorDataAtom);
   const lastIdx = sensorData.length - 1;
   const waterLevel = sensorData[lastIdx].water_level;
+
   const data = [
     { name: "blank", value: 100 - waterLevel },
     { name: "data", value: waterLevel },
@@ -45,6 +46,7 @@ const WaterTankValChart = () => {
             label={renderCustomizedLabel}
             outerRadius="75%"
             dataKey="value"
+            isAnimationActive={false}
           >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

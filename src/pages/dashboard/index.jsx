@@ -32,7 +32,6 @@ const Dashboard = (props) => {
     const timeout = setTimeout(() => {
       setIsLoaded(true);
     }, 1000);
-    console.log(props);
     return () => {
       clearTimeout(timeout);
     };
@@ -47,16 +46,17 @@ const Dashboard = (props) => {
       const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
       const sensorData = res.data;
       sensorData.forEach((item) => {
+        //백엔드의 더미데이터가 ms가 아니라 임시로 *1000해주고 있음
         item.created_at = new Date(item.created_at * 1000).toISOString();
       });
       setSensorData(sensorData);
     }, 1000);
     return () => clearInterval(intervalGetData);
-  }, []);
+  }, [setSensorData]);
 
   useEffect(() => {
-    console.log("DASHBOARD MAIN 컴포넌트에서 SENSORDATAATOM을 구독중입니다! - ATOM의 내용이 변경되었습니다.");
-    console.log(sensorData);
+    //console.log("DASHBOARD MAIN 컴포넌트에서 SENSORDATAATOM을 구독중입니다! - ATOM의 내용이 변경되었습니다.");
+    //console.log(sensorData);
   }, [sensorData]);
 
   //--------------------------------------------------------------------//
@@ -232,8 +232,11 @@ export async function getServerSideProps() {
 
   try {
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
-    const res = await axiosInstance.get(`/sensors/${device_id}?start_time=10000`);
-    const sensorData = res.data;
+    //start_time이 여기랑 CSR interval tetch 부분에서 달라서 결과값이 달라져서
+    //에러 났었음
+    const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
+    const sensorData = JSON.parse(res.data);
+    console.log(sensorData);
     sensorData.forEach((item) => {
       item.created_at = new Date(item.created_at * 1000).toISOString();
     });
