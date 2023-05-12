@@ -1,22 +1,22 @@
-import { useState, useEffect } from "react";
-import styled from "@emotion/styled";
-import axios from "axios";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { colorCodeAtom } from "@store/atoms";
-import { allDeviceSensorAtom } from "@store/atoms";
-import { oneDeviceSensorAtom } from "@store/atoms";
+import { useState, useEffect } from 'react';
+import styled from '@emotion/styled';
+import axios from 'axios';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { colorCodeAtom } from '@store/atoms';
+import { allDeviceSensorAtom } from '@store/atoms';
+import { oneDeviceSensorAtom } from '@store/atoms';
 
-import LodingComponent from "@/components/elements/loading";
+import LodingComponent from '@/components/elements/loading';
 
-import MainSection1Content from "@components/Dashboard2/MainSection/MainSection1";
-import MainSection2Content from "@components/Dashboard2/MainSection/MainSection2";
-import MainSection3Content from "@components/Dashboard2/MainSection/MainSection3";
-import MainSection4Content from "@components/Dashboard2/MainSection/MainSection4";
+import MainSection1Content from '@components/Dashboard2/MainSection/MainSection1';
+import MainSection2Content from '@components/Dashboard2/MainSection/MainSection2';
+import MainSection3Content from '@components/Dashboard2/MainSection/MainSection3';
+import MainSection4Content from '@components/Dashboard2/MainSection/MainSection4';
 
-import SubSection1Contents from "@components/Dashboard2/SubSection1/";
-import SubSection2Contents from "@components/Dashboard2/SubSection2/";
-import SubSection3Contents from "@components/Dashboard2/SubSection3/";
-import SubSection4Contents from "@components/Dashboard2/SubSection4/";
+import SubSection1Contents from '@components/Dashboard2/SubSection1/';
+import SubSection2Contents from '@components/Dashboard2/SubSection2/';
+import SubSection3Contents from '@components/Dashboard2/SubSection3/';
+import SubSection4Contents from '@components/Dashboard2/SubSection4/';
 
 const Dashboard2 = (props) => {
   const [activatedSection, setActivatedSection] = useState(1);
@@ -25,15 +25,15 @@ const Dashboard2 = (props) => {
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const colorCode = useRecoilValue(colorCodeAtom);
-  const [allDeviceSensorData, setAllDeviceSensorData] = useRecoilState(allDeviceSensorAtom);
-  const [oneDeviceSensorData, setOneDeviceSensorData] = useRecoilState(oneDeviceSensorAtom);
+  const [allDeviceSensorData, setAllDeviceSensorData] =
+    useRecoilState(allDeviceSensorAtom);
+  const [oneDeviceSensorData, setOneDeviceSensorData] =
+    useRecoilState(oneDeviceSensorAtom);
 
   //FETCH한 데이터를 RECOIL에 저장--------------------------------------//
   //컴포넌트가 다시 렌더링되어 새로운 props가 올때마다 useEffect가 반응해서 recoil에 저장..
-  useEffect(() => {
-    setAllDeviceSensorData(props.allDeviceSensorData);
-    setOneDeviceSensorData(props.oneDeviceSensorData);
-  }, [props.allDeviceSensorData, props.oneDeviceSensorData]);
+  setAllDeviceSensorData(props.allDeviceSensorData);
+  setOneDeviceSensorData(props.oneDeviceSensorData);
   //--------------------------------------------------------------------//
 
   //로딩페이지 설정-----------------------------------------------------//
@@ -45,7 +45,7 @@ const Dashboard2 = (props) => {
     return () => {
       clearTimeout(timeout);
     };
-  }, []);
+  }, [setIsLoaded]);
   //--------------------------------------------------------------------//
 
   //section onClick시 트랜지션 동작에 필요한 상태 세팅------------------//
@@ -89,7 +89,9 @@ const Dashboard2 = (props) => {
           >
             <MainSection1Content />
           </MainContent>
-          <SubContent>{activatedSection == 1 && <SubSection1Contents />}</SubContent>
+          <SubContent>
+            {activatedSection == 1 && <SubSection1Contents />}
+          </SubContent>
         </Contents>
       </Section>
       <Section
@@ -109,7 +111,9 @@ const Dashboard2 = (props) => {
           >
             <MainSection2Content />
           </MainContent>
-          <SubContent>{activatedSection == 2 && <SubSection2Contents />}</SubContent>
+          <SubContent>
+            {activatedSection == 2 && <SubSection2Contents />}
+          </SubContent>
         </Contents>
       </Section>
       <Section
@@ -128,7 +132,9 @@ const Dashboard2 = (props) => {
           >
             <MainSection3Content />
           </MainContent>
-          <SubContent>{activatedSection == 3 && <SubSection3Contents />}</SubContent>
+          <SubContent>
+            {activatedSection == 3 && <SubSection3Contents />}
+          </SubContent>
         </Contents>
       </Section>
       <Section
@@ -147,7 +153,9 @@ const Dashboard2 = (props) => {
           >
             <MainSection4Content />
           </MainContent>
-          <SubContent>{activatedSection == 4 && <SubSection4Contents />}</SubContent>
+          <SubContent>
+            {activatedSection == 4 && <SubSection4Contents />}
+          </SubContent>
         </Contents>
       </Section>
     </Main>
@@ -163,20 +171,29 @@ const Main = styled.div`
   background-color: #ffffff;
 `;
 
+const COLUMN_COUNT = 4;
+const SECTION_WIDTH_RATIO = 100 / COLUMN_COUNT;
+
 const Section = styled.div`
   position: absolute;
   top: 0;
   left: ${({ sectionIndex, activatedSection }) =>
-    sectionIndex == activatedSection ? 0 : `${25 * sectionIndex - 25}vw`};
-  width: ${({ sectionIndex, spreadSection }) => (sectionIndex == spreadSection ? "100vw" : "25vw")};
+    sectionIndex == activatedSection
+      ? 0
+      : `${SECTION_WIDTH_RATIO * sectionIndex - SECTION_WIDTH_RATIO}vw`};
+  width: ${({ sectionIndex, spreadSection }) =>
+    sectionIndex == spreadSection ? '100vw' : SECTION_WIDTH_RATIO + 'vw'};
   height: 100vh;
-  z-index: ${({ sectionIndex, popUpSection }) => (sectionIndex == popUpSection ? 3 : 1)};
+  z-index: ${({ sectionIndex, popUpSection }) =>
+    sectionIndex == popUpSection ? 3 : 1};
   overflow: hidden;
 
-  color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
-  background-color: ${({ bgColor }) => (bgColor ? bgColor : "#FFFFFF")};
+  color: ${({ fontColor }) => (fontColor ? fontColor : '#000000')};
+  background-color: ${({ bgColor }) => (bgColor ? bgColor : '#FFFFFF')};
   background-image: ${({ bgGradient, bgColor }) =>
-    bgGradient ? `linear-gradient(to top right, ${bgGradient}, ${bgColor})` : bgColor};
+    bgGradient
+      ? `linear-gradient(to top right, ${bgGradient}, ${bgColor})`
+      : bgColor};
   transition: width 0.25s ease-in-out, left 0.25s ease-in-out;
 `;
 
@@ -190,8 +207,8 @@ const Contents = styled.div`
 const MainContent = styled.div`
   width: 25vw;
   height: 100vh;
-  color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
-  background-color: ${({ bgColor }) => (bgColor ? bgColor : "transparent")};
+  color: ${({ fontColor }) => (fontColor ? fontColor : '#000000')};
+  background-color: ${({ bgColor }) => (bgColor ? bgColor : 'transparent')};
   &:hover {
     background-color: #8884d8;
     color: #fff;
@@ -201,13 +218,13 @@ const MainContent = styled.div`
 const SubContent = styled.div`
   width: 75vw;
   height: 100vh;
-  color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
-  background-color: ${({ bgColor }) => (bgColor ? bgColor : "#ffffff")};
+  color: ${({ fontColor }) => (fontColor ? fontColor : '#000000')};
+  background-color: ${({ bgColor }) => (bgColor ? bgColor : '#ffffff')};
 `;
 //--------------------------------------
 
 export async function getServerSideProps() {
-  const device_id = "unit002"; //임시 하드코딩 !!
+  const device_id = 'unit002'; //임시 하드코딩 !!
   axios.defaults.baseURL = process.env.NEXT_PUBLIC_PROD_API_ROOT;
 
   console.log(device_id);
@@ -215,7 +232,7 @@ export async function getServerSideProps() {
   try {
     //전체 디바이스의 전체 센서 데이터를 가져오는것은 테스트에만 사용하고 이후에는 getServerSideProps에서 제외하도록 하기(너무 큼)
     console.log(`=========GET ALL DEVICE SENSOR LOG DATA=========`);
-    const allDeviceSensorData = await axios.get("/sensors");
+    const allDeviceSensorData = await axios.get('/sensors');
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
     const oneDeviceSensorData = await axios.get(`/sensors/${device_id}`);
     return {

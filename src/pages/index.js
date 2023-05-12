@@ -1,6 +1,17 @@
-import Link from "next/link";
-import styled from "@emotion/styled";
+import Link from 'next/link';
+import styled from '@emotion/styled';
 
+/*
+FIXME : 페이지 컴포넌트로 바꾸기
+
+import { HomePageComponent } from '@components/Home/HomePageComponent'
+
+export default function Home() {
+	return (
+		<HomePageComponent />
+	)
+}
+*/
 export default function Home() {
   return (
     <MainPage>
@@ -30,6 +41,7 @@ const MainPage = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
+  overflow: hidden;
 `;
 const MainPageVideo = styled.video`
   width: 100%;
@@ -42,7 +54,7 @@ const MainPageContents = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
 `;
 const MainPageText = styled.h1`
