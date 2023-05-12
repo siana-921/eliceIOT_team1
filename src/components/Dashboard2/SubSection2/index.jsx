@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import Switch from "react-switch";
+import { axiosInstance, axiosTest } from "@baseURL";
 import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { autoControlStateAtom } from "@store/atoms";
@@ -21,6 +22,13 @@ const SubSection2Contents = () => {
     } else if (e.target.id === "setTimeMode") {
       setIsValueMode(false);
     }
+  };
+
+  const device_id = "unit000";
+  const data = { command: "run", actuator: "fan" };
+  const handlePost = async () => {
+    const res = await axiosTest.post(`/api/cmd/${device_id}?actuator=fan`, data);
+    console.log(res);
   };
 
   return (
@@ -92,10 +100,14 @@ const SubSection2Contents = () => {
           )}
         </Item2>
         <Item3>
-          <SmallTitleText>즉시 제어</SmallTitleText>
+          <SmallTitleText>즉시 제어 (LED)</SmallTitleText>
           <ControlBtnWrapper>
-            <ControlBtn>ON</ControlBtn>
-            <ControlBtn>OFF</ControlBtn>
+            <ControlBtn cmd={1} onClick={handlePost} isSelected={false}>
+              ON
+            </ControlBtn>
+            <ControlBtn cmd={0} onClick={handlePost} isSelected={false}>
+              OFF
+            </ControlBtn>
           </ControlBtnWrapper>
         </Item3>
         <Item4>

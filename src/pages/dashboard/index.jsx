@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import axios from "axios";
 import { colorCode } from "@store/constValue";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sensorDataAtom } from "@store/atoms";
