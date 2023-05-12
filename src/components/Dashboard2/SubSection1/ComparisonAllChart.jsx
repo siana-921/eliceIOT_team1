@@ -1,9 +1,21 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
+import { sensorDataAtom } from "@/store/atoms";
 import { colorCode } from "@store/constValue";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-const ComparisonAllChart = ({ data, width, height }) => {
+
+const ComparisonAllChart = (data2) => {
+  const sensorData = useRecoilValue(sensorDataAtom);
+
+  const data = sensorData.map((item, index) => ({
+    name: `Day ${index + 1}`,
+    light: item.light / 100,
+    temp: item.temp,
+    humidity: item.humidity,
+    moisture: item.moisture,
+  }));
+
   return (
     <Main>
       <SensorTitleText>
@@ -11,8 +23,6 @@ const ComparisonAllChart = ({ data, width, height }) => {
       </SensorTitleText>
       <ResponsiveContainer width="100%" height="22%">
         <AreaChart
-          width={width}
-          height={height * 0.19}
           data={data}
           syncId="anyId"
           margin={{
@@ -26,7 +36,13 @@ const ComparisonAllChart = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="light" stroke={colorCode.orange} fill={colorCode.orange} />
+          <Area
+            type="monotone"
+            dataKey="light"
+            stroke={colorCode.orange}
+            fill={colorCode.orange}
+            isAnimationActive={false}
+          />
         </AreaChart>
       </ResponsiveContainer>
 
@@ -35,8 +51,6 @@ const ComparisonAllChart = ({ data, width, height }) => {
       </SensorTitleText>
       <ResponsiveContainer width="100%" height="22%">
         <AreaChart
-          width={width}
-          height={height * 0.19}
           data={data}
           syncId="anyId"
           margin={{
@@ -50,7 +64,13 @@ const ComparisonAllChart = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="temp" stroke={colorCode.yellow} fill={colorCode.yellow} />
+          <Area
+            type="monotone"
+            dataKey="temp"
+            stroke={colorCode.yellow}
+            fill={colorCode.yellow}
+            isAnimationActive={false}
+          />
         </AreaChart>
       </ResponsiveContainer>
 
@@ -59,8 +79,6 @@ const ComparisonAllChart = ({ data, width, height }) => {
       </SensorTitleText>
       <ResponsiveContainer width="100%" height="22%">
         <AreaChart
-          width={width}
-          height={height * 0.19}
           data={data}
           syncId="anyId"
           margin={{
@@ -74,7 +92,13 @@ const ComparisonAllChart = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="humid" stroke={colorCode.lime} fill={colorCode.lime} />
+          <Area
+            type="monotone"
+            dataKey="humidity"
+            stroke={colorCode.lime}
+            fill={colorCode.lime}
+            isAnimationActive={false}
+          />
         </AreaChart>
       </ResponsiveContainer>
 
@@ -83,8 +107,6 @@ const ComparisonAllChart = ({ data, width, height }) => {
       </SensorTitleText>
       <ResponsiveContainer width="100%" height="22%">
         <AreaChart
-          width={width}
-          height={height * 0.19}
           data={data}
           syncId="anyId"
           margin={{
@@ -98,7 +120,13 @@ const ComparisonAllChart = ({ data, width, height }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="mois" stroke={colorCode.marine} fill={colorCode.marine} />
+          <Area
+            type="monotone"
+            dataKey="moisture"
+            stroke={colorCode.marine}
+            fill={colorCode.marine}
+            isAnimationActive={false}
+          />
         </AreaChart>
       </ResponsiveContainer>
     </Main>

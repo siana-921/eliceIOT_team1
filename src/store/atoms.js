@@ -5,9 +5,9 @@ export const allDeviceSensorAtom = atom({
   default: [],
 });
 
-export const oneDeviceSensorAtom = atom({
-  key: "oneDeviceSensorAtom",
-  default: {},
+export const sensorDataAtom = atom({
+  key: "sensorDataAtom",
+  default: [],
 });
 
 // 로그인 상태를 관리하는 atom
