@@ -20,7 +20,7 @@ export default function LoginFunc({ loginData }) {
         setLoading(false);
       }, 3000);
     }
-  }, [msg, loading]);
+  }, [msg, loading, loginData.id]);
 
   const handleResponse = (res) => {
     if (loginData && loginData.id === id && loginData.password === password) {
