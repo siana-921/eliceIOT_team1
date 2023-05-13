@@ -123,3 +123,9 @@ export const temperatureAtom = selector({
     return res;
   },
 });
+
+// 로그인 토큰 관리
+export const tokenState = atom({
+  key: "tokenState",
+  default: "",
+});
