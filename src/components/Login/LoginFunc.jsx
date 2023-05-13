@@ -70,8 +70,12 @@ export default function LoginFunc() {
     <LoginPage>
       <LoginPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted />
       <LoginPageContents>
-        <h1>Login</h1>
-        <form onSubmit={LoginFunc} method="post">
+        <LoginPageCompanyIntroductionDiv>
+          <LoginPageLogo src="/images/logo.png" alt="logo" />{" "}
+          <div>바질을 가장 똑똑하게 키울 수 있는 방법을 연구하는 파질팜입니다.</div>
+        </LoginPageCompanyIntroductionDiv>
+        <LoginPageForm onSubmit={LoginFunc} method="post">
+          <h1>Login</h1>
           <label htmlFor="id">ID</label>
           <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
           <label htmlFor="password">Password</label>
@@ -82,7 +86,7 @@ export default function LoginFunc() {
           <p>아직 가입을 하지 않았다면?</p>
           <Link href="/signup">가입하러 가기</Link>
           {msg}
-        </form>
+        </LoginPageForm>
       </LoginPageContents>
     </LoginPage>
   );
@@ -109,4 +113,27 @@ const LoginPageContents = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
+
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+`;
+
+const LoginPageCompanyIntroductionDiv = styled.div`
+  width: 30%;
+  height: 70%;
+  background-color: #ffffff;
+  border-radius: 10px 0 0 10px;
+`;
+
+const LoginPageLogo = styled.img`
+  width: 70%;
+`;
+
+const LoginPageForm = styled.form`
+  width: 30%;
+  height: 70%;
+  background-color: #ffffff;
+  border-radius: 0 10px 10px 0;
 `;
