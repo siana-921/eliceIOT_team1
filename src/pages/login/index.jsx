@@ -76,9 +76,7 @@ export default function LoginPage() {
           로그인
         </button>
         <p>아직 가입을 하지 않았다면?</p>
-        <Link href="/signup">
-          <a>가입하러 가기</a>
-        </Link>
+        <Link href="/signup">가입하러 가기</Link>
         {msg}
       </form>
     </>
