@@ -25,12 +25,14 @@ const MainPage = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
+  overflow: hidden;
 `;
 const MainPageVideo = styled.video`
   width: 100%;
   height: 100vh;
   object-fit: cover;
   z-index: -1;
+  width: 100%;
 `;
 
 const MainPageContents = styled.div`
