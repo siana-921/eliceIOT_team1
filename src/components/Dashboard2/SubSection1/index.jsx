@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
+
+import { useRecoilValue } from "recoil";
+import { sensorDataAtom } from "@store/atoms";
 
 import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAllChart";
 import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart";
@@ -8,13 +10,33 @@ import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValCh
 import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart";
 import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart";
 
-const SubSection1Contents = ({}) => {
-  console.log();
+const SubSection1Contents = () => {
+  const sensorData = useRecoilValue(sensorDataAtom);
+  const result = sensorData.reduce(
+    (acc, cur) => {
+      acc.temp.max = Math.max(acc.temp.max, cur.temp);
+      acc.temp.min = Math.min(acc.temp.min, cur.temp);
+      acc.humidity.max = Math.max(acc.humidity.max, cur.humidity);
+      acc.humidity.min = Math.min(acc.humidity.min, cur.humidity);
+      acc.light.max = Math.max(acc.light.max, cur.light);
+      acc.light.min = Math.min(acc.light.min, cur.light);
+      acc.moisture.max = Math.max(acc.moisture.max, cur.moisture);
+      acc.moisture.min = Math.min(acc.moisture.min, cur.moisture);
+      return acc;
+    },
+    {
+      temp: { max: -Infinity, min: Infinity },
+      humidity: { max: -Infinity, min: Infinity },
+      light: { max: -Infinity, min: Infinity },
+      moisture: { max: -Infinity, min: Infinity },
+    }
+  );
+
   return (
     <Main name="SubSection1Main">
       <Grid>
         <Item1>
-          <ComparisonAllChart data={data}></ComparisonAllChart>
+          <ComparisonAllChart></ComparisonAllChart>
         </Item1>
         <Item2>
           <DotsChart></DotsChart>
@@ -22,19 +44,27 @@ const SubSection1Contents = ({}) => {
         </Item2>
         <Item3>
           <MaxAndMinTitle>최고조도 | 최저조도</MaxAndMinTitle>
-          <MaxAndMinValue>88/10</MaxAndMinValue>
+          <MaxAndMinValue>
+            {result.light.max}/{result.light.min}
+          </MaxAndMinValue>
         </Item3>
         <Item5>
           <MaxAndMinTitle>최고온도 | 최저온도</MaxAndMinTitle>
-          <MaxAndMinValue>33/28</MaxAndMinValue>
+          <MaxAndMinValue>
+            {result.temp.max}/{result.temp.min}
+          </MaxAndMinValue>
         </Item5>
         <Item6>
           <MaxAndMinTitle>최고대기습도 | 최저대기습도</MaxAndMinTitle>
-          <MaxAndMinValue>43/32</MaxAndMinValue>
+          <MaxAndMinValue>
+            {result.humidity.max}/{result.humidity.min}
+          </MaxAndMinValue>
         </Item6>
         <Item7>
           <MaxAndMinTitle>최고토양수분 | 최저토양수분</MaxAndMinTitle>
-          <MaxAndMinValue>82/47</MaxAndMinValue>
+          <MaxAndMinValue>
+            {result.moisture.max}/{result.moisture.min}
+          </MaxAndMinValue>
         </Item7>
         <Item8>
           <WaterTankValChart></WaterTankValChart>
@@ -61,10 +91,14 @@ const Main = styled.div`
 const MaxAndMinTitle = styled.p``;
 const MaxAndMinValue = styled.div`
   width: 100%;
-  font-size: 5vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 56px;
   text-align: center;
   display: flex;
   justify-content: center;
+  transform: translateX(-50%) translateY(-40%);
 `;
 
 //-------------------------------------//
@@ -89,19 +123,23 @@ const Item2 = styled.div`
   grid-row: 1 / 5;
 `;
 const Item3 = styled.div`
+  position: relative;
   grid-column: 8 / 10;
   grid-row: 1 / 2;
 `;
 
 const Item5 = styled.div`
+  position: relative;
   grid-column: 8 / 10;
   grid-row: 2 / 3;
 `;
 const Item6 = styled.div`
+  position: relative;
   grid-column: 8 / 10;
   grid-row: 3 / 4;
 `;
 const Item7 = styled.div`
+  position: relative;
   grid-column: 8 / 10;
   grid-row: 4 / 5;
 `;
@@ -114,59 +152,3 @@ const Item9 = styled.div`
   grid-row: 5 / 7;
 `;
 //-------------------------------------//
-
-//-------------히트맵--------------//
-
-//-------------------------------------------//
-//임시 데이터
-const data = [
-  {
-    name: "Day1",
-    light: 100,
-    temp: 27,
-    humid: 55,
-    mois: 58,
-  },
-  {
-    name: "Day2",
-    light: 50,
-    temp: 31.1,
-    humid: 41,
-    mois: 77,
-  },
-  {
-    name: "Day3",
-    light: 70,
-    temp: 25.2,
-    humid: 33,
-    mois: 65,
-  },
-  {
-    name: "Day4",
-    light: 30,
-    temp: 21,
-    humid: 37,
-    mois: 60,
-  },
-  {
-    name: "Day5",
-    light: 67,
-    temp: 30,
-    humid: 35,
-    mois: 48,
-  },
-  {
-    name: "Day6",
-    light: 48,
-    temp: 30,
-    humid: 58,
-    mois: 55,
-  },
-  {
-    name: "Day7",
-    light: 33,
-    temp: 27,
-    humid: 60,
-    mois: 47,
-  },
-];

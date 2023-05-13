@@ -1,15 +1,10 @@
+import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { useRecoilState } from "recoil";
-import { allDeviceSensorState } from "@store/atoms";
-import { oneDeviceSensorState } from "@store/atoms";
+import { useRecoilValue } from "recoil";
+import { sensorDataAtom } from "@store/atoms";
 
 const SubSection4Contents = () => {
-  const [allDeviceSensorData, setAllDeviceSensorData] =
-    useRecoilState(allDeviceSensorState);
-  const [oneDeviceSensorData, setOneDeviceSensorData] =
-    useRecoilState(oneDeviceSensorState);
-
-  console.log(allDeviceSensorData);
+  const sensorData = useRecoilValue(sensorDataAtom);
 
   return <Main></Main>;
 };

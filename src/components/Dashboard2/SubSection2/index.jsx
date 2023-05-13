@@ -1,12 +1,16 @@
 import styled from "@emotion/styled";
 import Switch from "react-switch";
+import { axiosInstance, axiosTest } from "@baseURL";
 import { useState, useEffect } from "react";
-
+import { useRecoilValue } from "recoil";
+import { autoControlStateAtom } from "@store/atoms";
 import ActuatorLogTable from "../elements/ActuatorLogTable";
 
 const SubSection2Contents = () => {
   const [autoControlOn, setAutoControlOn] = useState(true);
   const [isValueMode, setIsValueMode] = useState(true);
+
+  const autoControlState = useRecoilValue(autoControlStateAtom);
 
   const handleAutoControlOnOff = (checked) => {
     setAutoControlOn(checked);
@@ -20,18 +24,23 @@ const SubSection2Contents = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("뭔가 리렌더링");
-    console.log(autoControlOn);
-    console.log(isValueMode);
-  }, [autoControlOn, isValueMode]);
+  const device_id = "unit000";
+  const data = { command: "run", actuator: "fan" };
+  const handlePost = async () => {
+    const res = await axiosTest.post(`/api/cmd/${device_id}?actuator=fan`, data);
+    console.log(res);
+  };
 
   return (
     <Main>
       <GridContainer>
         <Item1>
           <TitleText>자동제어</TitleText>
-          <MessageText>현재 자동제어가 동작하고 있습니다.</MessageText>
+          <MessageText>
+            {autoControlState.status
+              ? "현재 자동제어가 동작하고 있습니다"
+              : "현재 자동제어가 동작하고 있지 않습니다"}
+          </MessageText>
           <p>자동제어 시작일자 : 2222/22/22 33:33:33</p>
           <RadioInput
             type="radio"
@@ -73,20 +82,32 @@ const SubSection2Contents = () => {
             </RadioWrapper>
           ) : (
             <RadioWrapper>
-              <StyledRadio id="valueBasedControl" className="autoControlOff" isValueMode={isValueMode}>
+              <StyledRadio
+                id="valueBasedControl"
+                className="autoControlOff"
+                isValueMode={isValueMode}
+              >
                 <RadioLabel htmlFor="setValueMode">목표 수치로 제어</RadioLabel>
               </StyledRadio>
-              <StyledRadio id="timeBasedControl" className="autoControlOff" isValueMode={!isValueMode}>
+              <StyledRadio
+                id="timeBasedControl"
+                className="autoControlOff"
+                isValueMode={!isValueMode}
+              >
                 <RadioLabel htmlFor="setTimeMode">예약 시간 제어</RadioLabel>
               </StyledRadio>
             </RadioWrapper>
           )}
         </Item2>
         <Item3>
-          <SmallTitleText>즉시 제어</SmallTitleText>
+          <SmallTitleText>즉시 제어 (LED)</SmallTitleText>
           <ControlBtnWrapper>
-            <ControlBtn>ON</ControlBtn>
-            <ControlBtn>OFF</ControlBtn>
+            <ControlBtn cmd={1} onClick={handlePost} isSelected={false}>
+              ON
+            </ControlBtn>
+            <ControlBtn cmd={0} onClick={handlePost} isSelected={false}>
+              OFF
+            </ControlBtn>
           </ControlBtnWrapper>
         </Item3>
         <Item4>

@@ -15,7 +15,6 @@ const GaugeGraph = ({ data }) => {
     return active ? data[index].fill : "#666";
   };
 
-  console.log(data);
   return (
     <div
       style={{
