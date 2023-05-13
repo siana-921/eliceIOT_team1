@@ -25,6 +25,7 @@ export default function LogoutFunc(props) {
         alignItems: "center",
         width: "100%",
         height: "100vh",
+        background: red,
       }}
     >
       <h2>시작 페이지</h2>

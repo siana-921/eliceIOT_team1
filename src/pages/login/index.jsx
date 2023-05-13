@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { axiosInstance } from "@/api/base";
 import Link from "next/link";
-// import axios from "axios";
+import { tokenState } from "@/store/atoms";
+import { useSetRecoilState } from "recoil";
 
 export default function LoginPage() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+  const setToken = useSetRecoilState(tokenState);
 
   useEffect(() => {
     if (msg && loading) {
@@ -22,6 +24,7 @@ export default function LoginPage() {
     if (res.code === 200) {
       console.log("로그인");
       setMsg(" 로그인 완료 ! ");
+      setToken(res.data.token);
       window.location.href = "/myPage";
     } else if (res.code === 400) {
       setMsg("ID, Password가 비어있습니다.");
@@ -73,7 +76,9 @@ export default function LoginPage() {
           로그인
         </button>
         <p>아직 가입을 하지 않았다면?</p>
-        <Link href="/signup">가입하러 가기</Link>
+        <Link href="/signup">
+          <a>가입하러 가기</a>
+        </Link>
         {msg}
       </form>
     </>

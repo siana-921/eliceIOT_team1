@@ -4,12 +4,7 @@ import styled from "@emotion/styled";
 export default function Home() {
   return (
     <MainPage>
-      <MainPageVideo
-        src="/images/backgroundVideo.mp4"
-        loop
-        autoPlay
-        muted
-      ></MainPageVideo>
+      <MainPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted></MainPageVideo>
       <MainPageContents>
         <MainPageText>바질을 키우는 가장 스마트한 방법</MainPageText>
         <MainPageLogo src="/images/logo.png" alt="logo" />
@@ -44,6 +39,20 @@ const MainPageContents = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translateZ(0);
+    }
+
+    position: relative;
+    animation: fadeInUp 1s;
+  }
 `;
 const MainPageText = styled.h1`
   position: absolute;
