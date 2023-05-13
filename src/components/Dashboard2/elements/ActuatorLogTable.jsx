@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { colorCodeAtom } from "@store/atoms";
 import { useTable } from "react-table";
 import React, { useMemo } from "react";
 
@@ -11,8 +10,7 @@ const ActuatorLogTable = () => {
     () => [
       {
         Header: "날짜",
-        accessor: (row) =>
-          new Intl.DateTimeFormat("ko-KR").format(row.created_at),
+        accessor: (row) => new Intl.DateTimeFormat("ko-KR").format(row.created_at),
       },
       {
         Header: "액츄에이터 종류",
@@ -26,11 +24,7 @@ const ActuatorLogTable = () => {
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: ActuatorLog });
-
-  const colorCode = useRecoilValue(colorCodeAtom);
-
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data: ActuatorLog });
   return (
     <Main>
       <table {...getTableProps()}>

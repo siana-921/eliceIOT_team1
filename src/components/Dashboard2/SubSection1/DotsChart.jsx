@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { colorCodeAtom } from "@store/atoms";
-import {
-  ScatterChart,
-  Scatter,
-  XAxis,
-  YAxis,
-  ZAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { colorCode } from "@store/constValue";
+import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const DotsChart = () => {
-  const colorCode = useRecoilValue(colorCodeAtom);
   const [data01, setData01] = useState([]);
   const [data02, setData02] = useState([]);
 
@@ -109,17 +99,8 @@ const DotsChart = () => {
               axisLine={false}
               label={{ display: "none" }}
             />
-            <ZAxis
-              type="number"
-              dataKey="value"
-              domain={domain}
-              range={range}
-            />
-            <Tooltip
-              cursor={{ display: "none" }}
-              wrapperStyle={{ zIndex: 100 }}
-              content={renderTooltip}
-            />
+            <ZAxis type="number" dataKey="value" domain={domain} range={range} />
+            <Tooltip cursor={{ display: "none" }} wrapperStyle={{ zIndex: 100 }} content={renderTooltip} />
             <Scatter data={data01} fill={colorCode.gray} />
           </ScatterChart>
         </ResponsiveContainer>
@@ -143,17 +124,8 @@ const DotsChart = () => {
               axisLine={false}
               label={{ display: "none" }}
             />
-            <ZAxis
-              type="number"
-              dataKey="value"
-              domain={domain}
-              range={range}
-            />
-            <Tooltip
-              cursor={{ display: "none" }}
-              wrapperStyle={{ zIndex: 100 }}
-              content={renderTooltip}
-            />
+            <ZAxis type="number" dataKey="value" domain={domain} range={range} />
+            <Tooltip cursor={{ display: "none" }} wrapperStyle={{ zIndex: 100 }} content={renderTooltip} />
             <Scatter data={data01} fill={colorCode.gray} />
           </ScatterChart>
         </ResponsiveContainer>
@@ -177,17 +149,8 @@ const DotsChart = () => {
               axisLine={false}
               label={{ display: "none" }}
             />
-            <ZAxis
-              type="number"
-              dataKey="value"
-              domain={domain}
-              range={range}
-            />
-            <Tooltip
-              cursor={{ display: "none" }}
-              wrapperStyle={{ zIndex: 100 }}
-              content={renderTooltip}
-            />
+            <ZAxis type="number" dataKey="value" domain={domain} range={range} />
+            <Tooltip cursor={{ display: "none" }} wrapperStyle={{ zIndex: 100 }} content={renderTooltip} />
             <Scatter data={data01} fill={colorCode.gray} />
           </ScatterChart>
         </ResponsiveContainer>
@@ -211,17 +174,8 @@ const DotsChart = () => {
               axisLine={false}
               label={{ display: "none" }}
             />
-            <ZAxis
-              type="number"
-              dataKey="value"
-              domain={domain}
-              range={range}
-            />
-            <Tooltip
-              cursor={{ display: "none" }}
-              wrapperStyle={{ zIndex: 100 }}
-              content={renderTooltip}
-            />
+            <ZAxis type="number" dataKey="value" domain={domain} range={range} />
+            <Tooltip cursor={{ display: "none" }} wrapperStyle={{ zIndex: 100 }} content={renderTooltip} />
             <Scatter data={data01} fill={colorCode.gray} />
           </ScatterChart>
         </ResponsiveContainer>
@@ -245,17 +199,8 @@ const DotsChart = () => {
               axisLine={false}
               label={{ display: "none" }}
             />
-            <ZAxis
-              type="number"
-              dataKey="value"
-              domain={domain}
-              range={range}
-            />
-            <Tooltip
-              cursor={{ display: "none" }}
-              wrapperStyle={{ zIndex: 100 }}
-              content={renderTooltip}
-            />
+            <ZAxis type="number" dataKey="value" domain={domain} range={range} />
+            <Tooltip cursor={{ display: "none" }} wrapperStyle={{ zIndex: 100 }} content={renderTooltip} />
             <Scatter data={data01} fill={colorCode.gray} />
           </ScatterChart>
         </ResponsiveContainer>
@@ -279,17 +224,8 @@ const DotsChart = () => {
               axisLine={false}
               label={{ display: "none" }}
             />
-            <ZAxis
-              type="number"
-              dataKey="value"
-              domain={domain}
-              range={range}
-            />
-            <Tooltip
-              cursor={{ display: "none" }}
-              wrapperStyle={{ zIndex: 100 }}
-              content={renderTooltip}
-            />
+            <ZAxis type="number" dataKey="value" domain={domain} range={range} />
+            <Tooltip cursor={{ display: "none" }} wrapperStyle={{ zIndex: 100 }} content={renderTooltip} />
             <Scatter data={data01} fill={colorCode.gray} />
           </ScatterChart>
         </ResponsiveContainer>
@@ -313,17 +249,8 @@ const DotsChart = () => {
               axisLine={false}
               label={{ display: "none" }}
             />
-            <ZAxis
-              type="number"
-              dataKey="value"
-              domain={domain}
-              range={range}
-            />
-            <Tooltip
-              cursor={{ display: "none" }}
-              wrapperStyle={{ zIndex: 100 }}
-              content={renderTooltip}
-            />
+            <ZAxis type="number" dataKey="value" domain={domain} range={range} />
+            <Tooltip cursor={{ display: "none" }} wrapperStyle={{ zIndex: 100 }} content={renderTooltip} />
             <Scatter data={data01} fill={colorCode.gray} />
           </ScatterChart>
         </ResponsiveContainer>
