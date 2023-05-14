@@ -4,6 +4,8 @@ import { axiosInstance, axiosTest } from "@baseURL";
 import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { autoControlStateAtom } from "@store/atoms";
+import { userInfoAtom } from "@store/atoms";
+import { deviceInfoAtom } from "@store/atoms";
 import ActuatorLogTable from "../elements/ActuatorLogTable";
 
 const SubSection2Contents = () => {
@@ -11,6 +13,8 @@ const SubSection2Contents = () => {
   const [isValueMode, setIsValueMode] = useState(true);
 
   const autoControlState = useRecoilValue(autoControlStateAtom);
+  const user = useRecoilValue(userInfoAtom); //현재 로그인된 유저의 정보 : default user000
+  const device = useRecoilValue(deviceInfoAtom); //현재 로그인된 유저가 선택한 device : default unit000
 
   const handleAutoControlOnOff = (checked) => {
     setAutoControlOn(checked);
@@ -24,19 +28,19 @@ const SubSection2Contents = () => {
     }
   };
 
-  const device_id = "unit000";
-  const data = { command: "run", actuator: "led", target_moisture: 0 };
+  const device_id = device.id;
+  //const data = { command: "run", actuator: "led", target_moisture: 0 };
 
   const handlePost = async (e) => {
-    console.log(e.target.cmd);
-    const postres = await axiosInstance.post(`/cmd/${device_id}`, data);
+    //console.log(e.target.cmd);
+    //const postres = await axiosTest.post(`/cmd/${device_id}`, data);
     //POST가 성공했으면
     //SETSTATEATOM
     //실패했으면 유저에게 알리고 리턴
-    console.log(postres);
+    //console.log(postres);
 
-    //const getres = await axiosTest.get(`/api/actuators/${device_id}?start_time=0`);
-    //console.log(getres);
+    const getres = await axiosInstance.get(`/actuators/${device_id}?start_time=0`);
+    console.log(getres.data);
   };
 
   return (
