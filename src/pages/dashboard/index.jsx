@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { colorCode } from "@store/constValue";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { sensorDataAtom } from "@store/atoms";
-import { axiosInstance } from "@baseURL";
+import { sensorDataAtom, deviceInfoAtom } from "@store/atoms";
+import { axiosTest, axiosInstance } from "@baseURL";
 
 import LodingComponent from "@/components/elements/loading";
 import DashboardMain from "@components/MainPages/DashboardMain";
@@ -25,6 +25,7 @@ const Dashboard = (props) => {
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [sensorData, setSensorData] = useRecoilState(sensorDataAtom);
+  const device = useRecoilValue(deviceInfoAtom);
 
   //로딩페이지 설정-----------------------------------------------------//
   useEffect(() => {
@@ -37,26 +38,26 @@ const Dashboard = (props) => {
   }, [props]);
 
   useEffect(() => {
-    const device_id = "eun002";
+    const device_id = device.id;
     const DAYS_TO_LOAD = 29;
     const today = new Date();
     //const startDate = new Date(today.getTime() - DAYS_TO_LOAD * 24 * 60 * 60 * 1000);
     const intervalGetData = setInterval(async () => {
-      const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
-      const sensorData = res.data;
-      sensorData.forEach((item) => {
-        //백엔드의 더미데이터가 ms가 아니라 임시로 *1000해주고 있음
-        item.created_at = new Date(item.created_at * 1000).toISOString();
-      });
-      setSensorData(sensorData);
+      try {
+        const res = await axiosTest.get(`/sensors/${device_id}?start_time=0`);
+        const sensorData = res.data;
+        console.log(sensorData);
+        sensorData.forEach((item) => {
+          //백엔드의 더미데이터가 ms가 아니라 임시로 *1000해주고 있음
+          item.created_at = new Date(item.created_at * 1000).toISOString();
+        });
+        setSensorData(sensorData);
+      } catch (err) {
+        console.error(err);
+      }
     }, 1000);
     return () => clearInterval(intervalGetData);
-  }, [setSensorData]);
-
-  useEffect(() => {
-    //console.log("DASHBOARD MAIN 컴포넌트에서 SENSORDATAATOM을 구독중입니다! - ATOM의 내용이 변경되었습니다.");
-    //console.log(sensorData);
-  }, [sensorData]);
+  }, [device, sensorData, setSensorData]);
 
   //--------------------------------------------------------------------//
 
@@ -221,7 +222,7 @@ const SubContent = styled.div`
 
 export async function getServerSideProps() {
   //최초 렌더링용 데이터 (갱신과는 상관없음)
-  const device_id = "eun002"; //임시 하드코딩 !!
+  const device_id = "unit000"; //임시 하드코딩 !!
   const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
 
   const today = new Date();
@@ -231,9 +232,7 @@ export async function getServerSideProps() {
 
   try {
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
-    //start_time이 여기랑 CSR interval tetch 부분에서 달라서 결과값이 달라져서
-    //에러 났었음
-    const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
+    const res = await axiosTest.get(`/sensors/${device_id}?start_time=0`);
     const sensorData = JSON.parse(res.data);
     console.log(sensorData);
     sensorData.forEach((item) => {
