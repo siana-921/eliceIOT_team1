@@ -25,10 +25,18 @@ const SubSection2Contents = () => {
   };
 
   const device_id = "unit000";
-  const data = { command: "run", actuator: "fan" };
-  const handlePost = async () => {
-    const res = await axiosTest.post(`/api/cmd/${device_id}?actuator=fan`, data);
-    console.log(res);
+  const data = { command: "run", actuator: "led", target_moisture: 0 };
+
+  const handlePost = async (e) => {
+    console.log(e.target.cmd);
+    const postres = await axiosInstance.post(`/cmd/${device_id}`, data);
+    //POST가 성공했으면
+    //SETSTATEATOM
+    //실패했으면 유저에게 알리고 리턴
+    console.log(postres);
+
+    //const getres = await axiosTest.get(`/api/actuators/${device_id}?start_time=0`);
+    //console.log(getres);
   };
 
   return (
@@ -102,10 +110,10 @@ const SubSection2Contents = () => {
         <Item3>
           <SmallTitleText>즉시 제어 (LED)</SmallTitleText>
           <ControlBtnWrapper>
-            <ControlBtn cmd={1} onClick={handlePost} isSelected={false}>
+            <ControlBtn cmd={"run"} onClick={handlePost} isSelected={false}>
               ON
             </ControlBtn>
-            <ControlBtn cmd={0} onClick={handlePost} isSelected={false}>
+            <ControlBtn cmd={"stop"} onClick={handlePost} isSelected={false}>
               OFF
             </ControlBtn>
           </ControlBtnWrapper>
