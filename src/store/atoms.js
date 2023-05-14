@@ -36,12 +36,12 @@ export const loginState = atom({
 */
 
 //아무런 로그인 정보가 없을때는 테스트를 위해
-//user000 의 unit000 을 관리중이라고 침
+//user001 의 unit001 을 관리중이라고 침
 //유저 정보 (단일객체)
 export const userInfoAtom = atom({
   key: "userInfoAtom",
   default: {
-    id: "user000",
+    id: "user001",
     name: "알 수 없는 유저",
     phone: "010-0000-0000",
     email: "Basil@Farm.com",
@@ -55,7 +55,7 @@ export const userInfoAtom = atom({
 export const deviceInfoAtom = atom({
   key: "deviceInfoAtom",
   default: {
-    id: "unit000",
+    id: "unit001",
     name: "야생의바질",
     species: "basil",
     autoMode: false,

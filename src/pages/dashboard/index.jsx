@@ -28,6 +28,7 @@ const Dashboard = (props) => {
   const device = useRecoilValue(deviceInfoAtom);
 
   //로딩페이지 설정-----------------------------------------------------//
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoaded(true);
@@ -38,10 +39,14 @@ const Dashboard = (props) => {
   }, [props]);
 
   useEffect(() => {
+    setSensorData(props.sensorData); //SSR
+
     const device_id = device.id;
     const DAYS_TO_LOAD = 29;
     const today = new Date();
     //const startDate = new Date(today.getTime() - DAYS_TO_LOAD * 24 * 60 * 60 * 1000);
+
+    //CSR
     const intervalGetData = setInterval(async () => {
       try {
         const res = await axiosTest.get(`/sensors/${device_id}?start_time=0`);
@@ -55,9 +60,10 @@ const Dashboard = (props) => {
       } catch (err) {
         console.error(err);
       }
-    }, 1000);
+    }, 60000);
     return () => clearInterval(intervalGetData);
-  }, [device, sensorData, setSensorData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //--------------------------------------------------------------------//
 
@@ -222,7 +228,7 @@ const SubContent = styled.div`
 
 export async function getServerSideProps() {
   //최초 렌더링용 데이터 (갱신과는 상관없음)
-  const device_id = "unit000"; //임시 하드코딩 !!
+  const device_id = "unit001"; //임시 하드코딩 !!
   const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
 
   const today = new Date();
@@ -233,7 +239,7 @@ export async function getServerSideProps() {
   try {
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
     const res = await axiosTest.get(`/sensors/${device_id}?start_time=0`);
-    const sensorData = JSON.parse(res.data);
+    const sensorData = res.data;
     console.log(sensorData);
     sensorData.forEach((item) => {
       item.created_at = new Date(item.created_at * 1000).toISOString();
@@ -246,6 +252,7 @@ export async function getServerSideProps() {
     };
   } catch (err) {
     console.log(err);
+    console.log("ererer");
     return {
       props: {
         sensorData: null,
