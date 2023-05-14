@@ -14,14 +14,22 @@ const SubSection1Contents = () => {
   const sensorData = useRecoilValue(sensorDataAtom);
   const result = sensorData.reduce(
     (acc, cur) => {
-      acc.temp.max = Math.max(acc.temp.max, cur.temp);
-      acc.temp.min = Math.min(acc.temp.min, cur.temp);
-      acc.humidity.max = Math.max(acc.humidity.max, cur.humidity);
-      acc.humidity.min = Math.min(acc.humidity.min, cur.humidity);
-      acc.light.max = Math.max(acc.light.max, cur.light);
-      acc.light.min = Math.min(acc.light.min, cur.light);
-      acc.moisture.max = Math.max(acc.moisture.max, cur.moisture);
-      acc.moisture.min = Math.min(acc.moisture.min, cur.moisture);
+      if (cur.temp !== 0) {
+        acc.temp.max = Math.max(acc.temp.max, cur.temp);
+        acc.temp.min = Math.min(acc.temp.min, cur.temp);
+      }
+      if (cur.humidity !== 0) {
+        acc.humidity.max = Math.max(acc.humidity.max, cur.humidity);
+        acc.humidity.min = Math.min(acc.humidity.min, cur.humidity);
+      }
+      if (cur.light !== 0) {
+        acc.light.max = Math.max(acc.light.max, cur.light);
+        acc.light.min = Math.min(acc.light.min, cur.light);
+      }
+      if (cur.moisture !== 0) {
+        acc.moisture.max = Math.max(acc.moisture.max, cur.moisture);
+        acc.moisture.min = Math.min(acc.moisture.min, cur.moisture);
+      }
       return acc;
     },
     {

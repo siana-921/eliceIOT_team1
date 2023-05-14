@@ -49,7 +49,7 @@ const Dashboard = (props) => {
     //CSR
     const intervalGetData = setInterval(async () => {
       try {
-        const res = await axiosTest.get(`/sensors/${device_id}?start_time=0`);
+        const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
         const sensorData = res.data;
         console.log(sensorData);
         sensorData.forEach((item) => {
@@ -238,7 +238,7 @@ export async function getServerSideProps() {
 
   try {
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
-    const res = await axiosTest.get(`/sensors/${device_id}?start_time=0`);
+    const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
     const sensorData = res.data;
     console.log(sensorData);
     sensorData.forEach((item) => {
