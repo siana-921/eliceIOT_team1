@@ -1,22 +1,34 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 
+import { useRecoilValue } from "recoil";
+import { userInfoAtom } from "@store/atoms";
+import { deviceInfoAtom } from "@store/atoms";
+
 const MainSection1Content = () => {
+  const user = useRecoilValue(userInfoAtom);
+  const device = useRecoilValue(deviceInfoAtom);
   return (
     <Main>
       <ProfileImageWrapper>
         <Profileimage></Profileimage>
       </ProfileImageWrapper>
       <TitleWrapper>
-        <UserNameText>정수아님의</UserNameText>
-        <PlantNameText>먹다남은바질</PlantNameText>
+        <UserNameText>{user.name}님의</UserNameText>
+        <PlantNameText>{device.name}</PlantNameText>
       </TitleWrapper>
       <ContentsWrapper>
-        <SubTitleText>처음 키운날</SubTitleText>
-        <p>2023년 4월 23일</p>
+        <SubTitleText>{`${device.created_at}에 태어남`}</SubTitleText>
         <SubTitleText>현재상태</SubTitleText>
-        <SubTitleText>아무말ㅣㅑㅈ덜미쟈더</SubTitleText>
+        <SubTitleText>
+          {device.autoMode ? "자동제어가 실행중입니다." : "자동제어가 실행중이 아닙니다."}
+        </SubTitleText>
       </ContentsWrapper>
+      <NavWrapper>
+        <NavText>내식물</NavText>
+        <NavText>내정보</NavText>
+        <NavText>로그아웃</NavText>
+      </NavWrapper>
     </Main>
   );
 };
@@ -54,6 +66,15 @@ const Profileimage = styled.div`
   height: 80%;
   border-radius: 50%;
   background-color: #ffffff;
+  box-shadow: -2.3vh 2.3vh 4vh rgba(0, 0, 0, 0.15);
+`;
+const NavWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 3rem;
+  background-color: black;
+  display: flex;
 `;
 //----------------------------------
 
@@ -67,5 +88,10 @@ const PlantNameText = styled.p`
 `;
 const SubTitleText = styled.p`
   font-size: 1.3rem;
+`;
+const NavText = styled.div`
+  padding: 1rem;
+  width: 33%;
+  text-align: center;
 `;
 //----------------------------------

@@ -6,8 +6,10 @@
       "@styles/*": ["./src/styles/*"],
       "@store/*": ["./src/store/*"],
       "@api/*": ["./src/api/*"],
+      "@data/*": ["./src/data/*"],
       "@public/*": ["./public/*"],
-      "@images/*": ["./public/images/*"]
+      "@images/*": ["./public/images/*"],
+      "@baseURL": ["./src/api/base"]
     }
   }
 }
