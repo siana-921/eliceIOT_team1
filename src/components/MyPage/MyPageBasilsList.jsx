@@ -20,10 +20,10 @@ export default function MyPageBailsList() {
 
   return (
     <BasilsListMain>
-      <h2>김정연님의 바질</h2>
+      <h2>김정연님의 바질목록</h2>
       <BasilListDiv>
         <p>새로운 바질이 추가되었나요?</p>
-        <button onClick={openModal}> 👉 등록하러 가기</button>
+        <button onClick={openModal}> 등록하러 가기</button>
       </BasilListDiv>
       <DeviceModal isOpen={isModalOpen} closeModal={closeModal} addDevice={addDevice} />
       {devices.length === 0 ? (
@@ -49,7 +49,7 @@ export default function MyPageBailsList() {
 
 const BasilsListMain = styled.main`
   width: 70%;
-  margin: 80px;
+  margin: 60px;
 
   text-align: center;
 
@@ -64,8 +64,8 @@ const BasilListDiv = styled.div`
   text-align: center;
   justify-content: center;
 
-  margin: 10px;
-  font-size: 20px;
+  margin: 20px;
+  font-size: 18px;
 
   & button {
     margin-left: 10px;
@@ -74,14 +74,12 @@ const BasilListDiv = styled.div`
     cursor: pointer;
     background-color: transparent;
     border: none;
-    font-size: 18px;
+    font-size: 16px;
   }
 `;
 
 const BasilDeviceLists = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  margin: 30px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -101,8 +99,8 @@ const BasilDeviceLists = styled.ul`
   }
 
   .device-image {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     background-size: cover;
     background-position: center;
