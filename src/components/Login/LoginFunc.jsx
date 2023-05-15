@@ -28,8 +28,10 @@ export default function LoginFunc({ loginData }) {
       setMsg("");
       setToken(res.data.token);
       window.location.href = "/myPage";
-    } else if (res.code === 400) {
-      setMsg("ID, Password가 비어있습니다.");
+    } else if (!id || !password) {
+      setMsg("ID나 Password를 입력했는지 확인해주세요.");
+    } else if (!loginData) {
+      setMsg("로그인 데이터를 가져오는 중입니다...");
     } else if (res.code === 401) {
       setMsg("존재하지 않는 ID입니다.");
     } else if (res.code === 402) {
@@ -68,12 +70,7 @@ export default function LoginFunc({ loginData }) {
   };
   return (
     <LoginPage>
-      <LoginPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted />
       <LoginPageContents>
-        <LoginPageCompanyIntroductionDiv>
-          <LoginPageLogo src="/images/logo.png" alt="logo" />{" "}
-          <div>바질을 가장 똑똑하게 키울 수 있는 방법을 연구하는 파질팜입니다.</div>
-        </LoginPageCompanyIntroductionDiv>
         <LoginPageForm onSubmit={LoginFunc} method="post">
           <h1>Login</h1>
           <label htmlFor="id">ID</label>
@@ -99,14 +96,6 @@ const LoginPage = styled.div`
   overflow: hidden;
 `;
 
-const LoginPageVideo = styled.video`
-  width: 100%;
-  height: 100vh;
-  object-fit: cover;
-  z-index: -1;
-  width: 100%;
-`;
-
 const LoginPageContents = styled.div`
   position: absolute;
   top: 0;
@@ -118,17 +107,6 @@ const LoginPageContents = styled.div`
   justify-content: center;
   text-align: center;
   display: flex;
-`;
-
-const LoginPageCompanyIntroductionDiv = styled.div`
-  width: 30%;
-  height: 70%;
-  background-color: #ffffff;
-  border-radius: 10px 0 0 10px;
-`;
-
-const LoginPageLogo = styled.img`
-  width: 70%;
 `;
 
 const LoginPageForm = styled.form`

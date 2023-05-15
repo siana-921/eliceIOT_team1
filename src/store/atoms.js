@@ -69,6 +69,8 @@ export const actuatorLogAtom = atom({
   default: [{ idx: 0, device_id: "test001", led: 0, pump: 0, fan: 0, created_at: 1682658179 }],
 });
 
+// ---------------------------------------------로그인---------------------------------------------------------
+
 // 로그인 토큰 관리
 export const tokenState = atom({
   key: "tokenState",
