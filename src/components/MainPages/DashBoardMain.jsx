@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import { colorCode } from "@store/constValue";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { sensorDataAtom, deviceInfoAtom } from "@store/atoms";
-import { axiosTest, axiosInstance } from "@baseURL";
+import { colorCode } from "@store/constValue";
+import { allDeviceSensorAtom } from "@store/atoms";
+import { oneDeviceSensorAtom } from "@store/atoms";
 
 import LodingComponent from "@/components/elements/loading";
-import DashboardMain from "@components/MainPages/DashboardMain";
 
 import MainSection1Content from "@components/Dashboard2/MainSection/MainSection1";
 import MainSection2Content from "@components/Dashboard2/MainSection/MainSection2";
@@ -18,47 +17,23 @@ import SubSection2Contents from "@components/Dashboard2/SubSection2/";
 import SubSection3Contents from "@components/Dashboard2/SubSection3/";
 import SubSection4Contents from "@components/Dashboard2/SubSection4/";
 
-const Dashboard = (props) => {
+const DashboardMain = (props) => {
   const [activatedSection, setActivatedSection] = useState(1);
   const [popUpSection, setPopUpSection] = useState(1);
   const [spreadSection, setSpreadSection] = useState(1);
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [sensorData, setSensorData] = useRecoilState(sensorDataAtom);
-  const device = useRecoilValue(deviceInfoAtom);
 
   //로딩페이지 설정-----------------------------------------------------//
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoaded(true);
     }, 1000);
+
     return () => {
       clearTimeout(timeout);
     };
-  }, [props]);
-
-  useEffect(() => {
-    const device_id = device.id;
-    const DAYS_TO_LOAD = 29;
-    const today = new Date();
-    //const startDate = new Date(today.getTime() - DAYS_TO_LOAD * 24 * 60 * 60 * 1000);
-    const intervalGetData = setInterval(async () => {
-      try {
-        const res = await axiosTest.get(`/sensors/${device_id}?start_time=0`);
-        const sensorData = res.data;
-        console.log(sensorData);
-        sensorData.forEach((item) => {
-          //백엔드의 더미데이터가 ms가 아니라 임시로 *1000해주고 있음
-          item.created_at = new Date(item.created_at * 1000).toISOString();
-        });
-        setSensorData(sensorData);
-      } catch (err) {
-        console.error(err);
-      }
-    }, 1000);
-    return () => clearInterval(intervalGetData);
-  }, [device, sensorData, setSensorData]);
-
+  }, []);
   //--------------------------------------------------------------------//
 
   //section onClick시 트랜지션 동작에 필요한 상태 세팅------------------//
@@ -167,7 +142,7 @@ const Dashboard = (props) => {
   );
 };
 
-export default Dashboard;
+export default DashboardMain;
 
 //==========================스타일=========================//
 
@@ -220,36 +195,10 @@ const SubContent = styled.div`
 `;
 //--------------------------------------
 
-export async function getServerSideProps() {
-  //최초 렌더링용 데이터 (갱신과는 상관없음)
-  const device_id = "unit000"; //임시 하드코딩 !!
-  const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
+/*
+const Dash = () => {
+  return <div>sfffdf</div>;
+};
 
-  const today = new Date();
-  const startDate = new Date(today.getTime() - DAYS_TO_LOAD * 24 * 60 * 60 * 1000);
-  console.log(`DEVICE_ID : ${device_id}`);
-  console.log(`START_DATE : ${startDate}`);
-
-  try {
-    console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
-    const res = await axiosTest.get(`/sensors/${device_id}?start_time=0`);
-    const sensorData = JSON.parse(res.data);
-    console.log(sensorData);
-    sensorData.forEach((item) => {
-      item.created_at = new Date(item.created_at * 1000).toISOString();
-    });
-
-    return {
-      props: {
-        sensorData: sensorData,
-      },
-    };
-  } catch (err) {
-    console.log(err);
-    return {
-      props: {
-        sensorData: null,
-      },
-    };
-  }
-}
+export default Dash;
+*/
