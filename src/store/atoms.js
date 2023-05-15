@@ -22,19 +22,6 @@ export const sensorDataAtom = atom({
   ],
 });
 
-// 로그인 상태를 관리하는 atom
-/*
-export const loginState = atom({
-  key: "loginState",
-  default: {
-    id: "",
-    password: "",
-    loading: false,
-    msg: "",
-  },
-});
-*/
-
 //아무런 로그인 정보가 없을때는 테스트를 위해
 //user000 의 unit000 을 관리중이라고 침
 //유저 정보 (단일객체)
@@ -85,5 +72,28 @@ export const actuatorLogAtom = atom({
 // 로그인 토큰 관리
 export const tokenState = atom({
   key: "tokenState",
+  default: "",
+});
+
+// 로그인 상태를 관리하는 atom
+/*
+export const loginState = atom({
+  key: "loginState",
+  default: {
+    id: "",
+    password: "",
+    loading: false,
+    msg: "",
+  },
+});
+*/
+
+export const devicesState = atom({
+  key: "devicesState",
+  default: [],
+});
+
+export const defaultDeviceIdState = atom({
+  key: "defaultDeviceIdState",
   default: "",
 });
