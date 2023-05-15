@@ -7,17 +7,17 @@ export default function handler(req, res) {
       {
         id: "unit01",
         name: "Unit 1",
-        image: "path/to/device1.jpg",
+        image: "/images/404error.png",
       },
       {
         id: "unit02",
         name: "Unit 2",
-        image: "path/to/device1.jpg",
+        image: "/images/404error.png",
       },
       {
-        id: "unit02",
-        name: "Unit 2",
-        image: "path/to/device1.jpg",
+        id: "unit03",
+        name: "Unit 3",
+        image: "/images/404error.png",
       },
     ],
   };
