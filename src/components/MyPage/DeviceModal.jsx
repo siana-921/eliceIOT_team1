@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 
-const DeviceModal = ({ isOpen, closeModal }) => {
+const DeviceModal = ({ isOpen, closeModal, addDevice }) => {
   const [deviceName, setDeviceName] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -16,28 +16,31 @@ const DeviceModal = ({ isOpen, closeModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 디바이스 추가 처리를 여기에 구현합니다.
-    // deviceName과 selectedImage를 사용하여 디바이스를 추가하거나 서버로 전송할 수 있습니다.
+    const device = {
+      name: deviceName,
+      image: selectedImage,
+    };
+    addDevice(device); // 디바이스 추가
     closeModal(); // 모달 닫기
   };
 
   return (
     <Modal isOpen={isOpen} onRequestClose={closeModal} contentLabel="Device Modal">
-      <h2>Add Device</h2>
+      <h2>디바이스 추가</h2>
       <form onSubmit={handleSubmit}>
         <label>
-          Device Name:
+          디바이스 이름 :
           <input type="text" value={deviceName} onChange={handleNameChange} />
         </label>
         <br />
         <label>
-          Device Image:
+          디바이스 이미지 :
           <input type="file" accept="image/*" onChange={handleImageChange} />
         </label>
         <br />
-        <button type="submit">Save</button>
+        <button type="submit">등록</button>
         <button type="button" onClick={closeModal}>
-          Cancel
+          취소
         </button>
       </form>
     </Modal>
