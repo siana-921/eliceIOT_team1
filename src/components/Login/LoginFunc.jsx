@@ -6,7 +6,7 @@ import { useSetRecoilState } from "recoil";
 
 import styled from "@emotion/styled";
 
-export default function LoginFunc() {
+export default function LoginFunc({ loginData }) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,16 +16,16 @@ export default function LoginFunc() {
   useEffect(() => {
     if (msg && loading) {
       setTimeout(() => {
-        setMsg("");
+        setMsg(loginData.id + "로그인 되었습니다! 반가워요 😊");
         setLoading(false);
       }, 3000);
     }
-  }, [msg, loading]);
+  }, [msg, loading, loginData.id]);
 
   const handleResponse = (res) => {
-    if (res.code === 200) {
+    if (loginData && loginData.id === id && loginData.password === password) {
       console.log("로그인");
-      setMsg(" 로그인 완료 ! ");
+      setMsg("");
       setToken(res.data.token);
       window.location.href = "/myPage";
     } else if (res.code === 400) {

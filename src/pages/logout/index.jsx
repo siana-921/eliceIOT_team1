@@ -1,4 +1,4 @@
-import LogoutFunc from "@/components/Logout/Logout";
+import LogoutFunc from "@/components/Logout/LogoutFunc";
 
 export default function LoginPage() {
   return (
