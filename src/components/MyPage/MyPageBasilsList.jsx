@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import DeviceModal from "./DeviceModal";
 import { useRecoilState } from "recoil";
 import { devicesState, defaultDeviceIdState } from "../../store/atoms";
+import { AxiosInstance } from "axios";
+import { axiosInstance } from "@/api/base";
 
 export default function MyPageBailsList() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -15,7 +17,7 @@ export default function MyPageBailsList() {
     const fetchDefaultDeviceId = async () => {
       try {
         // 서버로부터 유저의 기본 device id를 가져온다고 가정(unit01)
-        const response = await fetch("/api/user/defaultDeviceId");
+        const response = await axiosInstance.get(`/user/sign_in/my_page`);
         const data = await response.json();
         setDefaultDeviceId(data.defaultDeviceId);
       } catch (error) {
@@ -24,7 +26,7 @@ export default function MyPageBailsList() {
     };
 
     fetchDefaultDeviceId();
-  }, []);
+  }, [setDefaultDeviceId]); // 값이 변경될 때마다 useEffect 콜백 함수가 실행되도록 의존성 배열 추가
 
   const openModal = () => {
     setModalOpen(true);
