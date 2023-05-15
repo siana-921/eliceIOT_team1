@@ -28,7 +28,7 @@ const MyPageUserMain = styled.main`
 
 const MyPageTitle = styled.h1`
   font-size: 50px;
-  font-weight: 300;
+  font-weight: 400;
 
   margin: 20px;
 `;
