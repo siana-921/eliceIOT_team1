@@ -1,10 +1,30 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeviceModal from "./DeviceModal";
+import { useRecoilState } from "recoil";
+import { devicesState, defaultDeviceIdState } from "../../store/atoms";
 
 export default function MyPageBailsList() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [devices, setDevices] = useState([]);
+
+  const [defaultDeviceId, setDefaultDeviceId] = useRecoilState(defaultDeviceIdState);
+
+  useEffect(() => {
+    // 여기서 기본 device id를 가져오는 로직을 구현
+    const fetchDefaultDeviceId = async () => {
+      try {
+        // 서버로부터 유저의 기본 device id를 가져온다고 가정(unit01)
+        const response = await fetch("/api/user/defaultDeviceId");
+        const data = await response.json();
+        setDefaultDeviceId(data.defaultDeviceId);
+      } catch (error) {
+        console.error("Failed to fetch default device id:", error);
+      }
+    };
+
+    fetchDefaultDeviceId();
+  }, []);
 
   const openModal = () => {
     setModalOpen(true);
