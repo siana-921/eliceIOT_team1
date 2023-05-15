@@ -35,14 +35,13 @@ const MyPageTitle = styled.h1`
 `;
 
 const MyPageDiv = styled.div`
-  margin: 35px;
+  margin-top: 35px;
+  margin-bottom: 20px;
 `;
 
-const MyPageInfoList = styled.ul`
-  margin: 10px;
-`;
+const MyPageInfoList = styled.ul``;
 
 const MyPageInfoItem = styled.li`
-  font-size: 23px;
-  margin: 5px;
+  font-size: 21px;
+  margin: 10px;
 `;
