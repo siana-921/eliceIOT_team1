@@ -3,8 +3,7 @@ import React, { useState, useEffect } from "react";
 import DeviceModal from "./DeviceModal";
 import { useRecoilState } from "recoil";
 import { devicesState, defaultDeviceIdState } from "../../store/atoms";
-import { AxiosInstance } from "axios";
-import { axiosInstance } from "@/api/base";
+import axios from "axios";
 
 export default function MyPageBailsList() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -17,7 +16,7 @@ export default function MyPageBailsList() {
     const fetchDefaultDeviceId = async () => {
       try {
         // 서버로부터 유저의 기본 device id를 가져온다고 가정(unit01)
-        const response = await axiosInstance.get(`/user/sign_in/my_page`);
+        const response = await axios.get(`/api/mockup/basilList`);
         const data = await response.json();
         setDefaultDeviceId(data.defaultDeviceId);
       } catch (error) {
