@@ -1,4 +1,4 @@
-// pages/api/mockup/basilList.js
+// pages/api/mockup/basilList.jsx
 
 export default function handler(req, res) {
   const data = {

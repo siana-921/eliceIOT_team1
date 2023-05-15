@@ -1,6 +1,7 @@
-import { axiosInstance } from "@/api/base";
+// import { axiosInstance } from "@/api/base";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function MyPageUser() {
   const [id, setId] = useState("");
@@ -15,7 +16,7 @@ export default function MyPageUser() {
     const fetchMyPageInfo = async () => {
       setLoading(true);
       try {
-        const response = await axiosInstance.get(`/user/sign_in/my_page`);
+        const response = await axios.get(`/api/mockup/userinfo`);
         const { id, email, phone, fullname } = response.data;
         setId(id);
         setEmail(email);
