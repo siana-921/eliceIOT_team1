@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { axiosInstance } from "@/api/base";
 import Link from "next/link";
-import { tokenState } from "@/store/atoms";
-import { useSetRecoilState } from "recoil";
+import { isLoggedInState, tokenState } from "@/store/atoms";
+import { useSetRecoilState, useRecoilState } from "recoil";
 
 import styled from "@emotion/styled";
 
@@ -11,6 +11,7 @@ export default function LoginFunc({ loginData }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+
   const setToken = useSetRecoilState(tokenState);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function LoginFunc({ loginData }) {
     } else if (!password) {
       return alert("Password를 입력하세요.");
     }
-    let body = {
+    const body = {
       id: id,
       password: password,
     };
