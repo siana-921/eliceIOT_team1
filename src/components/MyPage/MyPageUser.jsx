@@ -19,7 +19,6 @@ export default function MyPageUser() {
 
 const MyPageUserMain = styled.main`
   width: 75%;
-  margin: 0 auto;
 
   border-radius: 20px;
   background-color: rgba(217, 217, 217, 0.3);
