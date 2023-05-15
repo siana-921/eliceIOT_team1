@@ -1,12 +1,25 @@
 import styled from "@emotion/styled";
+import React, { useState } from "react";
+import DeviceModal from "./DeviceMojal";
 
 export default function MyPageBailsList() {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <BasilsListMain>
       <h3>김정연님의 바질</h3>
       <BasilListDiv>
         <p>새로운 바질이 추가되었나요?</p>
-        <button>추가하러 가기</button>
+        <button onClick={openModal}>추가하러 가기</button>
+        <DeviceModal isOpen={isModalOpen} closeModal={closeModal} />
       </BasilListDiv>
     </BasilsListMain>
   );
