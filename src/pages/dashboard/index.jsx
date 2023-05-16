@@ -250,13 +250,15 @@ const SubContent = styled.div`
 
 export async function getServerSideProps() {
   //최초 렌더링용 데이터 (갱신과는 상관없음)
-  const device_id = "unit001"; //임시 하드코딩 !!
-  const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
+  const device_id = "unit001"; //임시
 
+  /*현재 데이터가 충분하지 않아 START_TIME을 따로 계산할 필요 없음
+  const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
   const today = new Date();
   const startDate = new Date(today.getTime() - DAYS_TO_LOAD * 24 * 60 * 60 * 1000);
   console.log(`DEVICE_ID : ${device_id}`);
   console.log(`START_DATE : ${startDate}`);
+  */
 
   try {
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
