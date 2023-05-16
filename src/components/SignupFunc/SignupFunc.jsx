@@ -1,6 +1,7 @@
 import { axiosInstance } from "@/api/base";
 import React, { useState, useEffect } from "react";
 import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import { useCookies } from "react-cookie";
 
 import styled from "@emotion/styled";
 
@@ -18,29 +19,28 @@ export default function SignupFunc() {
   const setDevices = useSetRecoilState(devicesState);
   const setDefaultDeviceId = useSetRecoilState(defaultDeviceIdState);
   const [signup, setSignup] = useRecoilState(signupState);
+  const [cookies, setCookie] = useCookies(["access_token"]);
 
   const router = useRouter();
 
   useEffect(() => {
     if (signup.success) {
       const { access_token } = signup;
-
       const expires = new Date();
-      expires.setDate(expire.getDate() + 7); // 쿠키 만일일 7일
 
-      document.cookie = `access_token=${access_token}; expires=${expires.toUTCString()}`;
+      expires.setDate(expire.getDate() + 7); // 쿠키 만료일 7일
+
+      setCookie("access_token", access_token, { expires });
 
       // Recoil 상태 업데이트
       setToken(access_token);
       setIsLoggedIn(true);
-
-      // 회원가입 후 이동할 페이지로 이동합니다.
       router.push("/dashboard");
     } else if (signup.error) {
       // 회원가입이 실패한 경우
       alert(signup.error);
     }
-  }, [signup, setToken, setIsLoggedIn, router]);
+  }, [signup, setToken, setIsLoggedIn, router, setCookie]);
 
   function SignupFunc(e) {
     e.preventDefault();

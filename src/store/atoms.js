@@ -71,10 +71,10 @@ export const actuatorLogAtom = atom({
 
 // ---------------------------------------------로그인---------------------------------------------------------
 
-// 로그인 토큰 관리
+// 로그인 토큰 관리(사용 : signup)
 export const tokenState = atom({
   key: "tokenState",
-  default: "",
+  default: cookies.access_token || "",
 });
 
 // 로그인 상태를 관리하는 atom(로그아웃 처리를 위해서 작성)
