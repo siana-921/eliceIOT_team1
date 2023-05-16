@@ -49,7 +49,7 @@ export default function SignupFunc() {
     setLoading(true);
 
     axiosInstance
-      .post(`user/sign_up`, body) // 요청코드
+      .post(`user/sign_up`, body) // 요청코드 만드는 중
       .then((res) => {
         console.log(res);
         alert(res);
