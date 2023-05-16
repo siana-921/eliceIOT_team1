@@ -12,7 +12,7 @@ export default function Home() {
           <Link href="/login">
             <MainPageButton>로그인</MainPageButton>
           </Link>
-          <Link href="/join">
+          <Link href="/signup">
             <MainPageButton>회원가입</MainPageButton>
           </Link>
         </MainPageButtonDiv>
