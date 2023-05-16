@@ -166,4 +166,6 @@ const DeviceImage = styled.img`
   cursor: pointer;
   border-radius: 50px;
   opacity: ${({ selected }) => (selected ? 1 : 0.5)};
+  border: ${({ selected }) => (selected ? "5px solid #107d8e" : "none")};
+  outline: none;
 `;
