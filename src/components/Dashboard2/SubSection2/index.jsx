@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import Switch from "react-switch";
 import { axiosInstance, axiosTest } from "@baseURL";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { autoControlStateAtom } from "@store/atoms";
 import { userInfoAtom } from "@store/atoms";
@@ -29,15 +29,15 @@ const SubSection2Contents = () => {
   };
 
   const device_id = device.id;
-  //const data = { command: "run", actuator: "led", target_moisture: 0 };
+  const data = { command: "run", actuator: "led" };
 
   const handlePost = async (e) => {
-    //console.log(e.target.cmd);
-    //const postres = await axiosTest.post(`/cmd/${device_id}`, data);
+    console.log(e.target.cmd);
+    const postres = await axiosInstance.post(`/cmd/${device_id}`, data);
     //POST가 성공했으면
     //SETSTATEATOM
     //실패했으면 유저에게 알리고 리턴
-    //console.log(postres);
+    console.log(postres);
 
     const getres = await axiosInstance.get(`/actuators/${device_id}?start_time=0`);
     console.log(getres.data);

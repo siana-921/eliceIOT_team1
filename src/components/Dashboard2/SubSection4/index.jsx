@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRecoilValue } from "recoil";
-import { sensorDataAtom } from "@store/atoms";
+import { sensorDataSelector } from "@store/atoms";
 
 const SubSection4Contents = () => {
-  const sensorData = useRecoilValue(sensorDataAtom);
+  const sensorData = useRecoilValue(sensorDataSelector);
 
   return <Main></Main>;
 };
