@@ -83,6 +83,14 @@ export const isLoggedInState = atom({
   default: false,
 });
 
+export const signupState = atom({
+  key: "signupState",
+  default: {
+    success: false,
+    error: null,
+  },
+});
+
 export const devicesState = atom({
   key: "devicesState",
   default: [],
