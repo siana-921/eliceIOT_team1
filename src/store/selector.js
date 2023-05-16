@@ -3,7 +3,7 @@ import {
   sensorDataOriginAtom,
   userInfoAtom,
   deviceInfoAtom,
-  autoControlStateAtom,
+  autoControlStateOriginAtom,
   actuatorLogAtom,
 } from "@store/atoms";
 
@@ -92,6 +92,26 @@ export const dailyAverageSensorDataSelector = selector({
 
     return calSum;
   },
+});
+
+// [셀렉터] 자동제어 상태 포맷 변경 (배열->단일객체, unixTime->string)
+export const autoControlStateSeletor = selector({
+  key: "autoControlStateSeletor",
+  get: ({ get }) => {
+    const autoControlStateOrigin = get(autoControlStateOriginAtom);
+    const date = new Date(autoControlStateOrigin[0].created_at);
+
+    const dateString = `${date.getFullYear()}년 ${
+      date.getMonth() + 1
+    }월 ${date.getDate()}일 ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+
+    const newObject = { ...autoControlStateOrigin[0], created_at: dateString };
+    console.log(autoControlStateOrigin);
+    console.log(newObject);
+
+    return newObject;
+  },
+  dependencies: [autoControlStateOriginAtom],
 });
 
 // [셀렉터] 온도에 관한 모든 데이터

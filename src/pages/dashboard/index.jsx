@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { colorCode } from "@store/constValue";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { deviceInfoAtom, sensorDataOriginAtom } from "@store/atoms";
+import { deviceInfoAtom, sensorDataOriginAtom, autoControlStateAtom } from "@store/atoms";
 import { dailyAverageSensorDataSelector, sensorDataSelector } from "@store/selector";
 import { axiosTest, axiosInstance } from "@baseURL";
 
@@ -46,6 +46,7 @@ const Dashboard = (props) => {
   const [sensorDataOrigin, setSensorDataOrigin] = useRecoilState(sensorDataOriginAtom);
   const sensorData = useRecoilValue(sensorDataSelector);
   const device = useRecoilValue(deviceInfoAtom);
+  //데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
   const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
 
   console.log(dailyAverage);
@@ -59,6 +60,7 @@ const Dashboard = (props) => {
     console.log(dateTest3);
     */
 
+  /*
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoaded(true);
@@ -67,6 +69,7 @@ const Dashboard = (props) => {
       clearTimeout(timeout);
     };
   }, [props]);
+*/
 
   useInterval(async () => {
     const device_id = "unit001";

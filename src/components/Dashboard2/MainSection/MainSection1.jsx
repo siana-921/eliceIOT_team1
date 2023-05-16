@@ -3,12 +3,15 @@ import Image from "next/image";
 
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
-import { userInfoAtom } from "@store/atoms";
-import { deviceInfoAtom } from "@store/atoms";
+import { userInfoAtom, deviceInfoAtom } from "@store/atoms";
+import { autoControlStateSeletor } from "@store/selector";
 
 const MainSection1Content = () => {
   const user = useRecoilValue(userInfoAtom);
   const device = useRecoilValue(deviceInfoAtom);
+  const autoControlState = useRecoilValue(autoControlStateSeletor);
+
+  console.log(autoControlState);
   const router = useRouter();
 
   const handleNavMyPage = () => {
@@ -32,7 +35,7 @@ const MainSection1Content = () => {
         <SubTitleText>{`${device.created_at}에 태어남`}</SubTitleText>
         <SubTitleText>현재상태</SubTitleText>
         <SubTitleText>
-          {device.autoMode ? "자동제어가 실행중입니다." : "자동제어가 실행중이 아닙니다."}
+          {autoControlState.status ? "자동제어가 실행중입니다." : "자동제어가 실행중이 아닙니다."}
         </SubTitleText>
       </ContentsWrapper>
       <NavWrapper>
