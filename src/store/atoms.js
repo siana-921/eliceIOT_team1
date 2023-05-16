@@ -69,24 +69,19 @@ export const actuatorLogAtom = atom({
   default: [{ idx: 0, device_id: "test001", led: 0, pump: 0, fan: 0, created_at: 1682658179 }],
 });
 
+// ---------------------------------------------로그인---------------------------------------------------------
+
 // 로그인 토큰 관리
 export const tokenState = atom({
   key: "tokenState",
   default: "",
 });
 
-// 로그인 상태를 관리하는 atom
-/*
-export const loginState = atom({
-  key: "loginState",
-  default: {
-    id: "",
-    password: "",
-    loading: false,
-    msg: "",
-  },
+// 로그인 상태를 관리하는 atom(로그아웃 처리를 위해서 작성)
+export const isLoggedInState = atom({
+  key: "isLoggedInState",
+  default: false,
 });
-*/
 
 export const devicesState = atom({
   key: "devicesState",
