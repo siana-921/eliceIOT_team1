@@ -22,7 +22,8 @@ export const sensorDataSelector = selector({
   get: ({ get }) => {
     const sensorDataOrigin = get(sensorDataOriginAtom);
     const data = sensorDataOrigin.map((item) => {
-      const unixTimeDate = new Date(item.created_at * 1000);
+      const unixTimeDate = new Date(item.created_at * 1000); //date 타입으로 저장
+
       //YYYY/MM/DD 스트링으로 저장
       const yyyy = unixTimeDate.getFullYear();
       const mm = String(unixTimeDate.getMonth() + 1).padStart(2, "0");
@@ -47,6 +48,49 @@ export const sensorDataSelector = selector({
     console.log("sensorData selector 업데이트!");
     console.log(data);
     return data;
+  },
+});
+
+// [셀렉터] 하루 평균 센서데이터를 저장한 배열
+export const dailyAverageSensorDataSelector = selector({
+  key: "dailyAverageSensorDataSelector",
+  get: ({ get }) => {
+    const sensorData = get(sensorDataSelector);
+    const AverageData = [];
+
+    const calSum = sensorData.reduce((acc, cur) => {
+      if (acc.length === 0 || acc[acc.length - 1].date !== cur.date) {
+        acc.push({
+          date: cur.date,
+          count: 0,
+          sumLight: 0,
+          sumMoisture: 0,
+          sumTemp: 0,
+          sumHumidity: 0,
+        });
+      }
+
+      console.log(acc);
+
+      acc[acc.length - 1].sumLight += cur.light;
+      acc[acc.length - 1].sumMoisture += cur.moisture;
+      acc[acc.length - 1].sumTemp += cur.temp;
+      acc[acc.length - 1].sumHumidity += cur.humidity;
+      acc[acc.length - 1].count++;
+
+      return acc;
+    }, []);
+
+    //서버연결되고나서 다시해야징
+    /*const calAvg = calSum.map((item) => {
+        const lightAvg = item.sumLight/item.count;
+        const moistureAvg = item.sumMoisture/cur.count;
+        const tempAvg = cur.sumTemp/cur.count;
+        const humidityAvg = cur.sumHumidity/cur.count;
+        return ({light: lightAvg , moisture: moistureAvg, temp: tempAvg, humidity : humidityAvg})
+    })*/
+
+    return calSum;
   },
 });
 

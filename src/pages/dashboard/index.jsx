@@ -3,11 +3,10 @@ import styled from "@emotion/styled";
 import { colorCode } from "@store/constValue";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { deviceInfoAtom, sensorDataOriginAtom } from "@store/atoms";
-import { sensorDataSelector } from "@store/selector";
+import { dailyAverageSensorDataSelector, sensorDataSelector } from "@store/selector";
 import { axiosTest, axiosInstance } from "@baseURL";
 
 import LodingComponent from "@/components/elements/loading";
-import DashboardMain from "@components/MainPages/DashboardMain";
 
 import MainSection1Content from "@components/Dashboard2/MainSection/MainSection1";
 import MainSection2Content from "@components/Dashboard2/MainSection/MainSection2";
@@ -47,7 +46,9 @@ const Dashboard = (props) => {
   const [sensorDataOrigin, setSensorDataOrigin] = useRecoilState(sensorDataOriginAtom);
   const sensorData = useRecoilValue(sensorDataSelector);
   const device = useRecoilValue(deviceInfoAtom);
+  const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
 
+  console.log(dailyAverage);
   //로딩페이지 설정-----------------------------------------------------//
   /*이 컴포넌트와 아무런 상관이 없는 그냥 unix-time테스트를 위한 코드
     const dateTest = new Date(1684168506000);
@@ -69,14 +70,20 @@ const Dashboard = (props) => {
 
   useInterval(async () => {
     const device_id = "unit001";
-    const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
-
-    setSensorDataOrigin(res.data);
+    try {
+      const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
+      setSensorDataOrigin(res.data);
+    } catch (err) {
+      console.error(err);
+    }
   }, 60000);
 
   useEffect(() => {
-    setSensorDataOrigin(props.sensorDataOrigin); //SSR
-
+    if (props.sensorDataOrigin) {
+      setSensorDataOrigin(props.sensorDataOrigin); //SSR
+    } else {
+      console.log("props 값에 이상이 있어 setSensorDataOrigin 실패");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -243,13 +250,15 @@ const SubContent = styled.div`
 
 export async function getServerSideProps() {
   //최초 렌더링용 데이터 (갱신과는 상관없음)
-  const device_id = "unit001"; //임시 하드코딩 !!
-  const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
+  const device_id = "unit001"; //임시
 
+  /*현재 데이터가 충분하지 않아 START_TIME을 따로 계산할 필요 없음
+  const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
   const today = new Date();
   const startDate = new Date(today.getTime() - DAYS_TO_LOAD * 24 * 60 * 60 * 1000);
   console.log(`DEVICE_ID : ${device_id}`);
   console.log(`START_DATE : ${startDate}`);
+  */
 
   try {
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
@@ -265,10 +274,6 @@ export async function getServerSideProps() {
   } catch (err) {
     console.log(err);
     console.log("ererer");
-    return {
-      props: {
-        sensorData: null,
-      },
-    };
+    return { props: { sensorDataOrigin: null } };
   }
 }

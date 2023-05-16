@@ -33,10 +33,10 @@ const SubSection1Contents = () => {
       return acc;
     },
     {
-      temp: { max: -Infinity, min: Infinity },
-      humidity: { max: -Infinity, min: Infinity },
-      light: { max: -Infinity, min: Infinity },
-      moisture: { max: -Infinity, min: Infinity },
+      temp: { max: 0, min: 0 },
+      humidity: { max: 0, min: 0 },
+      light: { max: 0, min: 0 },
+      moisture: { max: 0, min: 0 },
     }
   );
 
