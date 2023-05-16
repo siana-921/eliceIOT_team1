@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRecoilValue } from "recoil";
-import { sensorDataAtom } from "@store/atoms";
+import { sensorDataSelector } from "@store/selector";
 import { colorCode } from "@store/constValue";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const ComparisonAllChart = (data2) => {
-  const sensorData = useRecoilValue(sensorDataAtom);
+  const sensorData = useRecoilValue(sensorDataSelector);
 
   const data = sensorData.map((item, index) => ({
     name: `Day ${index + 1}`,
