@@ -35,7 +35,7 @@ export default function SignupFunc() {
       setIsLoggedIn(true);
 
       // 회원가입 후 이동할 페이지로 이동합니다.
-      router.push("/dashboard"); // 적절한 경로로 수정해주세요.
+      router.push("/dashboard");
     } else if (signup.error) {
       // 회원가입이 실패한 경우
       alert(signup.error);
