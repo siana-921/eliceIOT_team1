@@ -3,12 +3,12 @@ import React, { useState, useEffect } from "react";
 import DeviceModal from "./DeviceModal";
 import { useRecoilState } from "recoil";
 import { devicesState, defaultDeviceIdState } from "../../store/atoms";
+// import { AxiosInstance } from "axios";
 import axios from "axios";
 
 export default function MyPageBailsList() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [devices, setDevices] = useState([]);
-
   const [defaultDeviceId, setDefaultDeviceId] = useRecoilState(defaultDeviceIdState);
 
   useEffect(() => {
@@ -17,10 +17,11 @@ export default function MyPageBailsList() {
       try {
         // 서버로부터 유저의 기본 device id를 가져온다고 가정(unit01)
         const response = await axios.get(`/api/mockup/basilList`);
-        const data = await response.json();
-        setDefaultDeviceId(data.defaultDeviceId);
+        const { defaultDeviceId, devices } = response.data;
+        setDefaultDeviceId(defaultDeviceId);
+        setDevices(devices);
       } catch (error) {
-        console.error("Failed to fetch default device id:", error);
+        console.error("기본 디바이스 ID를 가져오는데 실패했습니다.", error);
       }
     };
 
@@ -54,10 +55,7 @@ export default function MyPageBailsList() {
           {devices.map((device, index) => (
             <li key={index}>
               <div className="device-item">
-                <div
-                  className="device-image"
-                  style={{ backgroundImage: `url(${URL.createObjectURL(device.image)})` }}
-                />
+                <div className="device-image" style={{ backgroundImage: `url(${device.image})` }} />
                 <span>{device.name}</span>
               </div>
             </li>

@@ -2,26 +2,34 @@ import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 
 import { useRecoilValue } from "recoil";
-import { sensorDataAtom } from "@store/atoms";
+import { sensorDataSelector } from "@store/selector";
 
 import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAllChart";
-import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart";
-import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart";
-import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart";
-import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart";
+import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart.jsx";
+import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart.jsx";
+import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart.jsx";
+import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart.jsx";
 
 const SubSection1Contents = () => {
-  const sensorData = useRecoilValue(sensorDataAtom);
+  const sensorData = useRecoilValue(sensorDataSelector);
   const result = sensorData.reduce(
     (acc, cur) => {
-      acc.temp.max = Math.max(acc.temp.max, cur.temp);
-      acc.temp.min = Math.min(acc.temp.min, cur.temp);
-      acc.humidity.max = Math.max(acc.humidity.max, cur.humidity);
-      acc.humidity.min = Math.min(acc.humidity.min, cur.humidity);
-      acc.light.max = Math.max(acc.light.max, cur.light);
-      acc.light.min = Math.min(acc.light.min, cur.light);
-      acc.moisture.max = Math.max(acc.moisture.max, cur.moisture);
-      acc.moisture.min = Math.min(acc.moisture.min, cur.moisture);
+      if (cur.temp !== 0) {
+        acc.temp.max = Math.max(acc.temp.max, cur.temp);
+        acc.temp.min = Math.min(acc.temp.min, cur.temp);
+      }
+      if (cur.humidity !== 0) {
+        acc.humidity.max = Math.max(acc.humidity.max, cur.humidity);
+        acc.humidity.min = Math.min(acc.humidity.min, cur.humidity);
+      }
+      if (cur.light !== 0) {
+        acc.light.max = Math.max(acc.light.max, cur.light);
+        acc.light.min = Math.min(acc.light.min, cur.light);
+      }
+      if (cur.moisture !== 0) {
+        acc.moisture.max = Math.max(acc.moisture.max, cur.moisture);
+        acc.moisture.min = Math.min(acc.moisture.min, cur.moisture);
+      }
       return acc;
     },
     {
