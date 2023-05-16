@@ -6,8 +6,8 @@ export const allDeviceSensorAtom = atom({
 });
 
 //누적 센서 데이터 (객체배열)
-export const sensorDataAtom = atom({
-  key: "sensorDataAtom",
+export const sensorDataOriginAtom = atom({
+  key: "sensorDataOriginAtom",
   default: [
     {
       idx: 0,
@@ -17,7 +17,7 @@ export const sensorDataAtom = atom({
       temp: 0,
       humidity: 0,
       water_level: 0,
-      created_at: "", //unix-time-number로 오지만 저장할때 string으로 하게 함.
+      created_at: 0, //unix-time
     },
   ],
 });
@@ -46,7 +46,7 @@ export const userInfoAtom = atom({
     phone: "010-0000-0000",
     email: "Basil@Farm.com",
     picture: "1",
-    created_at: "1970-01-01T00:00:00.000Z",
+    created_at: "2023-04-24",
     devices: [],
   },
 });
@@ -59,7 +59,7 @@ export const deviceInfoAtom = atom({
     name: "야생의바질",
     species: "basil",
     autoMode: false,
-    created_at: "1970-01-01T00:00:00.000Z",
+    created_at: "2023-04-24",
   },
 });
 

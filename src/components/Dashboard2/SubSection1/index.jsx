@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 
 import { useRecoilValue } from "recoil";
-import { sensorDataAtom } from "@store/atoms";
+import { sensorDataSelector } from "@store/selector";
 
 import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAllChart";
-import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart";
-import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart";
-import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart";
-import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart";
+import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart.jsx";
+import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart.jsx";
+import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart.jsx";
+import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart.jsx";
 
 const SubSection1Contents = () => {
-  const sensorData = useRecoilValue(sensorDataAtom);
+  const sensorData = useRecoilValue(sensorDataSelector);
   const result = sensorData.reduce(
     (acc, cur) => {
       if (cur.temp !== 0) {

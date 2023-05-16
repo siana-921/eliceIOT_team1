@@ -1,10 +1,18 @@
-import { ComposedChart, Line, Bar, CartesianGrid, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  ComposedChart,
+  Line,
+  Bar,
+  CartesianGrid,
+  XAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import { useRecoilValue } from "recoil";
-import { sensorDataAtom } from "@/store/atoms";
+import { sensorDataSelector } from "@store/selector";
 import { colorCode } from "@store/constValue";
 
 const EnviroMoistChart = () => {
-  const sensorData = useRecoilValue(sensorDataAtom);
+  const sensorData = useRecoilValue(sensorDataSelector);
   const data = sensorData.map((item, index) => ({
     name: `Day ${index + 1}`,
     light: item.light / 100,
@@ -32,7 +40,12 @@ const EnviroMoistChart = () => {
         <Bar dataKey="moisture" barSize={20} fill="#C1DC70" />
         <Line type="monotone" dataKey="temp" stroke={colorCode.orange} isAnimationActive={false} />
         <Line type="monotone" dataKey="light" stroke={colorCode.yellow} isAnimationActive={false} />
-        <Line type="monotone" dataKey="humidity" stroke={colorCode.marine} isAnimationActive={false} />
+        <Line
+          type="monotone"
+          dataKey="humidity"
+          stroke={colorCode.marine}
+          isAnimationActive={false}
+        />
       </ComposedChart>
     </ResponsiveContainer>
   );
