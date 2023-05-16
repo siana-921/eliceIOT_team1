@@ -50,11 +50,7 @@ export default function SignupFunc() {
     setLoading(true);
 
     axiosInstance
-<<<<<<< HEAD
       .post(`user/sign_up`, body) // 요청코드 만드는 중
-=======
-      .post(`user/sign_up`, body) // 회원가입 요청코드
->>>>>>> ff34d85d9deebf64f230c2a931cacf0f5bb8c50a
       .then((res) => {
         console.log(res);
         alert(res);
