@@ -1,10 +1,18 @@
 import LoginFunc from "@/components/Login/LoginFunc";
 import { axiosInstance } from "@/api/base";
 import LoginIntroduction from "@/components/Login/LoginIntroduction";
+import { useEffect } from "react";
 
 import styled from "@emotion/styled";
 
-export default function LoginPage({ loginData }) {
+export default function LoginPage({ loginData, err }) {
+  useEffect(() => {
+    // example
+    if (err.message === "Network Connecting Error") {
+      alert("네트워크 상태를 확인해주세요");
+    }
+  }, [err]);
+
   return (
     <>
       <LoginPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted />
@@ -14,9 +22,11 @@ export default function LoginPage({ loginData }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  // context.req.headers.cookie["~~~~"]
+
   try {
-    const response = await axiosInstance.get(`/user/sign_in`);
+    const response = await axiosInstance.get(`/user/sign_in/my_page`);
     const loginData = response.data;
 
     return {
