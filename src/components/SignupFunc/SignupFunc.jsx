@@ -10,6 +10,7 @@ export default function SignupFunc() {
   const [fullname, setFullname] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [deviceId, setDeviceId] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [created_at, setCreated] = useState("");
@@ -44,12 +45,13 @@ export default function SignupFunc() {
       fullname: fullname,
       email: email,
       phone: phone,
+      device_id: deviceId,
     };
 
     setLoading(true);
 
     axiosInstance
-      .post(`user/sign_up`, body) // 요청코드
+      .post(`user/sign_up`, body) // 회원가입 요청코드
       .then((res) => {
         console.log(res);
         alert(res);
