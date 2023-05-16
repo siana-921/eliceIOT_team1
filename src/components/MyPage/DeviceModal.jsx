@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 
+// 모달 수정 시자그
 const DeviceModal = ({ isOpen, closeModal, addDevice }) => {
   const [deviceName, setDeviceName] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
