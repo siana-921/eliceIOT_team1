@@ -47,9 +47,8 @@ export default function SignupFunc() {
     }
   }, [signup, setToken, setIsLoggedIn, router, setCookie]);
 
-  const handlePhotoChange = (photo) => {
-    setSelectedPhoto(photo);
-    setDeviceId(photo);
+  const handlePhotoChange = (selectedPhoto) => {
+    setSelectedPhoto(selectedPhoto);
   };
 
   function SignupFunc(e) {
@@ -65,7 +64,7 @@ export default function SignupFunc() {
       return alert("이메일를 입력하세요.");
     } else if (!phone) {
       return alert("휴대폰번호를 입력하세요.");
-    } else if (!photo) {
+    } else if (!selectedPhoto) {
       return alert("디바이스 이미지를 선택해주세요.");
     } else if (!deviceId) {
       return alert("디바이스 아이디를 입력해주세요.");
@@ -78,7 +77,7 @@ export default function SignupFunc() {
       email: email,
       phone: phone,
       device_id: deviceId,
-      photo: photo,
+      photo: selectedPhoto,
     };
 
     setLoading(true);
@@ -114,6 +113,8 @@ export default function SignupFunc() {
         <label htmlFor="phone">Phone Number</label>
         <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
         <label htmlFor="text">Device ID</label>
+        <input type="text" value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
+        <label htmlFor="text">Device Image</label>
         <div>
           {deviceProfileImages.map((photo, index) => (
             <DeviceImage
@@ -153,7 +154,7 @@ const SignupPageForm = styled.form`
   align-items: center;
 
   & label {
-    text-align: left;
+    text-align: center;
     width: 100%;
   }
 `;
@@ -163,5 +164,6 @@ const DeviceImage = styled.img`
   height: 100px;
   margin: 10px;
   cursor: pointer;
+  border-radius: 50px;
   opacity: ${({ selected }) => (selected ? 1 : 0.5)};
 `;
