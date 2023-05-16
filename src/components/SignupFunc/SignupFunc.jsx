@@ -87,6 +87,31 @@ export default function SignupFunc() {
 
     setLoading(true);
 
+    /* 
+    API 없을 때 테스트하는 방법
+    const dummySignupApi = {
+      post: (url, body) => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve({
+              id: "minha",
+              phone: "010-1234-5678",
+              email: "basilfarm@gmail.com",
+              fullname: "손민하",
+              picture: null,
+              created_at: "2023-02-06T00:00:00.000Z",
+            });
+
+            reject({
+              status: 400,
+              message: "Bad Request",
+            });
+          }, 500);
+        });
+      },
+    };
+    */
+
     axiosInstance
       .post(`user/sign_up`, body)
       .then((res) => {
