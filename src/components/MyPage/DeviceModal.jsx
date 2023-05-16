@@ -40,7 +40,32 @@ const DeviceModal = ({ isOpen, closeModal, addDevice }) => {
 
   return (
     <DeviceModalMain>
-      <Modal isOpen={isOpen} onRequestClose={closeModal} contentLabel="Device Modal">
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+        contentLabel="Device Modal"
+        style={{
+          overlay: {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            width: "400px",
+            height: "600px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            border: "none",
+            borderRadius: "4px",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          },
+        }}
+      >
         <DeviceModalH2>디바이스 추가</DeviceModalH2>
         <DeviceModalForm onSubmit={handleSubmit}>
           <label>
