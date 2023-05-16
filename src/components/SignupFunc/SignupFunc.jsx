@@ -7,6 +7,13 @@ import { useRouter } from "next/router"; // useRouter 임포트
 
 import styled from "@emotion/styled";
 
+const deviceProfileImages = [
+  "/images/deviceprofile01.png",
+  "/images/deviceprofile02.png",
+  "/images/deviceprofile03.png",
+  "/images/deviceprofile04.png",
+];
+
 export default function SignupFunc() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +22,7 @@ export default function SignupFunc() {
   const [email, setEmail] = useState("");
   const [deviceId, setDeviceId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   const setToken = useSetRecoilState(tokenState);
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
@@ -39,6 +47,11 @@ export default function SignupFunc() {
     }
   }, [signup, setToken, setIsLoggedIn, router, setCookie]);
 
+  const handlePhotoChange = (photo) => {
+    setSelectedPhoto(photo);
+    setDeviceId(photo);
+  };
+
   function SignupFunc(e) {
     e.preventDefault();
 
@@ -52,6 +65,10 @@ export default function SignupFunc() {
       return alert("이메일를 입력하세요.");
     } else if (!phone) {
       return alert("휴대폰번호를 입력하세요.");
+    } else if (!photo) {
+      return alert("디바이스 이미지를 선택해주세요.");
+    } else if (!deviceId) {
+      return alert("디바이스 아이디를 입력해주세요.");
     }
 
     let body = {
@@ -61,6 +78,7 @@ export default function SignupFunc() {
       email: email,
       phone: phone,
       device_id: deviceId,
+      photo: photo,
     };
 
     setLoading(true);
@@ -96,7 +114,17 @@ export default function SignupFunc() {
         <label htmlFor="phone">Phone Number</label>
         <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
         <label htmlFor="text">Device ID</label>
-        <input type="text" value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
+        <div>
+          {deviceProfileImages.map((photo, index) => (
+            <DeviceImage
+              key={index}
+              onClick={() => handlePhotoChange(photo)}
+              selected={selectedPhoto === photo}
+              src={photo}
+              alt={`Device Profile ${index + 1}`}
+            />
+          ))}
+        </div>
         <button type="submit" disabled={loading}>
           Join
         </button>
@@ -128,4 +156,12 @@ const SignupPageForm = styled.form`
     text-align: left;
     width: 100%;
   }
+`;
+
+const DeviceImage = styled.img`
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  cursor: pointer;
+  opacity: ${({ selected }) => (selected ? 1 : 0.5)};
 `;
