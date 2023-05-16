@@ -42,8 +42,9 @@ export default function SignupFunc() {
       setToken(access_token);
       setIsLoggedIn(true);
       router.push("/dashboard");
+      Swal.fire("가입이 완료되었습니다.", "", "success");
     } else if (signup.error) {
-      alert(signup.error);
+      Swal.fire("가입 오류", signup.error, "error");
     }
   }, [signup, setToken, setIsLoggedIn, router, setCookie]);
 
@@ -95,7 +96,7 @@ export default function SignupFunc() {
       })
       .catch((error) => {
         console.log(error);
-        alert(error);
+        Swal.fire("가입 오류", error.message, "error");
       })
       .finally(() => {
         setLoading(false);
