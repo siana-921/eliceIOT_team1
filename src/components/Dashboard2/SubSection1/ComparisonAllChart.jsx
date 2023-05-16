@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRecoilValue } from "recoil";
-import { sensorDataSelector } from "@store/selector";
+import { dailyAverageSensorDataSelector, sensorDataSelector } from "@store/selector";
 import { colorCode } from "@store/constValue";
 import {
   AreaChart,
@@ -15,6 +15,9 @@ import {
 
 const ComparisonAllChart = (data2) => {
   const sensorData = useRecoilValue(sensorDataSelector);
+  const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
+
+  console.log(dailyAverage);
 
   const data = sensorData.map((item, index) => ({
     name: `Day ${index + 1}`,

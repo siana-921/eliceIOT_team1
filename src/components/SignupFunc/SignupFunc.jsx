@@ -1,8 +1,18 @@
 import { axiosInstance } from "@/api/base";
 import React, { useState, useEffect } from "react";
-// import axios from "axios";
-
+import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import { tokenState, isLoggedInState, signupState } from "@store/atoms";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
 import styled from "@emotion/styled";
+import Swal from "sweetalert2";
+
+const deviceProfileImages = [
+  "/images/deviceprofile01.png",
+  "/images/deviceprofile02.png",
+  "/images/deviceprofile03.png",
+  "/images/deviceprofile04.png",
+];
 
 export default function SignupFunc() {
   const [id, setId] = useState("");
@@ -11,31 +21,58 @@ export default function SignupFunc() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [deviceId, setDeviceId] = useState("");
-  const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  const setToken = useSetRecoilState(tokenState);
+  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
+  const [signup, setSignup] = useRecoilState(signupState);
+  const [cookies, setCookie] = useCookies(["access_token"]);
+
+  const router = useRouter();
 
   useEffect(() => {
-    if (msg && loading) {
-      setTimeout(() => {
-        setMsg("");
-        setLoading(false);
-      }, 3000);
+    if (signup.success) {
+      const { access_token } = signup;
+      const expires = new Date();
+      expires.setTime(expire.getTime() + 60 * 60 * 1000); //토큰 만료 1시간
+
+      setCookie("access_token", access_token, { expires, path: "/" });
+
+      setToken(access_token);
+      setIsLoggedIn(true);
+      router.push("/dashboard");
+      Swal.fire("가입이 완료되었습니다.", "", "success");
+    } else if (signup.error) {
+      Swal.fire("가입 오류", signup.error, "error");
     }
-  }, [msg, loading]);
+  }, [signup, setToken, setIsLoggedIn, router, setCookie]);
+
+  const handlePhotoChange = (selectedPhoto) => {
+    setSelectedPhoto(selectedPhoto);
+  };
 
   function SignupFunc(e) {
     e.preventDefault();
 
     if (!id) {
-      return alert("ID를 입력하세요.");
+      return Swal.fire("ID를 입력하세요.", "", "warning");
     } else if (!password) {
-      return alert("Password를 입력하세요.");
+      return Swal.fire(
+        "Password를 입력하세요.",
+        "비밀번호는 8자 이상 16자 이하의 대소문자와 숫자로 작성해야 합니다.",
+        "error"
+      );
     } else if (!fullname) {
-      return alert("이름을 입력하세요.");
+      return Swal.fire("이름을 입력하세요.", "", "warning");
     } else if (!email) {
-      return alert("이메일를 입력하세요.");
+      return Swal.fire("이메일를 입력하세요.", "", "warning");
     } else if (!phone) {
-      return alert("휴대폰번호를 입력하세요.");
+      return Swal.fire("휴대폰번호를 입력하세요.", "", "warning");
+    } else if (!selectedPhoto) {
+      return Swal.fire("디바이스 이미지를 선택해주세요.", "이미지 선택은 필수입니다.", "warning");
+    } else if (!deviceId) {
+      return Swal.fire("디바이스 아이디를 입력해주세요.", "", "warning");
     }
 
     let body = {
@@ -45,16 +82,38 @@ export default function SignupFunc() {
       email: email,
       phone: phone,
       device_id: deviceId,
+      photo: selectedPhoto,
     };
 
     setLoading(true);
 
+    /* 
+    API 없을 때 테스트하는 방법
+    const dummySignupApi = {
+      post: (url, body) => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve({
+              id: "minha",
+              phone: "010-1234-5678",
+              email: "basilfarm@gmail.com",
+              fullname: "손민하",
+              picture: null,
+              created_at: "2023-02-06T00:00:00.000Z",
+            });
+
+            reject({
+              status: 400,
+              message: "Bad Request",
+            });
+          }, 500);
+        });
+      },
+    };
+    */
+
     axiosInstance
-<<<<<<< HEAD
-      .post(`user/sign_up`, body) // 요청코드 만드는 중
-=======
-      .post(`user/sign_up`, body) // 회원가입 요청코드
->>>>>>> ff34d85d9deebf64f230c2a931cacf0f5bb8c50a
+      .post(`user/sign_up`, body)
       .then((res) => {
         console.log(res);
         alert(res);
@@ -62,7 +121,7 @@ export default function SignupFunc() {
       })
       .catch((error) => {
         console.log(error);
-        alert(error);
+        Swal.fire("가입 오류", error.message, "error");
       })
       .finally(() => {
         setLoading(false);
@@ -83,10 +142,23 @@ export default function SignupFunc() {
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         <label htmlFor="phone">Phone Number</label>
         <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+        <label htmlFor="text">Device ID</label>
+        <input type="text" value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
+        <label htmlFor="text">Device Image</label>
+        <div>
+          {deviceProfileImages.map((photo, index) => (
+            <DeviceImage
+              key={index}
+              onClick={() => handlePhotoChange(photo)}
+              selected={selectedPhoto === photo}
+              src={photo}
+              alt={`Device Profile ${index + 1}`}
+            />
+          ))}
+        </div>
         <button type="submit" disabled={loading}>
           Join
         </button>
-        {msg}
       </SignupPageForm>
     </SingupPageDiv>
   );
@@ -95,6 +167,11 @@ export default function SignupFunc() {
 const SingupPageDiv = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
+
   & h1 {
     text-align: center;
   }
@@ -103,6 +180,22 @@ const SingupPageDiv = styled.div`
 const SignupPageForm = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+
+  & label {
+    text-align: center;
+    width: 100%;
+  }
+`;
+
+const DeviceImage = styled.img`
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 50px;
+  opacity: ${({ selected }) => (selected ? 1 : 0.5)};
+  border: ${({ selected }) => (selected ? "5px solid #107d8e" : "none")};
+  outline: none;
 `;

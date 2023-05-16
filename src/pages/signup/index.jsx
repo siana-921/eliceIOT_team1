@@ -1,5 +1,6 @@
 import SignupFunc from "@/components/SignupFunc/SignupFunc";
 
+// SSR -> { signupData } 추가하기
 export default function SignupPage() {
   return (
     <>
@@ -8,4 +9,27 @@ export default function SignupPage() {
   );
 }
 
-// StaticProps 사용하기
+export async function getServerSideProps(context) {
+  try {
+    const response = await axiosInstance.get(`/user/sign_up`);
+    const signupData = response.data;
+
+    return {
+      props: {
+        signupData,
+      },
+    };
+  } catch (err) {
+    console.log(err.response);
+    const statusCode = err.response ? err.response.status : "🚨에러발생";
+    return {
+      props: {
+        signupData: null,
+        err: {
+          statusCode,
+          title: statusCode,
+        },
+      },
+    };
+  }
+}
