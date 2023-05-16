@@ -1,7 +1,9 @@
 import { axiosInstance } from "@/api/base";
 import React, { useState, useEffect } from "react";
 import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import { tokenState, isLoggedInState, signupState } from "@store/atoms";
 import { useCookies } from "react-cookie";
+import { useRouter } from "next/router"; // useRouter 임포트
 
 import styled from "@emotion/styled";
 
@@ -16,8 +18,6 @@ export default function SignupFunc() {
 
   const setToken = useSetRecoilState(tokenState);
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
-  const setDevices = useSetRecoilState(devicesState);
-  const setDefaultDeviceId = useSetRecoilState(defaultDeviceIdState);
   const [signup, setSignup] = useRecoilState(signupState);
   const [cookies, setCookie] = useCookies(["access_token"]);
 
@@ -27,17 +27,14 @@ export default function SignupFunc() {
     if (signup.success) {
       const { access_token } = signup;
       const expires = new Date();
+      expires.setTime(expire.getTime() + 60 * 60 * 1000); //토큰 만료 1시간
 
-      expires.setDate(expire.getDate() + 7); // 쿠키 만료일 7일
+      setCookie("access_token", access_token, { expires, path: "/" });
 
-      setCookie("access_token", access_token, { expires });
-
-      // Recoil 상태 업데이트
       setToken(access_token);
       setIsLoggedIn(true);
       router.push("/dashboard");
     } else if (signup.error) {
-      // 회원가입이 실패한 경우
       alert(signup.error);
     }
   }, [signup, setToken, setIsLoggedIn, router, setCookie]);
@@ -69,7 +66,7 @@ export default function SignupFunc() {
     setLoading(true);
 
     axiosInstance
-      .post(`user/sign_up`, body) // 요청코드 만드는 중
+      .post(`user/sign_up`, body)
       .then((res) => {
         console.log(res);
         alert(res);
@@ -98,10 +95,11 @@ export default function SignupFunc() {
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         <label htmlFor="phone">Phone Number</label>
         <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+        <label htmlFor="text">Device ID</label>
+        <input type="text" value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
         <button type="submit" disabled={loading}>
           Join
         </button>
-        {msg}
       </SignupPageForm>
     </SingupPageDiv>
   );
