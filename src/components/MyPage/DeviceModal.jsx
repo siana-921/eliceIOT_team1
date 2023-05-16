@@ -20,6 +20,13 @@ const DeviceModal = ({ isOpen, closeModal, addDevice }) => {
     const device = {
       name: deviceName,
       image: selectedImage,
+
+      /*
+device_id,
+name,
+owner_id,
+photo,
+*/
     };
     addDevice(device); // 디바이스 추가
     closeModal(); // 모달 닫기
