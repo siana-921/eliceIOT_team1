@@ -13,7 +13,6 @@ export default function SignupFunc() {
   const [deviceId, setDeviceId] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
-  const [created_at, setCreated] = useState("");
 
   useEffect(() => {
     if (msg && loading) {
@@ -80,12 +79,10 @@ export default function SignupFunc() {
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         <label htmlFor="phone">Phone Number</label>
         <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
-        {/* <label htmlFor="created_at">CreatedAt</label>
-        <input type="text" value={created_at} onChange={(e) => setCreated(e.target.value)} /> */}
         <button type="submit" disabled={loading}>
           Join
         </button>
-        {msg}{" "}
+        {msg}
       </SignupPageForm>
     </SingupPageDiv>
   );
