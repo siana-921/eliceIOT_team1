@@ -11,6 +11,7 @@ import ActuatorLogTable from "../elements/ActuatorLogTable";
 const SubSection2Contents = () => {
   const [autoControlOn, setAutoControlOn] = useState(true);
   const [isValueMode, setIsValueMode] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const autoControlState = useRecoilValue(autoControlStateAtom);
   const user = useRecoilValue(userInfoAtom); //현재 로그인된 유저의 정보 : default user000
@@ -29,18 +30,25 @@ const SubSection2Contents = () => {
   };
 
   const device_id = device.id;
-  const data = { command: "run", actuator: "led" };
 
   const handlePost = async (e) => {
     console.log(e.target.cmd);
-    const postres = await axiosInstance.post(`/cmd/${device_id}`, data);
+    const data = { command: e.target.cmd, actuator: "led" };
+    try {
+      const postres = await axiosInstance.post(`/cmd/${device_id}`, data);
+      setIsButtonDisabled(true);
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 30000);
+    } catch (err) {
+      console.error(err);
+    }
     //POST가 성공했으면
     //SETSTATEATOM
     //실패했으면 유저에게 알리고 리턴
-    console.log(postres);
-
-    const getres = await axiosInstance.get(`/actuators/${device_id}?start_time=0`);
-    console.log(getres.data);
+    //console.log(postres);
+    //const getres = await axiosInstance.get(`/actuators/${device_id}?start_time=0`);
+    //console.log(getres.data);
   };
 
   return (
@@ -114,10 +122,20 @@ const SubSection2Contents = () => {
         <Item3>
           <SmallTitleText>즉시 제어 (LED)</SmallTitleText>
           <ControlBtnWrapper>
-            <ControlBtn cmd={"run"} onClick={handlePost} isSelected={false}>
+            <ControlBtn
+              cmd={"run"}
+              onClick={handlePost}
+              isSelected={false}
+              disabled={isButtonDisabled}
+            >
               ON
             </ControlBtn>
-            <ControlBtn cmd={"stop"} onClick={handlePost} isSelected={false}>
+            <ControlBtn
+              cmd={"stop"}
+              onClick={handlePost}
+              isSelected={false}
+              disabled={isButtonDisabled}
+            >
               OFF
             </ControlBtn>
           </ControlBtnWrapper>
