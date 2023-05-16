@@ -7,3 +7,5 @@ export default function SignupPage() {
     </>
   );
 }
+
+// StaticProps 사용하기

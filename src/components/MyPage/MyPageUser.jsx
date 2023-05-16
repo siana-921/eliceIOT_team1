@@ -1,15 +1,46 @@
+import { axiosInstance } from "@/api/base";
 import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
 
 export default function MyPageUser() {
+  const [id, setId] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [fullname, setFullName] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    //My Page 불러오는 useEffect
+    const fetchMyPageInfo = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosInstance.get(`/api/user/sign_in/my_page`);
+        const { id, email, phone, fullname } = response.data;
+        setId(id);
+        setEmail(email);
+        setPhone(phone);
+        setFullName(fullname);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        console.log("API 호출에 실패했습니다.");
+        setLoading(false);
+      }
+    };
+
+    fetchMyPageInfo();
+  }, []);
+
   return (
     <>
       <MyPageUserMain>
-        <MyPageTitle>👋 김정연님, 반가워요!</MyPageTitle>
+        <MyPageTitle>👋 {fullname}님, 반가워요!</MyPageTitle>
         <MyPageDiv>
           <MyPageInfoList>
-            <MyPageInfoItem>🪴 아이디 : testuser</MyPageInfoItem>
-            <MyPageInfoItem>✉️ 이메일 : 123@example.com</MyPageInfoItem>
-            <MyPageInfoItem>📱 휴대폰번호 : 010-1234-5678</MyPageInfoItem>
+            <MyPageInfoItem>🪴 아이디 : {id}</MyPageInfoItem>
+            <MyPageInfoItem>✉️ 이메일 : {email}</MyPageInfoItem>
+            <MyPageInfoItem>📱 휴대폰번호 : {phone}</MyPageInfoItem>
           </MyPageInfoList>
         </MyPageDiv>
       </MyPageUserMain>

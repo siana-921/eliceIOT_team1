@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { colorCode } from "@store/constValue";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { sensorDataAtom, deviceInfoAtom } from "@store/atoms";
+import { deviceInfoAtom, sensorDataOriginAtom } from "@store/atoms";
+import { sensorDataSelector } from "@store/selector";
 import { axiosTest, axiosInstance } from "@baseURL";
 
 import LodingComponent from "@/components/elements/loading";
@@ -18,16 +19,45 @@ import SubSection2Contents from "@components/Dashboard2/SubSection2/";
 import SubSection3Contents from "@components/Dashboard2/SubSection3/";
 import SubSection4Contents from "@components/Dashboard2/SubSection4/";
 
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+
+    if (delay !== null) {
+      const intervalId = setInterval(tick, delay);
+      return () => clearInterval(intervalId);
+    }
+  }, [delay]);
+}
+
 const Dashboard = (props) => {
   const [activatedSection, setActivatedSection] = useState(1);
   const [popUpSection, setPopUpSection] = useState(1);
   const [spreadSection, setSpreadSection] = useState(1);
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [sensorData, setSensorData] = useRecoilState(sensorDataAtom);
+  const [sensorDataOrigin, setSensorDataOrigin] = useRecoilState(sensorDataOriginAtom);
+  const sensorData = useRecoilValue(sensorDataSelector);
   const device = useRecoilValue(deviceInfoAtom);
 
   //로딩페이지 설정-----------------------------------------------------//
+  /*이 컴포넌트와 아무런 상관이 없는 그냥 unix-time테스트를 위한 코드
+    const dateTest = new Date(1684168506000);
+    console.log(dateTest);
+    const dateTest2 = new Date();
+    console.log(dateTest2);
+    const dateTest3 = dateTest2.getTime();
+    console.log(dateTest3);
+    */
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoaded(true);
@@ -37,27 +67,18 @@ const Dashboard = (props) => {
     };
   }, [props]);
 
+  useInterval(async () => {
+    const device_id = "unit001";
+    const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
+
+    setSensorDataOrigin(res.data);
+  }, 60000);
+
   useEffect(() => {
-    const device_id = device.id;
-    const DAYS_TO_LOAD = 29;
-    const today = new Date();
-    //const startDate = new Date(today.getTime() - DAYS_TO_LOAD * 24 * 60 * 60 * 1000);
-    const intervalGetData = setInterval(async () => {
-      try {
-        const res = await axiosTest.get(`/sensors/${device_id}?start_time=0`);
-        const sensorData = res.data;
-        console.log(sensorData);
-        sensorData.forEach((item) => {
-          //백엔드의 더미데이터가 ms가 아니라 임시로 *1000해주고 있음
-          item.created_at = new Date(item.created_at * 1000).toISOString();
-        });
-        setSensorData(sensorData);
-      } catch (err) {
-        console.error(err);
-      }
-    }, 1000);
-    return () => clearInterval(intervalGetData);
-  }, [device, sensorData, setSensorData]);
+    setSensorDataOrigin(props.sensorDataOrigin); //SSR
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //--------------------------------------------------------------------//
 
@@ -222,7 +243,7 @@ const SubContent = styled.div`
 
 export async function getServerSideProps() {
   //최초 렌더링용 데이터 (갱신과는 상관없음)
-  const device_id = "unit000"; //임시 하드코딩 !!
+  const device_id = "unit001"; //임시 하드코딩 !!
   const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
 
   const today = new Date();
@@ -232,20 +253,18 @@ export async function getServerSideProps() {
 
   try {
     console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
-    const res = await axiosTest.get(`/sensors/${device_id}?start_time=0`);
-    const sensorData = JSON.parse(res.data);
-    console.log(sensorData);
-    sensorData.forEach((item) => {
-      item.created_at = new Date(item.created_at * 1000).toISOString();
-    });
+    const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
+    const sensorDataOrigin = res.data;
+    console.log(sensorDataOrigin);
 
     return {
       props: {
-        sensorData: sensorData,
+        sensorDataOrigin: sensorDataOrigin,
       },
     };
   } catch (err) {
     console.log(err);
+    console.log("ererer");
     return {
       props: {
         sensorData: null,

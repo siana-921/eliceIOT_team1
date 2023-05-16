@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { useRecoilValue } from "recoil";
-import { sensorDataAtom } from "@store/atoms";
+import { sensorDataSelector } from "@store/selector";
 
 const renderCustomizedLabel = ({ cx, cy, percent, payload }) => {
   if (payload.name === "data") {
@@ -24,7 +24,7 @@ const renderCustomizedLabel = ({ cx, cy, percent, payload }) => {
 };
 
 const WaterTankValChart = () => {
-  const sensorData = useRecoilValue(sensorDataAtom);
+  const sensorData = useRecoilValue(sensorDataSelector);
   const lastIdx = sensorData.length - 1;
   const waterLevel = sensorData[lastIdx].water_level;
 
