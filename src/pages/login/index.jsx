@@ -16,8 +16,10 @@ export default function LoginPage({ loginData, err }) {
   return (
     <>
       <LoginPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted />
-      <LoginIntroduction />
-      <LoginFunc loginData={loginData} />
+      <LoginPageContents>
+        {/* <LoginIntroduction /> */}
+        <LoginFunc loginData={loginData} />
+      </LoginPageContents>
     </>
   );
 }
@@ -55,4 +57,12 @@ const LoginPageVideo = styled.video`
   object-fit: cover;
   z-index: -1;
   width: 100%;
+`;
+
+const LoginPageContents = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 `;
