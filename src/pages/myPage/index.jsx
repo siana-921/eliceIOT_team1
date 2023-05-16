@@ -1,31 +1,52 @@
-import React from "react";
-import UserProfile from "../../components/MyPage/UserProfile";
-import PlantSettings from "../../components/MyPage/PlantSettings";
-import NavBar from "../../components/NavBar/NavBar";
 import styled from "@emotion/styled";
-const MyPage = () => {
+
+import MyPageBailsList from "@/components/MyPage/MyPageBasilsList";
+import MyPageUser from "@/components/MyPage/MyPageUser";
+
+export default function MyPage({ mypageData }) {
   return (
-    <Main>
-      <UserProfileWrapper>
-        <UserProfile></UserProfile>
-      </UserProfileWrapper>
-      <PlantSettingsWrapper>
-        <PlantSettings></PlantSettings>
-      </PlantSettingsWrapper>
-    </Main>
+    <MyPageContainer>
+      <MyPageLogoImage src="/images/logo.png" alt="logo" layout="fill" />
+      <MyPageUser />
+      <MyPageBailsList />
+    </MyPageContainer>
   );
-};
+}
 
-const Main = styled.div`
-  width: 100vw;
-  height: 100vh;
-`;
-const UserProfileWrapper = styled.div`
-  width: 100vw;
-  height: 360px;
-`;
-const PlantSettingsWrapper = styled.div`
-  width: 100vw;
+export async function getServerSideProps() {
+  try {
+    const response = await axiosInstance.get(`/user/sign_in/my_page`);
+    const mypageData = response.data;
+
+    return {
+      props: {
+        mypageData,
+      },
+    };
+  } catch (err) {
+    console.log(err.response);
+    const statusCode = err.response ? err.response.status : "🚨에러발생";
+    return {
+      props: {
+        mypageData: null,
+        err: {
+          statusCode,
+          title: statusCode,
+        },
+      },
+    };
+  }
+}
+
+const MyPageContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
-export default MyPage;
+const MyPageLogoImage = styled.img`
+  margin-top: 20px;
+
+  height: 80%;
+  width: 45%;
+`;
