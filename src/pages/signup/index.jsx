@@ -9,7 +9,7 @@ export default function SignupPage() {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   try {
     const response = await axiosInstance.get(`/user/sign_up`);
     const signupData = response.data;
