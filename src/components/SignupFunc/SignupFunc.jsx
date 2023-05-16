@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { atom, useRecoilState, useSetRecoilState } from "recoil";
 import { tokenState, isLoggedInState, signupState } from "@store/atoms";
 import { useCookies } from "react-cookie";
-import { useRouter } from "next/router"; // useRouter 임포트
+import { useRouter } from "next/router";
 
 import styled from "@emotion/styled";
 
