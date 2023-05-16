@@ -72,7 +72,7 @@ const Dashboard = (props) => {
     const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
 
     setSensorDataOrigin(res.data);
-  }, 6000);
+  }, 60000);
 
   useEffect(() => {
     setSensorDataOrigin(props.sensorDataOrigin); //SSR
