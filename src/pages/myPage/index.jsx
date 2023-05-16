@@ -13,30 +13,30 @@ export default function MyPage({ mypageData }) {
   );
 }
 
-export async function getServerSideProps() {
-  try {
-    const response = await axiosInstance.get(`/user/sign_in/my_page`);
-    const mypageData = response.data;
+// export async function getServerSideProps() {
+//   try {
+//     const response = await axiosInstance.get(`/user/sign_in/my_page`);
+//     const mypageData = response.data;
 
-    return {
-      props: {
-        mypageData,
-      },
-    };
-  } catch (err) {
-    console.log(err.response);
-    const statusCode = err.response ? err.response.status : "🚨에러발생";
-    return {
-      props: {
-        mypageData: null,
-        err: {
-          statusCode,
-          title: statusCode,
-        },
-      },
-    };
-  }
-}
+//     return {
+//       props: {
+//         mypageData,
+//       },
+//     };
+//   } catch (err) {
+//     console.log(err.response);
+//     const statusCode = err.response ? err.response.status : "🚨에러발생";
+//     return {
+//       props: {
+//         mypageData: null,
+//         err: {
+//           statusCode,
+//           title: statusCode,
+//         },
+//       },
+//     };
+//   }
+// }
 
 const MyPageContainer = styled.main`
   display: flex;
