@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import styled from "@emotion/styled";
 
-// 모달 수정 시자그
 const DeviceModal = ({ isOpen, closeModal, addDevice }) => {
   const [deviceName, setDeviceName] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -15,7 +14,10 @@ const DeviceModal = ({ isOpen, closeModal, addDevice }) => {
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
-    setSelectedPhoto(file);
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedPhoto(imageUrl); // 선택 이미지 미리보기
+    }
   };
 
   const handleDeviceIdChange = (e) => {
