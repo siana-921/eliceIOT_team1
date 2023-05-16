@@ -91,12 +91,13 @@ export const signupState = atom({
   },
 });
 
-// export const devicesState = atom({
-//   key: "devicesState",
-//   default: [],
-// });
+export const devicesState = atom({
+  key: "devicesState",
+  default: [],
+});
 
-// export const defaultDeviceIdState = atom({
-//   key: "defaultDeviceIdState",
-//   default: "",
-// });
+// 사용 : mypage
+export const defaultDeviceIdState = atom({
+  key: "defaultDeviceIdState",
+  default: "",
+});

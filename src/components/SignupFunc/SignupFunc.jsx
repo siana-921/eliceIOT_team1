@@ -4,8 +4,8 @@ import { atom, useRecoilState, useSetRecoilState } from "recoil";
 import { tokenState, isLoggedInState, signupState } from "@store/atoms";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
-
 import styled from "@emotion/styled";
+import Swal from "sweetalert2";
 
 const deviceProfileImages = [
   "/images/deviceprofile01.png",
@@ -42,33 +42,37 @@ export default function SignupFunc() {
       setToken(access_token);
       setIsLoggedIn(true);
       router.push("/dashboard");
+      Swal.fire("가입이 완료되었습니다.", "", "success");
     } else if (signup.error) {
-      alert(signup.error);
+      Swal.fire("가입 오류", signup.error, "error");
     }
   }, [signup, setToken, setIsLoggedIn, router, setCookie]);
 
-  const handlePhotoChange = (photo) => {
-    setSelectedPhoto(photo);
-    setDeviceId(photo);
+  const handlePhotoChange = (selectedPhoto) => {
+    setSelectedPhoto(selectedPhoto);
   };
 
   function SignupFunc(e) {
     e.preventDefault();
 
     if (!id) {
-      return alert("ID를 입력하세요.");
+      return Swal.fire("ID를 입력하세요.", "", "warning");
     } else if (!password) {
-      return alert("Password를 입력하세요.");
+      return Swal.fire(
+        "Password를 입력하세요.",
+        "비밀번호는 8자 이상 16자 이하의 대소문자와 숫자로 작성해야 합니다.",
+        "error"
+      );
     } else if (!fullname) {
-      return alert("이름을 입력하세요.");
+      return Swal.fire("이름을 입력하세요.", "", "warning");
     } else if (!email) {
-      return alert("이메일를 입력하세요.");
+      return Swal.fire("이메일를 입력하세요.", "", "warning");
     } else if (!phone) {
-      return alert("휴대폰번호를 입력하세요.");
-    } else if (!photo) {
-      return alert("디바이스 이미지를 선택해주세요.");
+      return Swal.fire("휴대폰번호를 입력하세요.", "", "warning");
+    } else if (!selectedPhoto) {
+      return Swal.fire("디바이스 이미지를 선택해주세요.", "이미지 선택은 필수입니다.", "warning");
     } else if (!deviceId) {
-      return alert("디바이스 아이디를 입력해주세요.");
+      return Swal.fire("디바이스 아이디를 입력해주세요.", "", "warning");
     }
 
     let body = {
@@ -78,7 +82,7 @@ export default function SignupFunc() {
       email: email,
       phone: phone,
       device_id: deviceId,
-      photo: photo,
+      photo: selectedPhoto,
     };
 
     setLoading(true);
@@ -92,7 +96,7 @@ export default function SignupFunc() {
       })
       .catch((error) => {
         console.log(error);
-        alert(error);
+        Swal.fire("가입 오류", error.message, "error");
       })
       .finally(() => {
         setLoading(false);
@@ -114,6 +118,8 @@ export default function SignupFunc() {
         <label htmlFor="phone">Phone Number</label>
         <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
         <label htmlFor="text">Device ID</label>
+        <input type="text" value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
+        <label htmlFor="text">Device Image</label>
         <div>
           {deviceProfileImages.map((photo, index) => (
             <DeviceImage
@@ -153,7 +159,7 @@ const SignupPageForm = styled.form`
   align-items: center;
 
   & label {
-    text-align: left;
+    text-align: center;
     width: 100%;
   }
 `;
@@ -163,5 +169,8 @@ const DeviceImage = styled.img`
   height: 100px;
   margin: 10px;
   cursor: pointer;
+  border-radius: 50px;
   opacity: ${({ selected }) => (selected ? 1 : 0.5)};
+  border: ${({ selected }) => (selected ? "5px solid #107d8e" : "none")};
+  outline: none;
 `;

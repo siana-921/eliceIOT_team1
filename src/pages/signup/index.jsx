@@ -1,5 +1,6 @@
 import SignupFunc from "@/components/SignupFunc/SignupFunc";
 
+// SSR -> { signupData } 추가하기
 export default function SignupPage() {
   return (
     <>
