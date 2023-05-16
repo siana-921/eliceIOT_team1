@@ -10,9 +10,9 @@ export default function SignupFunc() {
   const [fullname, setFullname] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [deviceId, setDeviceId] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
-  const [created_at, setCreated] = useState("");
 
   useEffect(() => {
     if (msg && loading) {
@@ -44,12 +44,13 @@ export default function SignupFunc() {
       fullname: fullname,
       email: email,
       phone: phone,
+      device_id: deviceId,
     };
 
     setLoading(true);
 
     axiosInstance
-      .post(`user/sign_up`, body) // 요청코드
+      .post(`user/sign_up`, body) // 회원가입 요청코드
       .then((res) => {
         console.log(res);
         alert(res);
@@ -78,12 +79,10 @@ export default function SignupFunc() {
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         <label htmlFor="phone">Phone Number</label>
         <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
-        {/* <label htmlFor="created_at">CreatedAt</label>
-        <input type="text" value={created_at} onChange={(e) => setCreated(e.target.value)} /> */}
         <button type="submit" disabled={loading}>
           Join
         </button>
-        {msg}{" "}
+        {msg}
       </SignupPageForm>
     </SingupPageDiv>
   );
