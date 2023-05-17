@@ -7,10 +7,6 @@ export default function MyPageUser() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [fullname, setFullName] = useState("");
-
-  const [defaultDeviceId, setDefaultDeviceId] = useState("");
-  const [devices, setDevices] = useState([]);
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
