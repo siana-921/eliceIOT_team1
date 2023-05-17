@@ -77,6 +77,16 @@ const SubSection2Contents = () => {
         .post(`/auto/${device_id}`, data)
         .then((postRes) => {
           console.log(postRes);
+          //자동제어 상태를 변경한 내용이 페이지에 반영되게 GET해서 ATOM에 넣기
+          axiosInstance
+            .get(`/auto/${device_id}/status`)
+            .then((getRes) => {
+              console.log(getRes);
+              setAutoControlStateOrigin(getRes.data);
+            })
+            .catch((getError) => {
+              console.error(getError);
+            });
         })
         .catch((postError) => {
           console.error(postError);
@@ -95,12 +105,12 @@ const SubSection2Contents = () => {
           .post(`/auto/${device_id}`, data)
           .then((postRes) => {
             console.log(postRes);
+            //자동제어 상태를 변경한 내용이 페이지에 반영되게 GET해서 ATOM에 넣기
             axiosInstance
               .get(`/auto/${device_id}/status`)
               .then((getRes) => {
                 console.log(getRes);
                 setAutoControlStateOrigin(getRes.data);
-                alert("자동제어 설정을 완료했습니다.");
               })
               .catch((getError) => {
                 console.error(getError);
@@ -123,19 +133,39 @@ const SubSection2Contents = () => {
       <GridContainer>
         <Item1>
           <TitleText>자동제어</TitleText>
-          <MessageText>
-            {isAutoControl
-              ? "현재 자동제어가 동작하고 있습니다"
-              : "자동제어가 동작하고 있지 않습니다"}
-          </MessageText>
-          {isAutoControl && (
+          {isAutoControl ? (
             <>
+              <MessageText>현재 자동제어가 동작하고 있습니다</MessageText>
+              <br />
+
               <p>
-                자동제어 시작일자 : <span>{autoControlState.created_at}</span>
+                설정된 목표 조도 :
+                <span
+                  style={{
+                    fontSize: "2rem",
+                    fontWeight: "700",
+                    color: "#8884d8",
+                    paddingLeft: "10px",
+                  }}
+                >
+                  {autoControlState.target_light}%
+                </span>
               </p>
               <p>
-                설정된 목표 조도 : <span>{autoControlState.target_light}%</span>
+                자동제어 시작일자 :
+                <span style={{ fontWeight: "700", paddingLeft: "10px" }}>
+                  {autoControlState.created_at}
+                </span>
               </p>
+            </>
+          ) : (
+            <>
+              <MessageText>자동제어가 동작 중이 아닙니다</MessageText>
+              <br />
+              <p style={{ fontSize: "1.2rem", fontWeight: "700" }}>
+                수동제어 또는 자동제어 설정이 가능합니다
+              </p>
+              <p>자동제어 설정 후 자동제어 버튼을 토글해주시면 자동제어를 시작합니다!</p>
             </>
           )}
           <RadioInput
