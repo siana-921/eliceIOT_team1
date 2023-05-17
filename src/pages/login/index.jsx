@@ -8,7 +8,7 @@ import styled from "@emotion/styled";
 
 export default function LoginPage({ loginData, err }) {
   return (
-    <>
+    <LoginPageMain>
       <LoginPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted />
       <LoginPageContents>
         <LoginPageContainer>
@@ -16,7 +16,7 @@ export default function LoginPage({ loginData, err }) {
           <LoginFunc loginData={loginData} />
         </LoginPageContainer>
       </LoginPageContents>
-    </>
+    </LoginPageMain>
   );
 }
 
@@ -55,11 +55,18 @@ export async function getServerSideProps(context) {
   }
 }
 
+const LoginPageMain = styled.main`
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+`;
+
 const LoginPageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 100vh;
 `;
 
 const LoginPageVideo = styled.video`
