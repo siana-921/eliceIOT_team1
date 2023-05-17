@@ -1,11 +1,12 @@
 import { axiosInstance } from "@/api/base";
 import React, { useState, useEffect } from "react";
 import { atom, useRecoilState, useSetRecoilState } from "recoil";
-import { tokenState, isLoggedInState, signupState } from "@store/atoms";
+import { tokenState, signupState, selectedPhotoState } from "@store/atoms";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import Swal from "sweetalert2";
+import { redirect } from "next/dist/server/api-utils";
 
 const deviceProfileImages = [
   "/images/deviceprofile01.png",
@@ -22,11 +23,11 @@ export default function SignupFunc() {
   const [email, setEmail] = useState("");
   const [deviceId, setDeviceId] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [redirectTimeout, setRedirectTimeout] = useState(null);
 
   const setToken = useSetRecoilState(tokenState);
-  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const [signup, setSignup] = useRecoilState(signupState);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [cookies, setCookie] = useCookies(["access_token"]);
 
   const router = useRouter();
@@ -40,16 +41,28 @@ export default function SignupFunc() {
       setCookie("access_token", access_token, { expires, path: "/" });
 
       setToken(access_token);
-      setIsLoggedIn(true);
-      router.push("/dashboard");
-      Swal.fire("가입이 완료되었습니다.", "", "success");
+
+      const redirectTimeout = setTimeout(() => {
+        router.push("/login");
+      }, 3000);
+
+      setRedirectTimeout(timeout);
     } else if (signup.error) {
       Swal.fire("가입 오류", signup.error, "error");
     }
-  }, [signup, setToken, setIsLoggedIn, router, setCookie]);
 
-  const handlePhotoChange = (selectedPhoto) => {
-    setSelectedPhoto(selectedPhoto);
+    return () => {
+      clearTimeout(redirectTimeout);
+    };
+  }, [signup, setToken, router, setCookie, redirectTimeout]);
+
+  const handlePhotoChange = (index) => {
+    setSelectedPhoto(index + 1);
+  };
+
+  const getSelectedPhotoIndex = (photo) => {
+    const index = deviceProfileImages.indexOf(photo);
+    return index !== -1 ? index + 1 : null;
   };
 
   function SignupFunc(e) {
@@ -60,7 +73,7 @@ export default function SignupFunc() {
     } else if (!password) {
       return Swal.fire(
         "Password를 입력하세요.",
-        "비밀번호는 8자 이상 16자 이하의 대소문자와 숫자로 작성해야 합니다.",
+        "8자 이상 16자 이하의 대소문자와 숫자로 작성해야 합니다.",
         "error"
       );
     } else if (!fullname) {
@@ -86,7 +99,6 @@ export default function SignupFunc() {
     };
 
     setLoading(true);
-
     /* 
     API 없을 때 테스트하는 방법
     const dummySignupApi = {
@@ -116,8 +128,12 @@ export default function SignupFunc() {
       .post(`user/sign_up`, body)
       .then((res) => {
         console.log(res);
-        alert(res);
+        // alert(JSON.stringify(res));
         setLoading(false);
+        setTimeout(() => {
+          router.push("/login");
+        }, 3000);
+        Swal.fire("가입이 완료되었습니다.", "", "success");
       })
       .catch((error) => {
         console.log(error);
@@ -154,8 +170,8 @@ export default function SignupFunc() {
             {deviceProfileImages.map((photo, index) => (
               <DeviceImage
                 key={index}
-                onClick={() => handlePhotoChange(photo)}
-                selected={selectedPhoto === photo}
+                onClick={() => handlePhotoChange(index)}
+                selected={selectedPhoto === index + 1}
                 src={photo}
                 alt={`Device Profile ${index + 1}`}
               />
