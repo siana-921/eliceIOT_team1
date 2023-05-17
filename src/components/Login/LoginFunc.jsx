@@ -4,43 +4,32 @@ import Link from "next/link";
 import { isLoggedInState, tokenState } from "@/store/atoms";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { useRouter } from "next/router";
-import axios from "axios";
+// import axios from "axios";
 
 import styled from "@emotion/styled";
 
-export default function LoginFunc({ loginData }) {
+export default function LoginFunc() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+  const [fullname, setFullName] = useState("");
 
   const setToken = useSetRecoilState(tokenState);
+  const router = useRouter();
 
-  useEffect(() => {
-    if (msg && loading) {
+  const handleResponse = (response) => {
+    if (response.status === 200) {
+      setMsg(id + "님, 로그인 되었습니다! 반가워요 😊");
       setTimeout(() => {
-        setMsg(loginData?.id + "로그인 되었습니다! 반가워요 😊");
-        setLoading(false);
-      }, 3000);
-    }
-  }, [msg, loading, loginData?.id]);
-
-  const handleResponse = (res) => {
-    if (loginData && loginData.id === id && loginData.password === password) {
-      console.log("로그인");
-      setMsg("");
-      setToken(res.data.token);
-      router.push("/mypage");
-    } else if (!id || !password) {
-      setMsg("ID나 Password를 입력했는지 확인해주세요.");
-    } else if (!loginData) {
-      setMsg("로그인 데이터를 가져오는 중입니다...");
-    } else if (res.code === 401) {
-      setMsg("존재하지 않는 ID입니다.");
-    } else if (res.code === 402) {
-      setMsg("Password가 틀립니다.");
+        router.push("/dashboard");
+      }, 1000);
+    } else if (response.status === 403) {
+      setMsg("가입되지 않은 계정입니다.");
+    } else if (response.status === 401) {
+      setMsg("로그인에 실패하였습니다.");
     } else {
-      setMsg("알 수 없는 오류가 발생했습니다." + res);
+      setMsg("알 수 없는 오류가 발생했습니다." + JSON.stringify(response));
     }
   };
 
@@ -54,15 +43,16 @@ export default function LoginFunc({ loginData }) {
     const body = {
       id: id,
       password: password,
+      fullname: fullname,
     };
 
     setLoading(true);
 
-    axios
-      .post(`pages/api/mockup/sign_in`, body)
-      .then((res) => {
-        console.log(res);
-        handleResponse(res);
+    axiosInstance
+      .post(`user/sign_in`, body)
+      .then((response) => {
+        console.log(response);
+        handleResponse(response);
         setLoading(false);
       })
       .catch((error) => {

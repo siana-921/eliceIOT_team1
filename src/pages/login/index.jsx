@@ -6,54 +6,54 @@ import axios from "axios";
 
 import styled from "@emotion/styled";
 
-export default function LoginPage({ loginData, err }) {
+export default function LoginPage() {
   return (
     <LoginPageMain>
       <LoginPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted />
       <LoginPageContents>
         <LoginPageContainer>
           {/* <LoginIntroduction /> */}
-          <LoginFunc loginData={loginData} />
+          <LoginFunc />
         </LoginPageContainer>
       </LoginPageContents>
     </LoginPageMain>
   );
 }
 
-export async function getServerSideProps(context) {
-  try {
-    // 코치님이 알려주신 부분 : context.req.headers.cookie["~~~~"]
-    const cookieValue = context.req.headers.cookie ? context.req.headers.cookie : undefined;
+// export async function getServerSideProps(context) {
+//   try {
+//     // 코치님이 알려주신 부분 : context.req.headers.cookie["~~~~"]
+//     const cookieValue = context.req.headers.cookie ? context.req.headers.cookie : undefined;
 
-    const response = await axios.get("pages/api/mockup/userinfo", {
-      headers: {
-        // 쿠키를 요청 헤더에 추가
-        Cookie: cookieValue,
-      },
-    });
+//     const response = await axios.get("pages/api/mockup/userinfo", {
+//       headers: {
+//         // 쿠키를 요청 헤더에 추가
+//         Cookie: cookieValue,
+//       },
+//     });
 
-    const loginData = response.data;
+//     const loginData = response.data;
 
-    return {
-      props: {
-        loginData,
-      },
-    };
-  } catch (err) {
-    console.log(err.response);
-    const statusCode = err.response ? err.response.status : "🚨에러발생";
+//     return {
+//       props: {
+//         loginData,
+//       },
+//     };
+//   } catch (err) {
+//     console.log(err.response);
+//     const statusCode = err.response ? err.response.status : "🚨에러발생";
 
-    return {
-      props: {
-        loginData: null,
-        err: {
-          statusCode,
-          title: statusCode,
-        },
-      },
-    };
-  }
-}
+//     return {
+//       props: {
+//         loginData: null,
+//         err: {
+//           statusCode,
+//           title: statusCode,
+//         },
+//       },
+//     };
+//   }
+// }
 
 const LoginPageMain = styled.main`
   position: relative;
