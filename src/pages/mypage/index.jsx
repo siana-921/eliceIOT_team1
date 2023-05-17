@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import MyPageBailsList from "@/components/MyPage/MyPageBasilsList";
 import MyPageUser from "@/components/MyPage/MyPageUser";
 
-export default function MyPage({ mypageData }) {
+export default function MyPage({}) {
   return (
     <MyPageContainer>
       <MyPageLogoImage src="/images/logo.png" alt="logo" layout="fill" />
