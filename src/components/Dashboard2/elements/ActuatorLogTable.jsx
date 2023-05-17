@@ -11,18 +11,22 @@ const ActuatorLogTable = () => {
       {
         Header: "날짜",
         accessor: (row) => new Intl.DateTimeFormat("ko-KR").format(row.created_at),
+        width: "30%",
       },
       {
         Header: "시간",
         accessor: () => "?",
+        width: "30%",
       },
       {
         Header: "액츄에이터 종류",
         accessor: () => "LED",
+        width: "20%",
       },
       {
         Header: "제어값",
         accessor: "led",
+        width: "20%",
       },
     ],
     []

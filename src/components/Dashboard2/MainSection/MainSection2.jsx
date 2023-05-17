@@ -15,8 +15,6 @@ import {
 const MainSection2Content = () => {
   const latestData = useRecoilValue(lastSensorDataSelector);
 
-  console.log(latestData);
-
   return (
     <Main>
       <BackTriangleWrapper>

@@ -59,8 +59,6 @@ const Dashboard = (props) => {
   //데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
   const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
 
-  console.log(props);
-
   //첫 마운트 SSR
   useEffect(() => {
     if (Array.isArray(props.sensorDataOrigin) && props.sensorDataOrigin.length > 10) {
@@ -81,13 +79,16 @@ const Dashboard = (props) => {
   }),
     [];
 
+  //서버에서 받아온 SENSOR DATA가 10분치가 안되면... 걍 디폴트 더미 씀(3분마다 요청)
   useInterval(async () => {
     const device_id = "unit001";
     try {
       const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
       const data = res.data;
-      if (Array.isArray(data) && data.length > 10) setSensorDataOrigin(res.data);
-      console.log("INTERVAL GET SENSOR");
+      if (Array.isArray(data) && data.length > 10) {
+        setSensorDataOrigin(res.data);
+        console.log("3 MIN INTERVAL GET SENSOR");
+      }
     } catch (err) {
       console.error(err);
     }
@@ -295,7 +296,7 @@ export async function getServerSideProps(context) {
     console.log(`=========GET ${deviceId} DEVICE AUTO CONTROL CONFIG=========`);
     const getAutoControlRes = await axiosInstance.get(`/auto/${deviceId}/status`);
     const autoControlConfig = getAutoControlRes.data;
-    console.log(autoControlConfig);
+    //console.log(autoControlConfig);
     resProps.autoControlConfig = autoControlConfig;
   } catch (err) {
     resProps.autoControlConfig = [];

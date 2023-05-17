@@ -26,7 +26,10 @@ const renderCustomizedLabel = ({ cx, cy, percent, payload }) => {
 const WaterTankValChart = () => {
   const sensorData = useRecoilValue(lastSensorDataSelector);
 
-  const waterLevel = sensorData.water_level;
+  const MAX = 2300;
+
+  const waterLevel =
+    (sensorData.water_level * 100) / MAX > 100 ? 100 : (sensorData.water_level * 100) / MAX;
 
   const data = [
     { name: "blank", value: 100 - waterLevel },
