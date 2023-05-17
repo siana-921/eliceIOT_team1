@@ -1,92 +1,51 @@
-import styled from "@emotion/styled";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useTable } from "react-table";
-import React, { useMemo } from "react";
+import React from "react";
+import { useRecoilValue } from "recoil";
+import { actuatorLogSelector } from "@store/selector";
 
 import device000actuator from "../../../data/testingdata/device000actuator";
 
 const ActuatorLogTable = () => {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "날짜",
-        accessor: (row) => new Intl.DateTimeFormat("ko-KR").format(row.created_at),
-        width: "30%",
-      },
-      {
-        Header: "시간",
-        accessor: () => "?",
-        width: "30%",
-      },
-      {
-        Header: "액츄에이터 종류",
-        accessor: () => "LED",
-        width: "20%",
-      },
-      {
-        Header: "제어값",
-        accessor: "led",
-        width: "20%",
-      },
-    ],
-    []
-  );
+  const dataAtom = useRecoilValue(actuatorLogSelector);
+  const data = dataAtom.length > 0 ? dataAtom : device000actuator;
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
-    columns,
-    data: device000actuator,
-  });
+  console.log(data);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = `${date.getMonth() + 1} / ${date.getDate()}`;
+    return formattedDate;
+  };
+
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const formattedTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    return formattedTime;
+  };
+
   return (
-    <Main>
-      <table {...getTableProps()}>
-        <TableHead>
-          {headerGroups.map((headerGroup) => (
-            <TitleRow key={headerGroup.Header} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th key={column.id} {...column.getHeaderProps()}>
-                  {column.render("Header")}
-                </th>
-              ))}
-            </TitleRow>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th width="28%">날짜</th>
+            <th width="32%">시간</th>
+            <th width="20%">구분</th>
+            <th width="20%">제어값</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.slice(0, 10).map((row) => (
+            <tr key={row.id}>
+              <td>{formatDate(row.created_at)}</td>
+              <td>{formatTime(row.created_at)}</td>
+              <td>LED</td>
+              <td>{row.led === 255 ? "ON" : "OFF"}</td>
+            </tr>
           ))}
-        </TableHead>
-        <tbody {...getTableBodyProps()}>
-          {rows.slice(0, 10).map((row, i) => {
-            prepareRow(row);
-            return (
-              <BodyRow key={row.id} {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td key={cell.row.id} {...cell.getCellProps()}>
-                    {cell.render("Cell")}
-                  </td>
-                ))}
-              </BodyRow>
-            );
-          })}
         </tbody>
       </table>
-    </Main>
+    </div>
   );
 };
 
 export default ActuatorLogTable;
-
-const Main = styled.div`
-  width: 100%;
-  height: 100%;
-  table {
-    width: 100%;
-    text-align: center;
-  }
-`;
-const TableHead = styled.thead`
-  font-size: 1.3vw;
-  font-weight: 600;
-  border-bottom: solid 1px #000000;
-`;
-const TitleRow = styled.tr`
-  height: 50px;
-`;
-const BodyRow = styled.tr`
-  height: 20px;
-`;

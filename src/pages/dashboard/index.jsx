@@ -286,7 +286,7 @@ export async function getServerSideProps(context) {
     console.log(`=========GET ${deviceId} DEVICE ACTUATOR LOG DATA=========`);
     const getActuatorDataRes = await axiosInstance.get(`/actuators/${deviceId}?start_time=0`);
     const actuatorDataOrigin = getActuatorDataRes.data;
-    //console.log(actuatorDataOrigin);
+    console.log(actuatorDataOrigin);
     resProps.actuatorDataOrigin = actuatorDataOrigin;
   } catch (err) {
     resProps.actuatorDataOrigin = [];

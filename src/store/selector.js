@@ -4,7 +4,7 @@ import {
   userInfoAtom,
   deviceInfoAtom,
   autoControlConfigOriginAtom,
-  actuatorLogAtom,
+  actuatorLogOriginAtom,
 } from "@store/atoms";
 import { maxBy } from "lodash";
 import device000sensor from "@data/testingdata/device000sensor";
@@ -172,6 +172,20 @@ export const autoControlConfigSeletor = selector({
 
       return newObject;
     }
+  },
+});
+
+// [셀렉터] 누적 액츄에이터 로그
+export const actuatorLogSelector = selector({
+  key: "actuatorLogSelector",
+  get: ({ get }) => {
+    const origin = get(actuatorLogOriginAtom);
+
+    const newLog = origin.map((item) => {
+      return { ...item, created_at: item.created_at * 1000 };
+    });
+
+    return newLog;
   },
 });
 

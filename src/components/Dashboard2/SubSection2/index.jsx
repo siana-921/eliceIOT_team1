@@ -51,15 +51,13 @@ const SubSection2Contents = () => {
         target_moisture: null,
         target_light: null,
       };
-      console.log("status 0 상태로 POST");
+
       axiosInstance
         .post(`/auto/${device_id}`, data)
         .then((postRes) => {
-          console.log(postRes);
           axiosInstance
             .get(`/auto/${device_id}/status`)
             .then((getRes) => {
-              console.log(getRes);
               setAutoControlConfigOrigin(getRes.data);
             })
             .catch((getError) => {
@@ -69,7 +67,7 @@ const SubSection2Contents = () => {
         .catch((postError) => {
           console.error(postError);
         });
-    } else if (isAutoControl === true && autoControlConfig.target_light !== targetValue) {
+    } else if (isAutoControl === true) {
       console.log("자동제어 모드를 시작합니다.");
       const data = {
         status: 1,
@@ -82,11 +80,9 @@ const SubSection2Contents = () => {
       axiosInstance
         .post(`/auto/${device_id}`, data)
         .then((postRes) => {
-          console.log(postRes);
           axiosInstance
             .get(`/auto/${device_id}/status`)
             .then((getRes) => {
-              console.log(getRes);
               setAutoControlConfigOrigin(getRes.data);
             })
             .catch((getError) => {
@@ -127,7 +123,7 @@ const SubSection2Contents = () => {
       setIsButtonDisabled(false);
     }, 20000);
     const data = { command: cmd, actuator: "led" }; //command: "0" or "1"
-    console.log(data);
+
     try {
       const postres = await axiosInstance.post(`/command/cmd/${device_id}`, data);
       console.log(postres);
@@ -138,6 +134,9 @@ const SubSection2Contents = () => {
   };
   //자동제어 POST (useEffect: isAutoControl)
 
+  useEffect(() => {
+    !isValueMode && setTargetValue(parseInt(optimal.light));
+  }, [isValueMode]);
   //--------------------------------------------------------------------//
 
   return (
@@ -160,7 +159,7 @@ const SubSection2Contents = () => {
                     paddingLeft: "10px",
                   }}
                 >
-                  {targetValue}%
+                  {targetValue} lux
                 </span>
               </p>
               <p>
@@ -226,9 +225,15 @@ const SubSection2Contents = () => {
                     <AutoModeSeletorWrapper>
                       <SliderWrapper>
                         <SlideTitle>
-                          목표 제어 조도<span>{targetValue ? targetValue : 0}%</span>
+                          목표 제어 조도<span>{targetValue ? targetValue : 0}lux</span>
                         </SlideTitle>
-                        <Slider min={0} max={100} value={targetValue} onChange={handleSlider} />
+                        <Slider
+                          min={0}
+                          max={20000}
+                          step={100}
+                          value={targetValue}
+                          onChange={handleSlider}
+                        />
                       </SliderWrapper>
                     </AutoModeSeletorWrapper>
                   ) : (

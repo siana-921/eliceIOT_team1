@@ -57,14 +57,15 @@ export const autoControlConfigOriginAtom = atom({
 
 //제어명령 누적 (객체배열)
 export const actuatorLogOriginAtom = atom({
-  key: "actuatorLogAtom",
+  key: "actuatorLogOriginAtom",
   default: [
     {
       idx: 0,
-      device_id: "test001",
+      device_id: "unit001",
       led: 0,
       pump: 0,
       fan: 0,
+      peltier: 0,
       created_at: 1682658179,
     },
   ],
