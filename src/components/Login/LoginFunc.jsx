@@ -23,7 +23,7 @@ export default function LoginFunc() {
   const handleResponse = (response) => {
     if (response.status === 200) {
       setMsg(id + "님, 로그인 되었습니다! 반가워요 😊");
-      const { access_token } = response.token;
+      const { access_token } = response.data.token;
       const expires = new Date();
       expires.setTime(expires.getTime() + 60 * 60 * 1000);
       setIsLoggedIn(true);
