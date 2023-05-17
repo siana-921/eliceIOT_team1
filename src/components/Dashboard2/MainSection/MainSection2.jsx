@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-import Slider, { Range, handleRender } from "rc-slider";
-import "rc-slider/assets/index.css";
+
 import {
   AreaChart,
   Area,
@@ -12,19 +11,6 @@ import {
 } from "recharts";
 
 const MainSection2Content = () => {
-  //슬라이더 래퍼 영역 클릭시 부모 요소(section)에 onclick이벤트 전달 방지
-  const handleSlideronClick = (event) => {
-    event.stopPropagation();
-  };
-  //--------------------------------------------------------------------//
-
-  //슬라이더 value onChange handler-------------------------------------//
-  const handleSlider = (value) => {
-    console.log(value);
-    //여기에 슬라이드 value를 활용한 코드 작성
-  };
-  //--------------------------------------------------------------------//
-
   return (
     <Main>
       <BackTriangleWrapper>
@@ -35,10 +21,7 @@ const MainSection2Content = () => {
         87<PercentText>%</PercentText>
       </DataValueText>
       <DataValueNote>기준: 1000lux</DataValueNote>
-      <SliderWrapper onClick={handleSlideronClick}>
-        <SlideTitle>목표 제어 조도</SlideTitle>
-        <Slider min={0} max={100} defaultValue={50} onChange={handleSlider} />
-      </SliderWrapper>
+
       <RandomMessageWrapper>
         <RandomMsg>바질의 최적온도는 26도 입니다</RandomMsg>
         <RandomMsg>바질은 여름보다 겨울 나기가 더 힘들어요</RandomMsg>
@@ -58,12 +41,7 @@ const MainSection2Content = () => {
               bottom: 5,
             }}
           >
-            <Area
-              type="monotone"
-              dataKey="uv"
-              stroke="rgba(0,0,0,0.3)"
-              fill="rgba(0,0,0,0.1)"
-            />
+            <Area type="monotone" dataKey="uv" stroke="rgba(0,0,0,0.3)" fill="rgba(0,0,0,0.1)" />
           </AreaChart>
         </ResponsiveContainer>
       </ChartWrapper>
@@ -116,10 +94,7 @@ const BackTriangleShape = styled.div`
   background-color: #ffffff;
   z-index: -1;
 `;
-const SliderWrapper = styled.div`
-  width: 100%;
-  padding: 20px;
-`;
+
 //---------------------------------
 
 //----------------텍스트 스타일
@@ -138,11 +113,7 @@ const PercentText = styled.span`
   font-size: 5rem;
   font-weight: 300;
 `;
-const SlideTitle = styled.div`
-  font-size: 1.2rem;
-  font-weight: 600;
-  padding-bottom: 0.2rem;
-`;
+
 const RandomMsg = styled.p`
   font-size: 1.1rem;
   text-align: right;

@@ -1,8 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { colorCode } from "@store/constValue";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { deviceInfoAtom, sensorDataOriginAtom } from "@store/atoms";
+import { useRecoilState, useRecoilValue, useRecoilCallback } from "recoil";
+import {
+  deviceInfoAtom,
+  sensorDataOriginAtom,
+  actuatorLogOriginAtom,
+  autoControlConfigOriginAtom,
+} from "@store/atoms";
 import { dailyAverageSensorDataSelector, sensorDataSelector } from "@store/selector";
 import { axiosTest, axiosInstance } from "@baseURL";
 
@@ -44,51 +49,83 @@ const Dashboard = (props) => {
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [sensorDataOrigin, setSensorDataOrigin] = useRecoilState(sensorDataOriginAtom);
+  const [actuatorDataOrigin, setActuatorDataOrigin] = useRecoilState(actuatorLogOriginAtom);
+  const [autoControlConfigOrigin, setAutoControlConfigOrigin] = useRecoilState(
+    autoControlConfigOriginAtom
+  );
   const sensorData = useRecoilValue(sensorDataSelector);
   const device = useRecoilValue(deviceInfoAtom);
+  //데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
   const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
 
-  console.log(dailyAverage);
-  //로딩페이지 설정-----------------------------------------------------//
-  /*이 컴포넌트와 아무런 상관이 없는 그냥 unix-time테스트를 위한 코드
-    const dateTest = new Date(1684168506000);
-    console.log(dateTest);
-    const dateTest2 = new Date();
-    console.log(dateTest2);
-    const dateTest3 = dateTest2.getTime();
-    console.log(dateTest3);
-    */
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsLoaded(true);
-    }, 1000);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [props]);
+  console.log(sensorDataOrigin);
+  console.log(actuatorDataOrigin);
+  console.log(autoControlConfigOrigin);
 
   useInterval(async () => {
     const device_id = "unit001";
     try {
       const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
       setSensorDataOrigin(res.data);
+      console.log("INTERVAL GET SENSOR");
     } catch (err) {
       console.error(err);
     }
   }, 60000);
+  /*
+  const handleSetSensorData = useRecoilCallback(({ set }) => {
+    return (newValue) => {
+      if (Array.isArray(newValue) && newValue.length === 0) {
+        return;
+      } else {
+        set(sensorDataOrigin, newValue);
+      }
+    };
+  });
+  const handleSetActuatorData = useRecoilCallback(({ set }) => {
+    return (newValue) => {
+      if (Array.isArray(newValue) && newValue.length === 0) {
+        return;
+      } else {
+        set(actuatorDataOrigin, newValue);
+      }
+    };
+  });
+  const handleAutoControlConfig = useRecoilCallback(({ set }) => {
+    return (newValue) => {
+      if (Array.isArray(newValue) && newValue.length === 0) {
+        return;
+      } else {
+        set(autoControlConfigOrigin, newValue);
+      }
+    };
+  });
 
+  //useEffect(의존성:빈배열 -> 첫 마운트시만 실행)
   useEffect(() => {
+    /*
     if (props.sensorDataOrigin) {
       setSensorDataOrigin(props.sensorDataOrigin); //SSR
     } else {
       console.log("props 값에 이상이 있어 setSensorDataOrigin 실패");
     }
+    if (props.actuatorDataOrigin) {
+      setActuatorDataOrigin(props.actuatorDataOrigin); //SSR
+    } else {
+      console.log("props 값에 이상이 있어 setActuatorDataOrigin 실패");
+    }
+    if (props.autoControlConfig) {
+      setAutoControlConfigOrigin(props.autoControlConfig); //SSR
+    } else {
+      console.log("props 값에 이상이 있어 setAutoControlConfigOrigin 실패");
+    }
+    handleSetSensorData(props.sensorDataOrigin);
+    handleSetActuatorData(props.actuatorDataOrigin);
+    handleAutoControlConfig(props.autoControlConfig);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   //--------------------------------------------------------------------//
-
+*/
   //section onClick시 트랜지션 동작에 필요한 상태 세팅------------------//
   useEffect(() => {
     if (isAnySectionActivated) {
@@ -109,7 +146,8 @@ const Dashboard = (props) => {
     setIsAnySectionActivated(isAnySectionActivated ? false : true);
     setActivatedSection(num);
   };
-  //
+  //--------------------------------------------------------------------//
+
   return (
     <Main>
       <Section
@@ -248,9 +286,8 @@ const SubContent = styled.div`
 `;
 //--------------------------------------
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   //최초 렌더링용 데이터 (갱신과는 상관없음)
-  const device_id = "unit001"; //임시
 
   /*현재 데이터가 충분하지 않아 START_TIME을 따로 계산할 필요 없음
   const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
@@ -260,20 +297,40 @@ export async function getServerSideProps() {
   console.log(`START_DATE : ${startDate}`);
   */
 
+  const { query } = context;
+  const userId = query.userId || "user001";
+  const deviceId = query.deviceId || "unit001";
+
+  console.log(userId, deviceId);
+
   try {
-    console.log(`=========GET ${device_id} DEVICE SENSOR LOG DATA=========`);
-    const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
-    const sensorDataOrigin = res.data;
-    console.log(sensorDataOrigin);
+    console.log(`=========GET ${deviceId} DEVICE SENSOR LOG DATA=========`);
+    const getSensorRes = await axiosInstance.get(`/sensors/${deviceId}?start_time=0`);
+    const sensorDataOrigin = getSensorRes.data;
+    //console.log(sensorDataOrigin);
+
+    console.log(`=========GET ${deviceId} DEVICE ACTUATOR LOG DATA=========`);
+    const getActuatorDataRes = await axiosInstance.get(`/actuators/${deviceId}?start_time=0`);
+    const actuatorDataOrigin = getActuatorDataRes.data;
+    console.log(actuatorDataOrigin);
+
+    console.log(`=========GET ${deviceId} DEVICE AUTO CONTROL CONFIG=========`);
+    const getAutoControlRes = await axiosInstance.get(`/auto/${deviceId}/status`);
+    const autoControlConfig = getAutoControlRes.data;
+    console.log(getAutoControlRes);
 
     return {
       props: {
         sensorDataOrigin: sensorDataOrigin,
+        actuatorDataOrigin: actuatorDataOrigin,
+        autoControlConfig: autoControlConfig,
       },
     };
   } catch (err) {
     console.log(err);
     console.log("ererer");
-    return { props: { sensorDataOrigin: null } };
+    return {
+      props: {},
+    };
   }
 }

@@ -1,13 +1,26 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 
+import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
-import { userInfoAtom } from "@store/atoms";
-import { deviceInfoAtom } from "@store/atoms";
+import { userInfoAtom, deviceInfoAtom } from "@store/atoms";
+import { autoControlConfigSeletor } from "@store/selector";
 
 const MainSection1Content = () => {
   const user = useRecoilValue(userInfoAtom);
   const device = useRecoilValue(deviceInfoAtom);
+  const autoControlConfig = useRecoilValue(autoControlConfigSeletor);
+
+  const router = useRouter();
+
+  const handleNavMyPage = () => {
+    router.push("/mypage");
+  };
+
+  const handleNavLogOut = () => {
+    router.push("/");
+  };
+
   return (
     <Main>
       <ProfileImageWrapper>
@@ -21,13 +34,12 @@ const MainSection1Content = () => {
         <SubTitleText>{`${device.created_at}에 태어남`}</SubTitleText>
         <SubTitleText>현재상태</SubTitleText>
         <SubTitleText>
-          {device.autoMode ? "자동제어가 실행중입니다." : "자동제어가 실행중이 아닙니다."}
+          {autoControlConfig.status ? "자동제어가 실행중입니다." : "자동제어가 실행중이 아닙니다."}
         </SubTitleText>
       </ContentsWrapper>
       <NavWrapper>
-        <NavText>내식물</NavText>
-        <NavText>내정보</NavText>
-        <NavText>로그아웃</NavText>
+        <NavText onClick={handleNavMyPage}>마이페이지</NavText>
+        <NavText onClick={handleNavLogOut}>로그아웃</NavText>
       </NavWrapper>
     </Main>
   );
@@ -91,7 +103,7 @@ const SubTitleText = styled.p`
 `;
 const NavText = styled.div`
   padding: 1rem;
-  width: 33%;
+  width: 50%;
   text-align: center;
 `;
 //----------------------------------

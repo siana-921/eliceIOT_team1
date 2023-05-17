@@ -4,11 +4,11 @@
 // import { useRecoilValue } from "recoil";
 // import { sensorDataSelector } from "@store/selector";
 
-// import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAllChart";
-// import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart.jsx";
-// import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart.jsx";
-// import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart.jsx";
-// import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart.jsx";
+import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAllChart";
+import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart.jsx";
+//import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart.jsx";
+import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart.jsx";
+import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart.jsx";
 
 // const SubSection1Contents = () => {
 //   const sensorData = useRecoilValue(sensorDataSelector);
@@ -40,50 +40,48 @@
 //     }
 //   );
 
-//   return (
-//     <Main name="SubSection1Main">
-//       <Grid>
-//         <Item1>
-//           <ComparisonAllChart></ComparisonAllChart>
-//         </Item1>
-//         <Item2>
-//           <DotsChart></DotsChart>
-//           <DayAndNightTempChart></DayAndNightTempChart>
-//         </Item2>
-//         <Item3>
-//           <MaxAndMinTitle>최고조도 | 최저조도</MaxAndMinTitle>
-//           <MaxAndMinValue>
-//             {result.light.max}/{result.light.min}
-//           </MaxAndMinValue>
-//         </Item3>
-//         <Item5>
-//           <MaxAndMinTitle>최고온도 | 최저온도</MaxAndMinTitle>
-//           <MaxAndMinValue>
-//             {result.temp.max}/{result.temp.min}
-//           </MaxAndMinValue>
-//         </Item5>
-//         <Item6>
-//           <MaxAndMinTitle>최고대기습도 | 최저대기습도</MaxAndMinTitle>
-//           <MaxAndMinValue>
-//             {result.humidity.max}/{result.humidity.min}
-//           </MaxAndMinValue>
-//         </Item6>
-//         <Item7>
-//           <MaxAndMinTitle>최고토양수분 | 최저토양수분</MaxAndMinTitle>
-//           <MaxAndMinValue>
-//             {result.moisture.max}/{result.moisture.min}
-//           </MaxAndMinValue>
-//         </Item7>
-//         <Item8>
-//           <WaterTankValChart></WaterTankValChart>
-//         </Item8>
-//         <Item9>
-//           <EnviroMoistChart></EnviroMoistChart>
-//         </Item9>
-//       </Grid>
-//     </Main>
-//   );
-// };
+  return (
+    <Main name="SubSection1Main">
+      <Grid>
+        <Item1>
+          <ComparisonAllChart></ComparisonAllChart>
+        </Item1>
+        <Item2>
+          <DotsChart></DotsChart>
+          <DayAndNightTempChart></DayAndNightTempChart>
+        </Item2>
+        <Item3>
+          <MaxAndMinTitle>최고조도 | 최저조도</MaxAndMinTitle>
+          <MaxAndMinValue>
+            {result.light.max}/{result.light.min}
+          </MaxAndMinValue>
+        </Item3>
+        <Item5>
+          <MaxAndMinTitle>최고온도 | 최저온도</MaxAndMinTitle>
+          <MaxAndMinValue>
+            {result.temp.max}/{result.temp.min}
+          </MaxAndMinValue>
+        </Item5>
+        <Item6>
+          <MaxAndMinTitle>최고대기습도 | 최저대기습도</MaxAndMinTitle>
+          <MaxAndMinValue>
+            {result.humidity.max}/{result.humidity.min}
+          </MaxAndMinValue>
+        </Item6>
+        <Item7>
+          <MaxAndMinTitle>최고토양수분 | 최저토양수분</MaxAndMinTitle>
+          <MaxAndMinValue>
+            {result.moisture.max}/{result.moisture.min}
+          </MaxAndMinValue>
+        </Item7>
+        <Item8>{/*<WaterTankValChart></WaterTankValChart>*/}</Item8>
+        <Item9>
+          <EnviroMoistChart></EnviroMoistChart>
+        </Item9>
+      </Grid>
+    </Main>
+  );
+};
 
 // export default SubSection1Contents;
 
