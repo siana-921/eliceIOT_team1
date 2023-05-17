@@ -8,28 +8,7 @@ export const allDeviceSensorAtom = atom({
 //누적 센서 데이터 (객체배열)
 export const sensorDataOriginAtom = atom({
   key: "sensorDataOriginAtom",
-  default: [
-    {
-      idx: 0,
-      device_id: "unit001",
-      light: 0,
-      moisture: 0,
-      temp: 0,
-      humidity: 0,
-      water_level: 0,
-      created_at: 1679580000, //unix-time
-    },
-    {
-      idx: 1,
-      device_id: "unit001",
-      light: 0,
-      moisture: 0,
-      temp: 0,
-      humidity: 0,
-      water_level: 0,
-      created_at: 1679666400, //unix-time
-    },
-  ],
+  default: [],
 });
 
 //아무런 로그인 정보가 없을때는 테스트를 위해

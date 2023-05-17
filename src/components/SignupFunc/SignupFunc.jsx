@@ -1,12 +1,11 @@
 import { axiosInstance } from "@/api/base";
 import React, { useState, useEffect } from "react";
-import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { tokenState, signupState, selectedPhotoState } from "@store/atoms";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import Swal from "sweetalert2";
-import { redirect } from "next/dist/server/api-utils";
 
 const deviceProfileImages = [
   "/images/deviceprofile01.png",
@@ -25,13 +24,14 @@ export default function SignupFunc() {
   const [loading, setLoading] = useState(false);
   const [redirectTimeout, setRedirectTimeout] = useState(null);
 
-  const setToken = useSetRecoilState(tokenState);
+  // const setToken = useSetRecoilState(tokenState);
   const [signup, setSignup] = useRecoilState(signupState);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [cookies, setCookie] = useCookies(["access_token"]);
+  //  const [cookies, setCookie] = useCookies(["access_token"]);
 
   const router = useRouter();
 
+  /*
   useEffect(() => {
     if (signup.success) {
       const { access_token } = signup;
@@ -53,7 +53,7 @@ export default function SignupFunc() {
       clearTimeout(timeoutId);
     };
   }, [signup, setToken, router, setCookie]);
-
+*/
   const handlePhotoChange = (index) => {
     setSelectedPhoto(index + 1);
   };

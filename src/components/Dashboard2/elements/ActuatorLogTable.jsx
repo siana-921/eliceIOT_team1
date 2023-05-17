@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useTable } from "react-table";
 import React, { useMemo } from "react";
 
-import ActuatorLog from "../../../data/testingdata/actuatorLog";
+import device000actuator from "../../../data/testingdata/device000actuator";
 
 const ActuatorLogTable = () => {
   const columns = React.useMemo(
@@ -24,7 +24,10 @@ const ActuatorLogTable = () => {
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data: ActuatorLog });
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+    columns,
+    data: device000actuator,
+  });
   return (
     <Main>
       <table {...getTableProps()}>
