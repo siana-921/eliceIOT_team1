@@ -93,7 +93,7 @@ export const actuatorLogOriginAtom = atom({
 
 // ---------------------------------------------로그인---------------------------------------------------------
 
-// 로그인 토큰 관리
+// 로그인 토큰 관리(사용 : signup)
 export const tokenState = atom({
   key: "tokenState",
   default: "",
@@ -105,11 +105,20 @@ export const isLoggedInState = atom({
   default: false,
 });
 
+export const signupState = atom({
+  key: "signupState",
+  default: {
+    success: false,
+    error: null,
+  },
+});
+
 export const devicesState = atom({
   key: "devicesState",
   default: [],
 });
 
+// 사용 : mypage
 export const defaultDeviceIdState = atom({
   key: "defaultDeviceIdState",
   default: "",

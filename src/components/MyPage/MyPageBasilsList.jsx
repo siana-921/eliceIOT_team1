@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import React, { useState, useEffect } from "react";
 import DeviceModal from "./DeviceModal";
 import { useRecoilState } from "recoil";
-import { devicesState, defaultDeviceIdState } from "../../store/atoms";
+import { defaultDeviceIdState } from "../../store/atoms";
 // import { AxiosInstance } from "axios";
 import axios from "axios";
 

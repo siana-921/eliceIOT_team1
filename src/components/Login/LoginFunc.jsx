@@ -3,6 +3,8 @@ import { axiosInstance } from "@/api/base";
 import Link from "next/link";
 import { isLoggedInState, tokenState } from "@/store/atoms";
 import { useSetRecoilState, useRecoilState } from "recoil";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 import styled from "@emotion/styled";
 
@@ -17,18 +19,18 @@ export default function LoginFunc({ loginData }) {
   useEffect(() => {
     if (msg && loading) {
       setTimeout(() => {
-        setMsg(loginData.id + "로그인 되었습니다! 반가워요 😊");
+        setMsg(loginData?.id + "로그인 되었습니다! 반가워요 😊");
         setLoading(false);
       }, 3000);
     }
-  }, [msg, loading, loginData.id]);
+  }, [msg, loading, loginData?.id]);
 
   const handleResponse = (res) => {
     if (loginData && loginData.id === id && loginData.password === password) {
       console.log("로그인");
       setMsg("");
       setToken(res.data.token);
-      window.location.href = "/myPage";
+      router.push("/mypage");
     } else if (!id || !password) {
       setMsg("ID나 Password를 입력했는지 확인해주세요.");
     } else if (!loginData) {
@@ -56,8 +58,8 @@ export default function LoginFunc({ loginData }) {
 
     setLoading(true);
 
-    axiosInstance
-      .post(`/user/sign_in`, body)
+    axios
+      .post(`pages/api/mockup/sign_in`, body)
       .then((res) => {
         console.log(res);
         handleResponse(res);
@@ -72,17 +74,26 @@ export default function LoginFunc({ loginData }) {
   return (
     <LoginPage>
       <LoginPageContents>
+        <LoginPageCommentDiv>
+          <h1>LOGIN</h1>
+          <h2>바질과 무제한 친해지리</h2>
+          <h3>다양한 센서들과 엑츄에이터들로 인생바질을 키워보세요</h3>
+        </LoginPageCommentDiv>
         <LoginPageForm onSubmit={LoginFunc} method="post">
-          <h1>Login</h1>
-          <label htmlFor="id">ID</label>
-          <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
-          <label htmlFor="password">Password</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="text" value={id} onChange={(e) => setId(e.target.value)} placeholder="ID" />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
           <button type="submit" disabled={loading}>
-            로그인
+            Login
           </button>
-          <p>아직 가입을 하지 않았다면?</p>
-          <Link href="/signup">가입하러 가기</Link>
+          <LoginPageSignupDiv>
+            <p>아직 가입을 하지 않았다면?</p>
+            <LoginPageSignupLink href="/signup">가입하러 가기</LoginPageSignupLink>
+          </LoginPageSignupDiv>
           {msg}
         </LoginPageForm>
       </LoginPageContents>
@@ -92,27 +103,99 @@ export default function LoginFunc({ loginData }) {
 
 const LoginPage = styled.div`
   position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  width: 30%;
+  height: 70%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #ffffff;
+  border-radius: 10px;
 `;
 
 const LoginPageContents = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  height: 80%;
+  // border: 2px solid;
   text-align: center;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const LoginPageCommentDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+
+  & h1 {
+    font-size: 70px;
+    font-weight: 700;
+    color: #97c410;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  & h3 {
+    font-weight: 500;
+  }
 `;
 
 const LoginPageForm = styled.form`
-  width: 30%;
-  height: 70%;
-  background-color: #ffffff;
-  border-radius: 0 10px 10px 0;
+  border-radius: 20px;
+
+  // border: 2px solid;
+  width: 80%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & input {
+    width: 100%;
+    height: 13%;
+    transition: background-color 0.8s;
+    border: 1px rgba(228, 228, 228, 0.5) solid;
+    border-radius: 5px;
+    margin: 15px;
+
+    &:focus {
+      border: 0.5px solid;
+    }
+
+    &::placeholder {
+      padding-left: 20px;
+      font-size: 15px;
+    }
+  }
+
+  & button {
+    cursor: pointer;
+    width: 100%;
+    margin: 20px;
+    height: 13%;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.2s;
+
+    font-size: 20px;
+
+    &: hover {
+      background-color: rgba(0, 168, 107, 0.8);
+    }
+  }
+`;
+
+const LoginPageSignupDiv = styled.div`
+  display: flex;
+  margin: 20px;
+  font-size: 18px;
+`;
+
+const LoginPageSignupLink = styled(Link)`
+  font-weight: bold;
+  margin-left: 10px;
+  color: rgba(0, 168, 107, 0.8);
 `;
