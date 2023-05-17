@@ -112,24 +112,63 @@ export const dailyAverageSensorDataSelector = selector({
     return calAvg;
   },
 });
+// [셀렉터] 일별 평균 센서값 배열의 최소, 최대값 계산
+export const dailyAverageMaxMinSelector = selector({
+  key: "dailyAverageMaxMinSelector",
+  get: ({ get }) => {
+    const dailyAverageSensorData = get(dailyAverageSensorDataSelector);
+
+    const res = dailyAverageSensorData.reduce(
+      (acc, cur) => {
+        if (cur.temp !== 0) {
+          acc.temp.max = Math.max(acc.temp.max, cur.temp);
+          acc.temp.min = Math.min(acc.temp.min, cur.temp);
+        }
+        if (cur.humidity !== 0) {
+          acc.humidity.max = Math.max(acc.humidity.max, cur.humidity);
+          acc.humidity.min = Math.min(acc.humidity.min, cur.humidity);
+        }
+        if (cur.light !== 0) {
+          acc.light.max = Math.max(acc.light.max, cur.light);
+          acc.light.min = Math.min(acc.light.min, cur.light);
+        }
+        if (cur.moisture !== 0) {
+          acc.moisture.max = Math.max(acc.moisture.max, cur.moisture);
+          acc.moisture.min = Math.min(acc.moisture.min, cur.moisture);
+        }
+        return acc;
+      },
+      {
+        temp: { max: 0, min: Infinity },
+        humidity: { max: 0, min: Infinity },
+        light: { max: 0, min: Infinity },
+        moisture: { max: 0, min: Infinity },
+      }
+    );
+
+    return res;
+  },
+});
 
 // [셀렉터] 자동제어 상태 포맷 변경 (배열->단일객체, unixTime->string)
 export const autoControlConfigSeletor = selector({
   key: "autoControlConfigSeletor",
   get: ({ get }) => {
     const autoControlConfigOrigin = get(autoControlConfigOriginAtom);
-    console.log(autoControlConfigOrigin);
 
     if (autoControlConfigOrigin.length > 0) {
-      const date = new Date(autoControlConfigOrigin[0].created_at);
+      const date = autoControlConfigOrigin[0].created_at;
 
-      const dateString = `${date.getFullYear()}년 ${
-        date.getMonth() + 1
-      }월 ${date.getDate()}일 ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+      const year = date.slice(0, 4);
+      const month = date.slice(5, 7);
+      const day = date.slice(8, 10);
+      const hours = date.slice(11, 13);
+      const minutes = date.slice(14, 16);
+      const seconds = date.slice(17, 19);
+
+      const dateString = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
 
       const newObject = { ...autoControlConfigOrigin[0], created_at: dateString };
-      console.log(autoControlConfigOrigin);
-      console.log(newObject);
 
       return newObject;
     }

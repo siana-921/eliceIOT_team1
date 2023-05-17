@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 
 import { useRecoilValue } from "recoil";
-import { sensorDataSelector } from "@store/selector";
+import {
+  sensorDataSelector,
+  dailyAverageMaxMinSelector,
+  //dailyAverageSensorDataSelector,
+} from "@store/selector";
 
 import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAllChart";
 import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart.jsx";
@@ -13,6 +17,7 @@ import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNigh
 const SubSection1Contents = () => {
   const sensorData = useRecoilValue(sensorDataSelector);
 
+  //필터링 전 origin sensorData기준으로 계산하는거라 셀렉터랑 다름!
   const calMinMax = sensorData.reduce(
     (acc, cur) => {
       if (cur.temp !== 0) {

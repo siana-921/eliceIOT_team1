@@ -68,12 +68,12 @@ const Dashboard = (props) => {
     } else {
       console.log("sensor log에 빈 배열이 들어오고 있음. 디폴트 사용");
     }
-    if (Array.isArray(props.actuatorDataOrigin) && props.actuatorDataOrigin.length > 1) {
+    if (Array.isArray(props.actuatorDataOrigin) && props.actuatorDataOrigin.length > 0) {
       setActuatorDataOrigin(props.actuatorDataOrigin);
     } else {
       console.log("actuator log에 빈 배열이 들어오고 있음. 디폴트 사용");
     }
-    if (Array.isArray(props.autoControlConfig) && props.autoControlConfig.length > 1) {
+    if (Array.isArray(props.autoControlConfig) && props.autoControlConfig.length > 0) {
       setAutoControlConfigOrigin(props.autoControlConfig);
     } else {
       console.log("autoControlConfig에 빈 배열이 들어오고 있음. 디폴트 사용");
@@ -92,60 +92,7 @@ const Dashboard = (props) => {
       console.error(err);
     }
   }, 180000);
-  /*
-  const handleSetSensorData = useRecoilCallback(({ set }) => {
-    return (newValue) => {
-      if (Array.isArray(newValue) && newValue.length === 0) {
-        return;
-      } else {
-        set(sensorDataOrigin, newValue);
-      }
-    };
-  });
-  const handleSetActuatorData = useRecoilCallback(({ set }) => {
-    return (newValue) => {
-      if (Array.isArray(newValue) && newValue.length === 0) {
-        return;
-      } else {
-        set(actuatorDataOrigin, newValue);
-      }
-    };
-  });
-  const handleAutoControlConfig = useRecoilCallback(({ set }) => {
-    return (newValue) => {
-      if (Array.isArray(newValue) && newValue.length === 0) {
-        return;
-      } else {
-        set(autoControlConfigOrigin, newValue);
-      }
-    };
-  });
 
-  //useEffect(의존성:빈배열 -> 첫 마운트시만 실행)
-  useEffect(() => {
-    /*
-    if (props.sensorDataOrigin) {
-      setSensorDataOrigin(props.sensorDataOrigin); //SSR
-    } else {
-      console.log("props 값에 이상이 있어 setSensorDataOrigin 실패");
-    }
-    if (props.actuatorDataOrigin) {
-      setActuatorDataOrigin(props.actuatorDataOrigin); //SSR
-    } else {
-      console.log("props 값에 이상이 있어 setActuatorDataOrigin 실패");
-    }
-    if (props.autoControlConfig) {
-      setAutoControlConfigOrigin(props.autoControlConfig); //SSR
-    } else {
-      console.log("props 값에 이상이 있어 setAutoControlConfigOrigin 실패");
-    }
-    handleSetSensorData(props.sensorDataOrigin);
-    handleSetActuatorData(props.actuatorDataOrigin);
-    handleAutoControlConfig(props.autoControlConfig);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  //--------------------------------------------------------------------//
-*/
   //section onClick시 트랜지션 동작에 필요한 상태 세팅------------------//
   useEffect(() => {
     if (isAnySectionActivated) {
@@ -328,7 +275,7 @@ export async function getServerSideProps(context) {
     console.log(`=========GET ${deviceId} DEVICE SENSOR LOG DATA=========`);
     const getSensorRes = await axiosInstance.get(`/sensors/${deviceId}?start_time=0`);
     const sensorDataOrigin = getSensorRes.data;
-    console.log(sensorDataOrigin);
+    //console.log(sensorDataOrigin);
     resProps.sensorDataOrigin = sensorDataOrigin;
   } catch (err) {
     resProps.sensorDataOrigin = [];
@@ -338,7 +285,7 @@ export async function getServerSideProps(context) {
     console.log(`=========GET ${deviceId} DEVICE ACTUATOR LOG DATA=========`);
     const getActuatorDataRes = await axiosInstance.get(`/actuators/${deviceId}?start_time=0`);
     const actuatorDataOrigin = getActuatorDataRes.data;
-    console.log(actuatorDataOrigin);
+    //console.log(actuatorDataOrigin);
     resProps.actuatorDataOrigin = actuatorDataOrigin;
   } catch (err) {
     resProps.actuatorDataOrigin = [];
@@ -348,7 +295,7 @@ export async function getServerSideProps(context) {
     console.log(`=========GET ${deviceId} DEVICE AUTO CONTROL CONFIG=========`);
     const getAutoControlRes = await axiosInstance.get(`/auto/${deviceId}/status`);
     const autoControlConfig = getAutoControlRes.data;
-    console.log(getAutoControlRes);
+    console.log(autoControlConfig);
     resProps.autoControlConfig = autoControlConfig;
   } catch (err) {
     resProps.autoControlConfig = [];

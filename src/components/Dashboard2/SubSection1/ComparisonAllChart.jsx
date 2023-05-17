@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRecoilValue } from "recoil";
-import { dailyAverageSensorDataSelector, sensorDataSelector } from "@store/selector";
+import {
+  dailyAverageSensorDataSelector,
+  dailyAverageMaxMinSelector,
+  sensorDataSelector,
+} from "@store/selector";
 import { colorCode } from "@store/constValue";
 import {
   AreaChart,
@@ -13,11 +17,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const ComparisonAllChart = (data2) => {
-  const sensorData = useRecoilValue(sensorDataSelector);
+const ComparisonAllChart = () => {
   const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
-
-  console.log(dailyAverage);
+  const dailyAverageMaxMin = useRecoilValue(dailyAverageMaxMinSelector);
 
   const data = dailyAverage.map((item, index) => ({
     name: `Day ${index + 1}`,
@@ -27,6 +29,7 @@ const ComparisonAllChart = (data2) => {
     moisture: item.moisture,
   }));
 
+  console.log(dailyAverageMaxMin);
   return (
     <Main>
       <SensorTitleText>
@@ -45,11 +48,11 @@ const ComparisonAllChart = (data2) => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis domain={[0, dailyAverageMaxMin.temp.max * 1.5]} />
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="light"
+            dataKey="temp"
             stroke={colorCode.orange}
             fill={colorCode.orange}
             isAnimationActive={false}
@@ -72,12 +75,12 @@ const ComparisonAllChart = (data2) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="name" domain={[50, 150]} />
           <YAxis />
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="temp"
+            dataKey="light"
             stroke={colorCode.yellow}
             fill={colorCode.yellow}
             isAnimationActive={false}
@@ -100,7 +103,7 @@ const ComparisonAllChart = (data2) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="name" domain={[50, 150]} />
           <YAxis />
           <Tooltip />
           <Area
@@ -128,7 +131,7 @@ const ComparisonAllChart = (data2) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="name" domain={[50, 150]} />
           <YAxis />
           <Tooltip />
           <Area
