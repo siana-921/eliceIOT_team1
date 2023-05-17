@@ -42,6 +42,7 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
+/////////////////////////////////////////////////////////////////////////////////
 const Dashboard = (props) => {
   const [activatedSection, setActivatedSection] = useState(1);
   const [popUpSection, setPopUpSection] = useState(1);
@@ -58,74 +59,40 @@ const Dashboard = (props) => {
   //데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
   const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
 
-  console.log(sensorDataOrigin);
-  console.log(actuatorDataOrigin);
-  console.log(autoControlConfigOrigin);
+  console.log(props);
+
+  //첫 마운트 SSR
+  useEffect(() => {
+    if (Array.isArray(props.sensorDataOrigin) && props.sensorDataOrigin.length > 10) {
+      setSensorDataOrigin(props.senserDataOrigin);
+    } else {
+      console.log("sensor log에 빈 배열이 들어오고 있음. 디폴트 사용");
+    }
+    if (Array.isArray(props.actuatorDataOrigin) && props.actuatorDataOrigin.length > 0) {
+      setActuatorDataOrigin(props.actuatorDataOrigin);
+    } else {
+      console.log("actuator log에 빈 배열이 들어오고 있음. 디폴트 사용");
+    }
+    if (Array.isArray(props.autoControlConfig) && props.autoControlConfig.length > 0) {
+      setAutoControlConfigOrigin(props.autoControlConfig);
+    } else {
+      console.log("autoControlConfig에 빈 배열이 들어오고 있음. 디폴트 사용");
+    }
+  }),
+    [];
 
   useInterval(async () => {
     const device_id = "unit001";
     try {
       const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
-      setSensorDataOrigin(res.data);
+      const data = res.data;
+      if (Array.isArray(data) && data.length > 10) setSensorDataOrigin(res.data);
       console.log("INTERVAL GET SENSOR");
     } catch (err) {
       console.error(err);
     }
-  }, 60000);
-  /*
-  const handleSetSensorData = useRecoilCallback(({ set }) => {
-    return (newValue) => {
-      if (Array.isArray(newValue) && newValue.length === 0) {
-        return;
-      } else {
-        set(sensorDataOrigin, newValue);
-      }
-    };
-  });
-  const handleSetActuatorData = useRecoilCallback(({ set }) => {
-    return (newValue) => {
-      if (Array.isArray(newValue) && newValue.length === 0) {
-        return;
-      } else {
-        set(actuatorDataOrigin, newValue);
-      }
-    };
-  });
-  const handleAutoControlConfig = useRecoilCallback(({ set }) => {
-    return (newValue) => {
-      if (Array.isArray(newValue) && newValue.length === 0) {
-        return;
-      } else {
-        set(autoControlConfigOrigin, newValue);
-      }
-    };
-  });
+  }, 180000);
 
-  //useEffect(의존성:빈배열 -> 첫 마운트시만 실행)
-  useEffect(() => {
-    /*
-    if (props.sensorDataOrigin) {
-      setSensorDataOrigin(props.sensorDataOrigin); //SSR
-    } else {
-      console.log("props 값에 이상이 있어 setSensorDataOrigin 실패");
-    }
-    if (props.actuatorDataOrigin) {
-      setActuatorDataOrigin(props.actuatorDataOrigin); //SSR
-    } else {
-      console.log("props 값에 이상이 있어 setActuatorDataOrigin 실패");
-    }
-    if (props.autoControlConfig) {
-      setAutoControlConfigOrigin(props.autoControlConfig); //SSR
-    } else {
-      console.log("props 값에 이상이 있어 setAutoControlConfigOrigin 실패");
-    }
-    handleSetSensorData(props.sensorDataOrigin);
-    handleSetActuatorData(props.actuatorDataOrigin);
-    handleAutoControlConfig(props.autoControlConfig);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  //--------------------------------------------------------------------//
-*/
   //section onClick시 트랜지션 동작에 필요한 상태 세팅------------------//
   useEffect(() => {
     if (isAnySectionActivated) {
@@ -302,35 +269,40 @@ export async function getServerSideProps(context) {
   const deviceId = query.deviceId || "unit001";
 
   console.log(userId, deviceId);
+  const resProps = {};
 
   try {
     console.log(`=========GET ${deviceId} DEVICE SENSOR LOG DATA=========`);
     const getSensorRes = await axiosInstance.get(`/sensors/${deviceId}?start_time=0`);
     const sensorDataOrigin = getSensorRes.data;
     //console.log(sensorDataOrigin);
-
+    resProps.sensorDataOrigin = sensorDataOrigin;
+  } catch (err) {
+    resProps.sensorDataOrigin = [];
+    console.error(err);
+  }
+  try {
     console.log(`=========GET ${deviceId} DEVICE ACTUATOR LOG DATA=========`);
     const getActuatorDataRes = await axiosInstance.get(`/actuators/${deviceId}?start_time=0`);
     const actuatorDataOrigin = getActuatorDataRes.data;
-    console.log(actuatorDataOrigin);
-
+    //console.log(actuatorDataOrigin);
+    resProps.actuatorDataOrigin = actuatorDataOrigin;
+  } catch (err) {
+    resProps.actuatorDataOrigin = [];
+    console.error(err);
+  }
+  try {
     console.log(`=========GET ${deviceId} DEVICE AUTO CONTROL CONFIG=========`);
     const getAutoControlRes = await axiosInstance.get(`/auto/${deviceId}/status`);
     const autoControlConfig = getAutoControlRes.data;
-    console.log(getAutoControlRes);
-
-    return {
-      props: {
-        sensorDataOrigin: sensorDataOrigin,
-        actuatorDataOrigin: actuatorDataOrigin,
-        autoControlConfig: autoControlConfig,
-      },
-    };
+    console.log(autoControlConfig);
+    resProps.autoControlConfig = autoControlConfig;
   } catch (err) {
-    console.log(err);
-    console.log("ererer");
-    return {
-      props: {},
-    };
+    resProps.autoControlConfig = [];
+    console.error(err);
   }
+
+  return {
+    props: resProps,
+  };
 }

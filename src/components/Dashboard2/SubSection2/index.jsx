@@ -12,7 +12,6 @@ import "rc-slider/assets/index.css";
 import optimal from "@data/optimalGrowingCondition";
 
 import ActuatorLogTable from "../elements/ActuatorLogTable";
-import { validateConfig } from "next/dist/server/config-shared";
 
 const SubSection2Contents = () => {
   const [autoControlConfigOrigin, setAutoControlConfigOrigin] = useRecoilState(
@@ -22,25 +21,86 @@ const SubSection2Contents = () => {
   const [isValueMode, setIsValueMode] = useState(true);
   const [isAutoControl, setIsAutoControl] = useState(autoControlConfig.status);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [targetValue, setTargetValue] = useState(autoControlConfig.target_light);
+  const [targetValue, setTargetValue] = useState(autoControlConfig.target_light || 50);
 
   const user = useRecoilValue(userInfoAtom); //현재 로그인된 유저의 정보 : default user001
   const device = useRecoilValue(deviceInfoAtom); //현재 로그인된 유저의 device : default unit001
-  const { device_id } = device;
+  const { id: device_id } = device;
+  const { id: user_id } = user;
 
-  //POST성공후 GET해서 ATOMSET중이라 컴포넌트 렌더링때 GET안하고
-  //MainSection렌더링때 set된 ATOM데이터를 초기렌더링에 써도될듯?
-  /*
-  useEffect(()=>{
-    const 
-  },[])
-*/
+  useEffect(() => {
+    console.log(`자동제어상태 : ${isAutoControl}`);
+    console.log(`현재 로그인 정보 : ${(user_id, device_id)}`);
+    console.log(autoControlConfig);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setTargetValue(autoControlConfig.target_light);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //자동제어 토글버튼 onChange
   const handleAutoControlOnOff = () => {
-    setIsAutoControl(!isAutoControl);
+    setIsAutoControl((prevIsAutoControl) => !prevIsAutoControl);
   };
 
+  useEffect(() => {
+    if (isAutoControl === false) {
+      console.log("자동제어 모드를 종료합니다. 즉시제어 또는 자동제어 설정이 가능합니다.");
+      const data = {
+        status: 0,
+        target_temp: null,
+        target_moisture: null,
+        target_light: null,
+      };
+      console.log("status 0 상태로 POST");
+      axiosInstance
+        .post(`/auto/${device_id}`, data)
+        .then((postRes) => {
+          console.log(postRes);
+          axiosInstance
+            .get(`/auto/${device_id}/status`)
+            .then((getRes) => {
+              console.log(getRes);
+              setAutoControlConfigOrigin(getRes.data);
+            })
+            .catch((getError) => {
+              console.error(getError);
+            });
+        })
+        .catch((postError) => {
+          console.error(postError);
+        });
+    } else if (isAutoControl === true && autoControlConfig.target_light !== targetValue) {
+      console.log("자동제어 모드를 시작합니다.");
+      const data = {
+        status: 1,
+        target_temp: parseInt(optimal.temp),
+        target_moisture: parseInt(optimal.moist),
+        target_light: targetValue,
+      };
+      console.log("아래의 데이터로 자동제어 POST 합니다!");
+      console.log(data);
+      axiosInstance
+        .post(`/auto/${device_id}`, data)
+        .then((postRes) => {
+          console.log(postRes);
+          axiosInstance
+            .get(`/auto/${device_id}/status`)
+            .then((getRes) => {
+              console.log(getRes);
+              setAutoControlConfigOrigin(getRes.data);
+            })
+            .catch((getError) => {
+              console.error(getError);
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("서버와의 통신에 실패했습니다.");
+          setTargetValue(autoControlConfig.target_light);
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAutoControl]);
   //자동제어 모드 라디오버튼 onChange
   const handleRadioChange = (e) => {
     console.log(e.target.id);
@@ -74,66 +134,7 @@ const SubSection2Contents = () => {
       alert("서버와의 통신에 실패했습니다.");
     }
   };
-
   //자동제어 POST (useEffect: isAutoControl)
-  useEffect(() => {
-    if (isAutoControl == false) {
-      console.log("자동제어 모드를 종료합니다. 즉시제어 또는 자동제어 설정이 가능합니다.");
-      const data = {
-        status: 0,
-      };
-      axiosInstance
-        .post(`/auto/${device_id}`, data)
-        .then((postRes) => {
-          console.log(postRes);
-          //자동제어 상태를 변경한 내용이 페이지에 반영되게 GET해서 ATOM에 넣기
-          axiosInstance
-            .get(`/auto/${device_id}/status`)
-            .then((getRes) => {
-              console.log(getRes);
-              setAutoControlConfigOrigin(getRes.data);
-            })
-            .catch((getError) => {
-              console.error(getError);
-            });
-        })
-        .catch((postError) => {
-          console.error(postError);
-        });
-    } else {
-      console.log("자동제어 모드를 시작합니다.");
-      if (autoControlConfig.target_light !== targetValue) {
-        const data = {
-          status: 1,
-          target_temp: parseInt(optimal.temp),
-          target_moisture: parseInt(optimal.moist),
-          target_light: targetValue,
-        };
-        console.log(data);
-        axiosInstance
-          .post(`/auto/${device_id}`, data)
-          .then((postRes) => {
-            console.log(postRes);
-            //자동제어 상태를 변경한 내용이 페이지에 반영되게 GET해서 ATOM에 넣기
-            axiosInstance
-              .get(`/auto/${device_id}/status`)
-              .then((getRes) => {
-                console.log(getRes);
-                setAutoControlConfigOrigin(getRes.data);
-              })
-              .catch((getError) => {
-                console.error(getError);
-              });
-          })
-          .catch((error) => {
-            console.error(error);
-            alert("서버와의 통신에 실패했습니다.");
-            setTargetValue(autoControlConfig.target_light);
-          });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAutoControl]);
 
   //--------------------------------------------------------------------//
 
@@ -157,7 +158,7 @@ const SubSection2Contents = () => {
                     paddingLeft: "10px",
                   }}
                 >
-                  {autoControlConfig.target_light}%
+                  {targetValue}%
                 </span>
               </p>
               <p>
@@ -223,7 +224,7 @@ const SubSection2Contents = () => {
                     <AutoModeSeletorWrapper>
                       <SliderWrapper>
                         <SlideTitle>
-                          목표 제어 조도<span>{targetValue}%</span>
+                          목표 제어 조도<span>{targetValue ? targetValue : 0}%</span>
                         </SlideTitle>
                         <Slider min={0} max={100} value={targetValue} onChange={handleSlider} />
                       </SliderWrapper>
