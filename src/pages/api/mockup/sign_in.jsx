@@ -1,4 +1,4 @@
-// pages/api/mockup/userinfo.jsx
+// pages/api/mockup/sign_in.jsx
 
 export default function handler(req, res) {
   const data = {
