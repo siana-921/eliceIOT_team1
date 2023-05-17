@@ -8,7 +8,7 @@ export default function MyPage({}) {
     <MyPageContainer>
       <MyPageLogoImage src="/images/logo.png" alt="logo" layout="fill" />
       <MyPageUser />
-      <MyPageBailsList />
+      {/* <MyPageBailsList /> */}
     </MyPageContainer>
   );
 }
