@@ -67,7 +67,7 @@ export default function LoginFunc() {
     axiosInstance
       .post(`user/sign_in`, body, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${cookies.access_token}`,
         },
       })
       .then((response) => {
