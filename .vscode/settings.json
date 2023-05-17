@@ -1,3 +1,14 @@
 {
-  "cSpell.words": ["charjs", "fullname", "mypage", "occured", "signup", "Singup", "testuser"]
+  "cSpell.words": [
+    "charjs",
+    "deviceprofile",
+    "fullname",
+    "mypage",
+    "occured",
+    "signup",
+    "Singup",
+    "Swal",
+    "sweetalert",
+    "testuser"
+  ]
 }
