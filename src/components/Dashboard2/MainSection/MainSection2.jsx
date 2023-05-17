@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import { useRecoilValue } from "recoil";
+import { lastSensorDataSelector } from "@/store/selector";
 
 import {
   AreaChart,
@@ -11,6 +13,10 @@ import {
 } from "recharts";
 
 const MainSection2Content = () => {
+  const latestData = useRecoilValue(lastSensorDataSelector);
+
+  console.log(latestData);
+
   return (
     <Main>
       <BackTriangleWrapper>
@@ -20,7 +26,7 @@ const MainSection2Content = () => {
       <DataValueText>
         87<PercentText>%</PercentText>
       </DataValueText>
-      <DataValueNote>기준: 1000lux</DataValueNote>
+      <DataValueNote>기준: 15000</DataValueNote>
 
       <RandomMessageWrapper>
         <RandomMsg>바질의 최적온도는 26도 입니다</RandomMsg>

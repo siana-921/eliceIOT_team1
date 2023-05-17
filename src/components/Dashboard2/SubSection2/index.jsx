@@ -117,7 +117,7 @@ const SubSection2Contents = () => {
   }, 300);
 
   //수동제어 POST (onClick handler)
-  const handlePost = async (e, target) => {
+  const handlePost = async (e, cmd) => {
     if (isButtonDisabled) {
       alert("이전 명령이 처리중입니다.");
       return;
@@ -126,9 +126,11 @@ const SubSection2Contents = () => {
     setTimeout(() => {
       setIsButtonDisabled(false);
     }, 20000);
-    const data = { command: target, actuator: "led" }; //command: 0 or 1
+    const data = { command: cmd, actuator: "led" }; //command: "0" or "1"
+    console.log(data);
     try {
-      const postres = await axiosInstance.post(`/cmd/${device_id}`, data);
+      const postres = await axiosInstance.post(`/command/cmd/${device_id}`, data);
+      console.log(postres);
     } catch (err) {
       console.error(err);
       alert("서버와의 통신에 실패했습니다.");
@@ -267,14 +269,14 @@ const SubSection2Contents = () => {
             </DisabledManualControlBtn>
           ) : (
             <ManualControlBtnWrapper>
-              <ManualControlBtn onClick={(e) => handlePost(e, 1)}>ON</ManualControlBtn>
-              <ManualControlBtn onClick={(e) => handlePost(e, 0)}>OFF</ManualControlBtn>
+              <ManualControlBtn onClick={(e) => handlePost(e, "1")}>ON</ManualControlBtn>
+              <ManualControlBtn onClick={(e) => handlePost(e, "0")}>OFF</ManualControlBtn>
             </ManualControlBtnWrapper>
           )}
         </Item3>
         <Item4>
           <SmallTitleText>제어 기록</SmallTitleText>
-          <ActuatorLogTable></ActuatorLogTable>
+          <ActuatorLogTable category="light"></ActuatorLogTable>
         </Item4>
       </GridContainer>
     </Main>

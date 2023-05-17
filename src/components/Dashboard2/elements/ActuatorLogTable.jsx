@@ -13,6 +13,10 @@ const ActuatorLogTable = () => {
         accessor: (row) => new Intl.DateTimeFormat("ko-KR").format(row.created_at),
       },
       {
+        Header: "시간",
+        accessor: () => "?",
+      },
+      {
         Header: "액츄에이터 종류",
         accessor: () => "LED",
       },
@@ -33,9 +37,11 @@ const ActuatorLogTable = () => {
       <table {...getTableProps()}>
         <TableHead>
           {headerGroups.map((headerGroup) => (
-            <TitleRow {...headerGroup.getHeaderGroupProps()}>
+            <TitleRow key={headerGroup.Header} {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+                <th key={column.id} {...column.getHeaderProps()}>
+                  {column.render("Header")}
+                </th>
               ))}
             </TitleRow>
           ))}
@@ -44,9 +50,11 @@ const ActuatorLogTable = () => {
           {rows.slice(0, 10).map((row, i) => {
             prepareRow(row);
             return (
-              <BodyRow {...row.getRowProps()}>
+              <BodyRow key={row.id} {...row.getRowProps()}>
                 {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  <td key={cell.row.id} {...cell.getCellProps()}>
+                    {cell.render("Cell")}
+                  </td>
                 ))}
               </BodyRow>
             );

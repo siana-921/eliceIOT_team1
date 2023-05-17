@@ -2,14 +2,15 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
-import { userInfoAtom, deviceInfoAtom } from "@store/atoms";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { userInfoAtom, deviceInfoAtom, isLoggedInState } from "@store/atoms";
 import { autoControlConfigSeletor } from "@store/selector";
 
 const MainSection1Content = () => {
   const user = useRecoilValue(userInfoAtom);
   const device = useRecoilValue(deviceInfoAtom);
   const autoControlConfig = useRecoilValue(autoControlConfigSeletor);
+  const [islogin, setIslogin] = useRecoilState(isLoggedInState);
 
   const router = useRouter();
 
@@ -18,7 +19,10 @@ const MainSection1Content = () => {
   };
 
   const handleNavLogOut = () => {
-    //router.push("/");
+    setIslogin((prev) => {
+      !prev;
+    });
+    router.push("/");
   };
 
   return (

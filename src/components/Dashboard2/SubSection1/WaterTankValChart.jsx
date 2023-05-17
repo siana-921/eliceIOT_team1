@@ -26,7 +26,6 @@ const renderCustomizedLabel = ({ cx, cy, percent, payload }) => {
 const WaterTankValChart = () => {
   const sensorData = useRecoilValue(lastSensorDataSelector);
 
-  /*
   const waterLevel = sensorData.water_level;
 
   const data = [
@@ -58,7 +57,7 @@ const WaterTankValChart = () => {
       <TitleText>물통수위</TitleText>
     </Main>
   );
-  */
+
   return <></>;
 };
 

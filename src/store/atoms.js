@@ -81,7 +81,7 @@ export const tokenState = atom({
 
 // 로그인 상태를 관리하는 atom(로그아웃 처리를 위해서 작성)
 // 사용 : login
-// 예정 : mypage, (dashboard)
+// 예정 : mypage, dashboard
 export const isLoggedInState = atom({
   key: "isLoggedInState",
   default: false,
