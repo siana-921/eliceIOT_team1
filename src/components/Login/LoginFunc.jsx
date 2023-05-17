@@ -12,6 +12,7 @@ export default function LoginFunc() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
   const [msg, setMsg] = useState("");
   const [fullname, setFullName] = useState("");
 
@@ -22,7 +23,7 @@ export default function LoginFunc() {
     if (response.status === 200) {
       setMsg(id + "님, 로그인 되었습니다! 반가워요 😊");
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/mypage");
       }, 1000);
     } else if (response.status === 403) {
       setMsg("가입되지 않은 계정입니다.");
