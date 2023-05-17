@@ -4,7 +4,7 @@ import Link from "next/link";
 import { isLoggedInState, tokenState } from "@/store/atoms";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { useRouter } from "next/router";
-// import axios from "axios";
+import { useCookies } from "react-cookie";
 
 import styled from "@emotion/styled";
 
@@ -13,16 +13,25 @@ export default function LoginFunc() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
-  const [fullname, setFullName] = useState("");
+  const [cookies, setCookie] = useCookies(["access_token"]);
 
+  const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const setToken = useSetRecoilState(tokenState);
+
   const router = useRouter();
 
   const handleResponse = (response) => {
     if (response.status === 200) {
       setMsg(id + "님, 로그인 되었습니다! 반가워요 😊");
+      const { access_token } = response.token;
+      const expires = new Date();
+      expires.setTime(expires.getTime() + 60 * 60 * 1000);
+      setIsLoggedIn(true);
+
+      setCookie("access_token", access_token, { expires, path: "/" });
+      setToken(access_token);
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/mypage");
       }, 1000);
     } else if (response.status === 403) {
       setMsg("가입되지 않은 계정입니다.");
@@ -43,7 +52,6 @@ export default function LoginFunc() {
     const body = {
       id: id,
       password: password,
-      fullname: fullname,
     };
 
     setLoading(true);
