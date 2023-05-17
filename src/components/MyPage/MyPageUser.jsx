@@ -15,7 +15,7 @@ export default function MyPageUser() {
     const fetchMyPageInfo = async () => {
       setLoading(true);
       try {
-        const response = await axiosInstance.get(`/api/user/sign_in/my_page`);
+        const response = await axiosInstance.get(`/user/sign_in/my_page`);
         const { id, email, phone, fullname } = response.data;
         setId(id);
         setEmail(email);
