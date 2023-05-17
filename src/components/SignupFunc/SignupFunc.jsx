@@ -130,36 +130,42 @@ export default function SignupFunc() {
 
   return (
     <SingupPageDiv>
-      <h1>Join</h1>
-      <SignupPageForm onSubmit={SignupFunc} method="post">
-        <label htmlFor="id">ID</label>
-        <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
-        <label htmlFor="password">Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <label htmlFor="fullname">Name</label>
-        <input type="text" value={fullname} onChange={(e) => setFullname(e.target.value)} />
-        <label htmlFor="email">Email</label>
-        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <label htmlFor="phone">Phone Number</label>
-        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
-        <label htmlFor="text">Device ID</label>
-        <input type="text" value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
-        <label htmlFor="text">Device Image</label>
-        <div>
-          {deviceProfileImages.map((photo, index) => (
-            <DeviceImage
-              key={index}
-              onClick={() => handlePhotoChange(photo)}
-              selected={selectedPhoto === photo}
-              src={photo}
-              alt={`Device Profile ${index + 1}`}
-            />
-          ))}
-        </div>
-        <button type="submit" disabled={loading}>
-          Join
-        </button>
-      </SignupPageForm>
+      <SignupPageContents>
+        <SignupPageCommentDiv>
+          <h1>JOIN</h1>
+          <h2>바질과 무제한 친해지리</h2>
+          <h3>다양한 센서들과 엑츄에이터들로 인생바질을 키워보세요</h3>
+        </SignupPageCommentDiv>
+        <SignupPageForm onSubmit={SignupFunc} method="post">
+          <label htmlFor="id">ID*</label>
+          <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
+          <label htmlFor="password">Password*</label>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <label htmlFor="fullname">Name*</label>
+          <input type="text" value={fullname} onChange={(e) => setFullname(e.target.value)} />
+          <label htmlFor="email">Email*</label>
+          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <label htmlFor="phone">Phone Number*</label>
+          <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <label htmlFor="text">Device ID*</label>
+          <input type="text" value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
+          <label htmlFor="text">Device Image*</label>
+          <div>
+            {deviceProfileImages.map((photo, index) => (
+              <DeviceImage
+                key={index}
+                onClick={() => handlePhotoChange(photo)}
+                selected={selectedPhoto === photo}
+                src={photo}
+                alt={`Device Profile ${index + 1}`}
+              />
+            ))}
+          </div>
+          <button type="submit" disabled={loading}>
+            Join
+          </button>
+        </SignupPageForm>
+      </SignupPageContents>
     </SingupPageDiv>
   );
 }
@@ -169,30 +175,111 @@ const SingupPageDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 
-  height: 100vh;
+  height: 83%;
+  width: 30%;
+  border-radius: 10px;
+
+  background-color: #ffffff;
+`;
+
+const SignupPageContents = styled.div`
+  width: 100%;
+  height: 100%;
+  // border: 2px solid;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SignupPageCommentDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+
+  width: 85%;
+  // border: 2px red solid;
+
+  margin-top: 15px;
+  margin-bottom: 15px;
 
   & h1 {
+    font-size: 60px;
+    font-weight: 700;
+    color: #97c410;
     text-align: center;
+    margin-bottom: 25px;
+  }
+  & h2 {
+    font-size: 20px;
+  }
+  & h3 {
+    font-weight: 500;
+    font-size: 17px;
   }
 `;
 
 const SignupPageForm = styled.form`
+  border-radius: 20px;
+
+  // border: 2px solid;
+  width: 85%;
+  height: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   & label {
-    text-align: center;
+    text-align: left;
+    // border: 2px red solid;
+    height: 50%;
     width: 100%;
+    margin: 5px;
+  }
+
+  & input {
+    width: 100%;
+    height: 50%;
+    transition: background-color 0.8s;
+    border: 1px rgba(228, 228, 228, 0.5) solid;
+    border-radius: 5px;
+
+    &:focus {
+      border: 0.5px solid;
+    }
+
+    &::placeholder {
+      padding-left: 20px;
+      font-size: 15px;
+    }
+  }
+
+  & button {
+    cursor: pointer;
+    width: 100%;
+    height: 50%;
+    margin: 25px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.2s;
+
+    font-size: 20px;
+
+    &: hover {
+      background-color: rgba(0, 168, 107, 0.8);
+    }
   }
 `;
 
 const DeviceImage = styled.img`
-  width: 100px;
-  height: 100px;
-  margin: 10px;
+  width: 60px;
+  margin-left: 10px;
+  margin-right: 10px;
   cursor: pointer;
   border-radius: 50px;
   opacity: ${({ selected }) => (selected ? 1 : 0.5)};
