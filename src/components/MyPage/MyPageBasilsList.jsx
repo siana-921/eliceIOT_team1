@@ -11,6 +11,7 @@ export default function MyPageBailsList() {
   const [id, setId] = useState("");
   const [picture, setPicture] = useState("");
   const [device_id, setDeviceId] = useState("");
+  const [fullname, setFullName] = useState("");
 
   const router = useRouter();
 
@@ -19,9 +20,10 @@ export default function MyPageBailsList() {
     const fetchDefaultDeviceId = async () => {
       try {
         const response = await axiosInstance.get(`/user/sign_in/my_page`);
-        const { picture, device_id } = response.data;
+        const { picture, device_id, fullname } = response.data;
         setDeviceId(device_id);
         setPicture(picture);
+        setFullName(fullname);
       } catch (error) {
         console.error("🚀디바이스 목록을 가져오는데 실패했습니다.", error);
       }
@@ -44,7 +46,7 @@ export default function MyPageBailsList() {
 
   return (
     <BasilsListMain>
-      <h2>김정연님의 바질목록</h2>
+      <h2> {fullname}님의 바질목록</h2>
       <BasilListDiv>
         <p>새로운 바질이 추가되었나요?</p>
         <button onClick={openModal}> 등록하러 가기</button>
