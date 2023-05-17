@@ -13,7 +13,7 @@ export default function LoginFunc() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
-  const [cookies, setCookie] = useCookies(["access_token"]);
+  // const [cookies, setCookie] = useCookies(["access_token"]);
 
   const setToken = useSetRecoilState(tokenState);
   const [isLoggedIn, setLoggedIn] = useRecoilState(isLoggedInState);
