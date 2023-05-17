@@ -93,26 +93,30 @@ export const actuatorLogOriginAtom = atom({
 
 // ---------------------------------------------로그인---------------------------------------------------------
 
-// 로그인 토큰 관리(사용 : signup)
+// 토큰 관리(사용자 인증과 관련된 모든 페이지에 적용해야할 듯)
+// 사용 : signup
 export const tokenState = atom({
   key: "tokenState",
   default: "",
 });
 
 // 로그인 상태를 관리하는 atom(로그아웃 처리를 위해서 작성)
+// 사용 : login
+// 예정 : mypage, (dashboard)
 export const isLoggedInState = atom({
   key: "isLoggedInState",
   default: false,
 });
 
+// 필요없을꺼 같은디,, 정리예정
 export const signupState = atom({
   key: "signupState",
   default: {
     success: false,
-    error: null,
   },
 });
 
+// 얘도 필요없을 듯
 export const devicesState = atom({
   key: "devicesState",
   default: [],
@@ -122,4 +126,12 @@ export const devicesState = atom({
 export const defaultDeviceIdState = atom({
   key: "defaultDeviceIdState",
   default: "",
+});
+
+// 회원가입 시 선택하게 되는 사진
+// 사용 : signup
+// 예정 : (mypage, dashboard)
+export const selectedPhotoState = atom({
+  key: "selectedPhotoState",
+  default: null,
 });
