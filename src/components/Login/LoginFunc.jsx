@@ -5,6 +5,7 @@ import { isLoggedInState, tokenState } from "@/store/atoms";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { useCookies } from "react-cookie";
+// import { useRouter } from "next/router";
 
 import styled from "@emotion/styled";
 
@@ -23,24 +24,23 @@ export default function LoginFunc() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push("/mypage");
+      setTimeout(() => {
+        router.push("/mypage");
+      }, 1000);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, router]);
 
   const handleResponse = (response) => {
     console.log(response);
     if (response.status === 200) {
       setMsg(id + "님, 로그인 되었습니다! 반가워요 😊");
-      const { access_token } = response.data.token;
+      const accessToken = response.data.token.accessToken;
       const expires = new Date();
       expires.setTime(expires.getTime() + 60 * 60 * 1000);
-      setIsLoggedIn(true);
 
       setCookie("access_token", access_token, { expires, path: "/" });
       setToken(access_token);
-      setTimeout(() => {
-        router.push("/mypage");
-      }, 1000);
+      setLoggedIn(true);
     } else if (response.status === 403) {
       setMsg("가입되지 않은 계정입니다.");
     } else if (response.status === 401) {
@@ -65,7 +65,11 @@ export default function LoginFunc() {
     setLoading(true);
 
     axiosInstance
-      .post(`user/sign_in`, body)
+      .post(`user/sign_in`, body, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
       .then((response) => {
         console.log(response);
         handleResponse(response);
