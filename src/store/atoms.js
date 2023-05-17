@@ -42,9 +42,9 @@ export const userInfoAtom = atom({
     name: "알 수 없는 유저",
     phone: "010-0000-0000",
     email: "Basil@Farm.com",
-    picture: "1",
+    picture: 1,
     created_at: "2023-04-24",
-    devices: [],
+    device: "unit001",
   },
 });
 
@@ -60,23 +60,35 @@ export const deviceInfoAtom = atom({
   },
 });
 
-//디바이스 자동제어상태확인 (단일객체인지 누적데이터배열인지 확인필요0512)
+//디바이스 자동제어상태확인 (Origin: 언제나 객체 1개만 들어있는 배열로 옴)
 //api/auto/:device_id/status
-export const autoControlStateAtom = atom({
-  key: "autoControlStateAtom",
-  default: {
-    device_id: "test001",
-    status: 0,
-    target_temp: 0,
-    target_moisture: 0,
-    created_at: "",
-  },
+export const autoControlConfigOriginAtom = atom({
+  key: "autoControlConfigOriginAtom",
+  default: [
+    {
+      device_id: "unit001",
+      status: 1,
+      target_temp: 20,
+      target_moisture: 70,
+      target_light: 40,
+      created_at: "2023-05-12T12:26:40.000Z",
+    },
+  ],
 });
 
 //제어명령 누적 (객체배열)
-export const actuatorLogAtom = atom({
+export const actuatorLogOriginAtom = atom({
   key: "actuatorLogAtom",
-  default: [{ idx: 0, device_id: "test001", led: 0, pump: 0, fan: 0, created_at: 1682658179 }],
+  default: [
+    {
+      idx: 0,
+      device_id: "test001",
+      led: 0,
+      pump: 0,
+      fan: 0,
+      created_at: 1682658179,
+    },
+  ],
 });
 
 // ---------------------------------------------로그인---------------------------------------------------------
