@@ -3,31 +3,32 @@ import React, { useState, useEffect } from "react";
 import DeviceModal from "./DeviceModal";
 import { useRecoilState } from "recoil";
 import { defaultDeviceIdState } from "../../store/atoms";
-import { AxiosInstance } from "axios";
+import { axiosInstance } from "@/api/base";
 import { useRouter } from "next/router";
 
 export default function MyPageBailsList() {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [devices, setDevices] = useState([]);
-  const [defaultDeviceId, setDefaultDeviceId] = useRecoilState(defaultDeviceIdState);
+  const [id, setId] = useState("");
+  const [picture, setPicture] = useState("");
+  const [device_id, setDeviceId] = useState("");
+
   const router = useRouter();
 
   useEffect(() => {
     // 여기서 기본 device id를 가져오는 로직을 구현
     const fetchDefaultDeviceId = async () => {
       try {
-        // 서버로부터 유저의 기본 device id를 가져온다고 가정(unit01)
-        const response = await AxiosInstance.get(`/device/info`);
-        const { defaultDeviceId, devices } = response.data;
-        setDefaultDeviceId(defaultDeviceId);
-        setDevices(devices);
+        const response = await axiosInstance.get(`/user/sign_in/my_page`);
+        const { picture, device_id } = response.data;
+        setDeviceId(device_id);
+        setPicture(picture);
       } catch (error) {
-        console.error("기본 디바이스 ID를 가져오는데 실패했습니다.", error);
+        console.error("🚀디바이스 목록을 가져오는데 실패했습니다.", error);
       }
     };
 
     fetchDefaultDeviceId();
-  }, [setDefaultDeviceId]);
+  }, []);
 
   const openModal = () => {
     setModalOpen(true);
@@ -35,10 +36,6 @@ export default function MyPageBailsList() {
 
   const closeModal = () => {
     setModalOpen(false);
-  };
-
-  const addDevice = (device) => {
-    setDevices([...devices, device]);
   };
 
   const handleDeviceClick = (deviceId) => {
