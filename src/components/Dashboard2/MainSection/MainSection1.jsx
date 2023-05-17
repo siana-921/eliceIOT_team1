@@ -18,7 +18,7 @@ const MainSection1Content = () => {
   };
 
   const handleNavLogOut = () => {
-    router.push("/");
+    //router.push("/");
   };
 
   return (
