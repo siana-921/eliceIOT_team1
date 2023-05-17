@@ -2,33 +2,36 @@ import LoginFunc from "@/components/Login/LoginFunc";
 import { axiosInstance } from "@/api/base";
 import LoginIntroduction from "@/components/Login/LoginIntroduction";
 import { useEffect } from "react";
+import axios from "axios";
 
 import styled from "@emotion/styled";
 
 export default function LoginPage({ loginData, err }) {
-  useEffect(() => {
-    // example
-    if (err.message === "Network Connecting Error") {
-      alert("네트워크 상태를 확인해주세요");
-    }
-  }, [err]);
-
   return (
-    <>
+    <LoginPageMain>
       <LoginPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted />
       <LoginPageContents>
-        {/* <LoginIntroduction /> */}
-        <LoginFunc loginData={loginData} />
+        <LoginPageContainer>
+          {/* <LoginIntroduction /> */}
+          <LoginFunc loginData={loginData} />
+        </LoginPageContainer>
       </LoginPageContents>
-    </>
+    </LoginPageMain>
   );
 }
 
 export async function getServerSideProps(context) {
-  // context.req.headers.cookie["~~~~"]
-
   try {
-    const response = await axiosInstance.get(`/user/sign_in/my_page`);
+    // 코치님이 알려주신 부분 : context.req.headers.cookie["~~~~"]
+    const cookieValue = context.req.headers.cookie ? context.req.headers.cookie : undefined;
+
+    const response = await axios.get("pages/api/mockup/userinfo", {
+      headers: {
+        // 쿠키를 요청 헤더에 추가
+        Cookie: cookieValue,
+      },
+    });
+
     const loginData = response.data;
 
     return {
@@ -39,6 +42,7 @@ export async function getServerSideProps(context) {
   } catch (err) {
     console.log(err.response);
     const statusCode = err.response ? err.response.status : "🚨에러발생";
+
     return {
       props: {
         loginData: null,
@@ -51,12 +55,25 @@ export async function getServerSideProps(context) {
   }
 }
 
+const LoginPageMain = styled.main`
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+`;
+
+const LoginPageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
 const LoginPageVideo = styled.video`
   width: 100%;
   height: 100vh;
   object-fit: cover;
   z-index: -1;
-  width: 100%;
 `;
 
 const LoginPageContents = styled.div`
