@@ -3,20 +3,21 @@ import React, { useState, useEffect } from "react";
 import DeviceModal from "./DeviceModal";
 import { useRecoilState } from "recoil";
 import { defaultDeviceIdState } from "../../store/atoms";
-// import { AxiosInstance } from "axios";
-import axios from "axios";
+import { AxiosInstance } from "axios";
+import { useRouter } from "next/router";
 
 export default function MyPageBailsList() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [devices, setDevices] = useState([]);
   const [defaultDeviceId, setDefaultDeviceId] = useRecoilState(defaultDeviceIdState);
+  const router = useRouter();
 
   useEffect(() => {
     // 여기서 기본 device id를 가져오는 로직을 구현
     const fetchDefaultDeviceId = async () => {
       try {
         // 서버로부터 유저의 기본 device id를 가져온다고 가정(unit01)
-        const response = await axios.get(`/api/mockup/basilList`);
+        const response = await AxiosInstance.get(`/device/info`);
         const { defaultDeviceId, devices } = response.data;
         setDefaultDeviceId(defaultDeviceId);
         setDevices(devices);
@@ -26,7 +27,7 @@ export default function MyPageBailsList() {
     };
 
     fetchDefaultDeviceId();
-  }, [setDefaultDeviceId]); // 값이 변경될 때마다 useEffect 콜백 함수가 실행되도록 의존성 배열 추가
+  }, [setDefaultDeviceId]);
 
   const openModal = () => {
     setModalOpen(true);
@@ -38,6 +39,10 @@ export default function MyPageBailsList() {
 
   const addDevice = (device) => {
     setDevices([...devices, device]);
+  };
+
+  const handleDeviceClick = (deviceId) => {
+    router.push(`/dashboard/${deviceId}`);
   };
 
   return (
@@ -53,7 +58,7 @@ export default function MyPageBailsList() {
       ) : (
         <BasilDeviceLists>
           {devices.map((device, index) => (
-            <li key={index}>
+            <li key={index} onClick={() => handleDeviceClick(device.id)}>
               <div className="device-item">
                 <div className="device-image" style={{ backgroundImage: `url(${device.image})` }} />
                 <span>{device.name}</span>
