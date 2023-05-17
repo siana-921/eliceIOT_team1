@@ -17,10 +17,18 @@ export default function LoginFunc() {
 
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const setToken = useSetRecoilState(tokenState);
+  const [isLoggedIn, setLoggedIn] = useRecoilState(isLoggedInState);
 
   const router = useRouter();
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/mypage");
+    }
+  }, [isLoggedIn]);
+
   const handleResponse = (response) => {
+    console.log(response);
     if (response.status === 200) {
       setMsg(id + "님, 로그인 되었습니다! 반가워요 😊");
       const { access_token } = response.data.token;
