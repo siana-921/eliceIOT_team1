@@ -67,7 +67,7 @@ export default function LoginFunc() {
     axiosInstance
       .post(`user/sign_in`, body, {
         headers: {
-          Authorization: `Bearer ${access_token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((response) => {
