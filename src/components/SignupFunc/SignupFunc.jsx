@@ -26,7 +26,7 @@ export default function SignupFunc() {
 
   // const setToken = useSetRecoilState(tokenState);
   const [signup, setSignup] = useRecoilState(signupState);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedPicture, setSelectedPicture] = useState(null);
   //  const [cookies, setCookie] = useCookies(["access_token"]);
 
   const router = useRouter();
@@ -54,12 +54,12 @@ export default function SignupFunc() {
     };
   }, [signup, setToken, router, setCookie]);
 */
-  const handlePhotoChange = (index) => {
-    setSelectedPhoto(index + 1);
+  const handlePictureChange = (index) => {
+    setSelectedPicture(index + 1);
   };
 
-  const getSelectedPhotoIndex = (photo) => {
-    const index = deviceProfileImages.indexOf(photo);
+  const getSelectedPictureIndex = (picture) => {
+    const index = deviceProfileImages.indexOf(picture);
     return index !== -1 ? index + 1 : null;
   };
 
@@ -80,7 +80,7 @@ export default function SignupFunc() {
       return Swal.fire("이메일를 입력하세요.", "", "warning");
     } else if (!phone) {
       return Swal.fire("휴대폰번호를 입력하세요.", "", "warning");
-    } else if (!selectedPhoto) {
+    } else if (!selectedPicture) {
       return Swal.fire("디바이스 이미지를 선택해주세요.", "이미지 선택은 필수입니다.", "warning");
     } else if (!deviceId) {
       return Swal.fire("디바이스 아이디를 입력해주세요.", "", "warning");
@@ -93,7 +93,7 @@ export default function SignupFunc() {
       email: email,
       phone: phone,
       device_id: deviceId,
-      photo: selectedPhoto,
+      picture: selectedPicture,
     };
 
     setLoading(true);
@@ -165,12 +165,12 @@ export default function SignupFunc() {
           <input type="text" value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
           <label htmlFor="text">Device Image*</label>
           <div>
-            {deviceProfileImages.map((photo, index) => (
+            {deviceProfileImages.map((picture, index) => (
               <DeviceImage
                 key={index}
-                onClick={() => handlePhotoChange(index)}
-                selected={selectedPhoto === index + 1}
-                src={photo}
+                onClick={() => handlePictureChange(index)}
+                selected={selectedPicture === index + 1}
+                src={picture}
                 alt={`Device Profile ${index + 1}`}
               />
             ))}
