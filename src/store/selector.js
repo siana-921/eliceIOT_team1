@@ -3,16 +3,21 @@ import {
   sensorDataOriginAtom,
   userInfoAtom,
   deviceInfoAtom,
-  autoControlStateAtom,
+  autoControlConfigOriginAtom,
   actuatorLogAtom,
 } from "@store/atoms";
+import { maxBy } from "lodash";
 
 // [셀렉터] 누적센서데이터 중 최신 데이터
 export const lastSensorDataSelector = selector({
   key: "lastSensorDataSelector",
   get: ({ get }) => {
     const sensorData = get(sensorDataOriginAtom);
-    return maxBy(sensorData, (data) => new Date(data.created_at).getTime());
+    if (sensorDataOriginAtom.length > 0) {
+      return maxBy(sensorData, (data) => new Date(data.created_at).getTime());
+    } else {
+      return [];
+    }
   },
 });
 
@@ -21,33 +26,36 @@ export const sensorDataSelector = selector({
   key: "sensorDataSelector",
   get: ({ get }) => {
     const sensorDataOrigin = get(sensorDataOriginAtom);
-    const data = sensorDataOrigin.map((item) => {
-      const unixTimeDate = new Date(item.created_at * 1000); //date 타입으로 저장
 
-      //YYYY/MM/DD 스트링으로 저장
-      const yyyy = unixTimeDate.getFullYear();
-      const mm = String(unixTimeDate.getMonth() + 1).padStart(2, "0");
-      const dd = String(unixTimeDate.getDate()).padStart(2, "0");
-      const formattedDate = `${yyyy}/${mm}/${dd}`;
+    if (sensorDataOrigin.length > 0) {
+      const data = sensorDataOrigin.map((item) => {
+        const unixTimeDate = new Date(item.created_at * 1000); //date 타입으로 저장
 
-      //HH:mm:ss 스트링으로 저장
-      const hh = String(unixTimeDate.getHours()).padStart(2, "0");
-      const min = String(unixTimeDate.getMinutes()).padStart(2, "0");
-      const sec = String(unixTimeDate.getSeconds()).padStart(2, "0");
-      const formattedTime = `${hh}:${min}:${sec}`;
+        //YYYY/MM/DD 스트링으로 저장
+        const yyyy = unixTimeDate.getFullYear();
+        const mm = String(unixTimeDate.getMonth() + 1).padStart(2, "0");
+        const dd = String(unixTimeDate.getDate()).padStart(2, "0");
+        const formattedDate = `${yyyy}/${mm}/${dd}`;
 
-      const newItem = {
-        ...item,
-        created_at: unixTimeDate,
-        date: formattedDate,
-        time: formattedTime,
-      };
+        //HH:mm:ss 스트링으로 저장
+        const hh = String(unixTimeDate.getHours()).padStart(2, "0");
+        const min = String(unixTimeDate.getMinutes()).padStart(2, "0");
+        const sec = String(unixTimeDate.getSeconds()).padStart(2, "0");
+        const formattedTime = `${hh}:${min}:${sec}`;
 
-      return newItem;
-    });
-    console.log("sensorData selector 업데이트!");
-    console.log(data);
-    return data;
+        const newItem = {
+          ...item,
+          created_at: unixTimeDate,
+          date: formattedDate,
+          time: formattedTime,
+        };
+
+        return newItem;
+      });
+      return data;
+    } else {
+      return [];
+    }
   },
 });
 
@@ -69,8 +77,6 @@ export const dailyAverageSensorDataSelector = selector({
           sumHumidity: 0,
         });
       }
-
-      console.log(acc);
 
       acc[acc.length - 1].sumLight += cur.light;
       acc[acc.length - 1].sumMoisture += cur.moisture;
@@ -94,23 +100,46 @@ export const dailyAverageSensorDataSelector = selector({
   },
 });
 
+// [셀렉터] 자동제어 상태 포맷 변경 (배열->단일객체, unixTime->string)
+export const autoControlConfigSeletor = selector({
+  key: "autoControlConfigSeletor",
+  get: ({ get }) => {
+    const autoControlConfigOrigin = get(autoControlConfigOriginAtom);
+    console.log(autoControlConfigOrigin);
+
+    if (autoControlConfigOrigin.length > 0) {
+      const date = new Date(autoControlConfigOrigin[0].created_at);
+
+      const dateString = `${date.getFullYear()}년 ${
+        date.getMonth() + 1
+      }월 ${date.getDate()}일 ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+
+      const newObject = { ...autoControlConfigOrigin[0], created_at: dateString };
+      console.log(autoControlConfigOrigin);
+      console.log(newObject);
+
+      return newObject;
+    }
+  },
+});
+
 // [셀렉터] 온도에 관한 모든 데이터
 /*export const temperatureAtom = selector({
   key: "temperatureAtom",
   get: ({ get }) => {
     const sensorData = get(sensorDataAtom); //배열객체 -api연결완료
-    const autoControlState = get(autoControlStateAtom); //단일객체
+    const autoControlConfig = get(autoControlConfigAtom); //단일객체
     const actuatorLog = get(actuatorLogAtom); //배열객체
 
     const latestTemp = sensorData[sensorData.length - 1].temp; //최신온도값(단일)
-    const isAutoControl = autoControlState.status; //autoControlState가 배열이라면 수정필요(현재 단일객체에서 뽑은 단일값)
+    const isAutoControl = autoControlConfig.status; //autoControlConfig가 배열이라면 수정필요(현재 단일객체에서 뽑은 단일값)
 
     let isAutoTemp = false;
     let autoStartAt = 0;
     //온도에 대한 자동제어가 진행중인지, 진행중이라면 언제부터 진행중인지 저장(단일)
-    if (isAutoControl && autoControlState.target_temp) {
+    if (isAutoControl && autoControlConfig.target_temp) {
       isAutoTemp = true;
-      autoStartAt = autoControlState.created_at;
+      autoStartAt = autoControlConfig.created_at;
     } else {
       isAutoTemp = false;
       autoStartAt = 0;
