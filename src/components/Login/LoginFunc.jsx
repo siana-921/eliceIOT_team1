@@ -17,8 +17,15 @@ export default function LoginFunc() {
 
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const setToken = useSetRecoilState(tokenState);
+  const [isLoggedIn, setLoggedIn] = useRecoilState(isLoggedInState);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/mypage");
+    }
+  }, [isLoggedIn]);
 
   const handleResponse = (response) => {
     console.log(response);
