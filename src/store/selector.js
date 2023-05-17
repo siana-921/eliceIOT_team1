@@ -6,6 +6,7 @@ import {
   autoControlStateOriginAtom,
   actuatorLogAtom,
 } from "@store/atoms";
+import { maxBy } from "lodash";
 
 // [셀렉터] 누적센서데이터 중 최신 데이터
 export const lastSensorDataSelector = selector({

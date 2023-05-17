@@ -1,34 +1,35 @@
 import styled from "@emotion/styled";
 import Switch from "react-switch";
+import Image from "next/image";
+import { debounce } from "lodash";
 import { axiosInstance, axiosTest } from "@baseURL";
 import { useState, useEffect, useRef } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { userInfoAtom, deviceInfoAtom, autoControlStateOriginAtom } from "@store/atoms";
 import { autoControlStateSeletor } from "@store/selector";
+import Slider, { Range, handleRender } from "rc-slider";
+import "rc-slider/assets/index.css";
+import optimal from "@data/optimalGrowingCondition";
 
 import ActuatorLogTable from "../elements/ActuatorLogTable";
 import { validateConfig } from "next/dist/server/config-shared";
 
 const SubSection2Contents = () => {
-  const [isValueMode, setIsValueMode] = useState(true);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
-  const user = useRecoilValue(userInfoAtom); //현재 로그인된 유저의 정보 : default user001
-  const device = useRecoilValue(deviceInfoAtom); //현재 로그인된 유저의 device : default unit001
   const [autoControlStateOrigin, setAutoControlStateOrigin] = useRecoilState(
     autoControlStateOriginAtom
   ); //현재 디바이스의 자동제어상태
   const autoControlState = useRecoilValue(autoControlStateSeletor); //현재 디바이스의 자동제어상태
+  const [isValueMode, setIsValueMode] = useState(true);
+  const [isAutoControl, setIsAutoControl] = useState(autoControlState.status);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [targetValue, setTargetValue] = useState(autoControlState.target_light);
 
-  console.log(autoControlStateOrigin.status ? "자동제어ON(ATOM)" : "자동제어OFF(ATOM)");
-  console.log(autoControlStateOrigin);
-  console.log(autoControlState);
+  const user = useRecoilValue(userInfoAtom); //현재 로그인된 유저의 정보 : default user001
+  const device = useRecoilValue(deviceInfoAtom); //현재 로그인된 유저의 device : default unit001
+  const { device_id } = device;
 
   const handleAutoControlOnOff = () => {
-    console.log(autoControlStateOrigin);
-    const { status } = autoControlState;
-    const newAutoControlStateObj = [{ ...autoControlStateOrigin[0], status: !status }];
-    setAutoControlStateOrigin(newAutoControlStateObj);
+    setIsAutoControl(!isAutoControl);
   };
 
   const handleRadioChange = (e) => {
@@ -40,27 +41,82 @@ const SubSection2Contents = () => {
     }
   };
 
-  const device_id = device.id;
-
-  const handlePost = async (e) => {
-    console.log(e.target.cmd);
-    const data = { command: e.target.cmd, actuator: "led" };
+  //수동제어 핸들
+  const handlePost = async (e, target) => {
+    if (isButtonDisabled) {
+      alert("이전 명령이 처리중입니다.");
+      return;
+    }
+    setIsButtonDisabled(true);
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 20000);
+    const data = { command: target, actuator: "led" }; //command: 0 or 1
     try {
       const postres = await axiosInstance.post(`/cmd/${device_id}`, data);
-      setIsButtonDisabled(true);
-      setTimeout(() => {
-        setIsButtonDisabled(false);
-      }, 30000);
     } catch (err) {
       console.error(err);
+      alert("서버와의 통신에 실패했습니다.");
     }
-    //POST가 성공했으면
-    //SETSTATEATOM
-    //실패했으면 유저에게 알리고 리턴
-    //console.log(postres);
-    //const getres = await axiosInstance.get(`/actuators/${device_id}?start_time=0`);
-    //console.log(getres.data);
   };
+
+  //슬라이더 value onChange handler
+  const handleSlider = debounce(async (value) => {
+    console.log(value);
+    setTargetValue(value);
+  }, 300);
+
+  //자동제어 단추를 OFF한 경우 POST
+  useEffect(() => {
+    if (isAutoControl == false) {
+      console.log("자동제어 모드를 종료합니다. 즉시제어 또는 자동제어 설정이 가능합니다.");
+      const data = {
+        status: 0,
+      };
+      axiosInstance
+        .post(`/auto/${device_id}`, data)
+        .then((postRes) => {
+          console.log(postRes);
+        })
+        .catch((postError) => {
+          console.error(postError);
+        });
+    } else {
+      console.log("자동제어 모드를 시작합니다.");
+      if (autoControlState.target_light !== targetValue) {
+        const data = {
+          status: 1,
+          target_temp: parseInt(optimal.temp),
+          target_moisture: parseInt(optimal.moist),
+          target_light: targetValue,
+        };
+        console.log(data);
+        axiosInstance
+          .post(`/auto/${device_id}`, data)
+          .then((postRes) => {
+            console.log(postRes);
+            axiosInstance
+              .get(`/auto/${device_id}/status`)
+              .then((getRes) => {
+                console.log(getRes);
+                setAutoControlStateOrigin(getRes.data);
+                alert("자동제어 설정을 완료했습니다.");
+              })
+              .catch((getError) => {
+                console.error(getError);
+              });
+          })
+          .catch((error) => {
+            console.error(error);
+            alert("서버와의 통신에 실패했습니다.");
+            setTargetValue(autoControlState.target_light);
+          });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAutoControl]);
+
+  //--------------------------------------------------------------------//
 
   return (
     <Main>
@@ -68,16 +124,19 @@ const SubSection2Contents = () => {
         <Item1>
           <TitleText>자동제어</TitleText>
           <MessageText>
-            {autoControlState.status
+            {isAutoControl
               ? "현재 자동제어가 동작하고 있습니다"
-              : "현재 자동제어가 동작하고 있지 않습니다"}
+              : "자동제어가 동작하고 있지 않습니다"}
           </MessageText>
-          {autoControlState.status ? (
-            <p>
-              자동제어 시작일자 : <span>{autoControlState.created_at}</span>
-            </p>
-          ) : (
-            ""
+          {isAutoControl && (
+            <>
+              <p>
+                자동제어 시작일자 : <span>{autoControlState.created_at}</span>
+              </p>
+              <p>
+                설정된 목표 조도 : <span>{autoControlState.target_light}%</span>
+              </p>
+            </>
           )}
           <RadioInput
             type="radio"
@@ -97,7 +156,7 @@ const SubSection2Contents = () => {
             <label>
               <Switch
                 onChange={handleAutoControlOnOff}
-                checked={autoControlStateOrigin.status}
+                checked={isAutoControl}
                 onColor="#00b7d8"
                 offColor="#B8B8B8"
                 checkedIcon={false}
@@ -108,7 +167,7 @@ const SubSection2Contents = () => {
         </Item1>
         <Item2>
           <TitleText>자동제어 설정</TitleText>
-          {autoControlState.status ? (
+          {isAutoControl ? (
             <RadioWrapper>
               <StyledRadio id="valueBasedControl" className="autoControlOn">
                 <div>자동제어 동작 중에는 설정할 수 없습니다</div>
@@ -119,45 +178,59 @@ const SubSection2Contents = () => {
             </RadioWrapper>
           ) : (
             <RadioWrapper>
-              <StyledRadio
-                id="valueBasedControl"
-                className="autoControlOff"
-                isValueMode={isValueMode}
-              >
-                <RadioLabel htmlFor="setValueMode">목표 수치로 제어</RadioLabel>
+              <StyledRadio id="valueBasedControl" className="autoControlOff" selected={isValueMode}>
+                <RadioLabel htmlFor="setValueMode">
+                  {isValueMode ? (
+                    <AutoModeSeletorWrapper>
+                      <SliderWrapper>
+                        <SlideTitle>
+                          목표 제어 조도<span>{targetValue}%</span>
+                        </SlideTitle>
+                        <Slider min={0} max={100} value={targetValue} onChange={handleSlider} />
+                      </SliderWrapper>
+                    </AutoModeSeletorWrapper>
+                  ) : (
+                    <AutoModeSeletorWrapper>
+                      <AutoModeSeletorText>목표 조도 직접 설정하기</AutoModeSeletorText>
+                    </AutoModeSeletorWrapper>
+                  )}
+                </RadioLabel>
               </StyledRadio>
-              <StyledRadio
-                id="timeBasedControl"
-                className="autoControlOff"
-                isValueMode={!isValueMode}
-              >
-                <RadioLabel htmlFor="setTimeMode">최적 수치로 제어</RadioLabel>
+              <StyledRadio id="timeBasedControl" className="autoControlOff" selected={!isValueMode}>
+                <RadioLabel htmlFor="setAlphaGoMode">
+                  {isValueMode ? (
+                    <AutoModeSeletorWrapper>
+                      <AutoModeSeletorText>최적 수치로 제어하기</AutoModeSeletorText>
+                    </AutoModeSeletorWrapper>
+                  ) : (
+                    <AutoModeSeletorWrapper>
+                      <AutoModeSeletorText
+                        style={{ color: "black", fontWeight: "100", fontSize: "2.5rem" }}
+                      >
+                        ...누군가에게 맡기기
+                      </AutoModeSeletorText>
+                      <div style={{ position: "absolute", right: 0, opacity: "30%" }}>
+                        <Image src="/images/alphago.png" alt="alphago" width={200} height={200} />
+                      </div>
+                    </AutoModeSeletorWrapper>
+                  )}
+                </RadioLabel>
               </StyledRadio>
             </RadioWrapper>
           )}
         </Item2>
         <Item3>
           <SmallTitleText>즉시 제어 (LED)</SmallTitleText>
-          {autoControlState.status ? (
+          {isAutoControl ? (
             <DisabledManualControlBtn>
-              자동제어 동작 중에는 설정할 수 없습니다
+              <div>자동제어 동작 중에는 설정할 수 없습니다</div>
             </DisabledManualControlBtn>
           ) : (
             <ManualControlBtnWrapper>
-              <ManualControlBtn
-                cmd={"run"}
-                onClick={handlePost}
-                isSelected={false}
-                disabled={isButtonDisabled}
-              >
+              <ManualControlBtn onClick={(e) => handlePost(e, 1)} isSelected={false}>
                 ON
               </ManualControlBtn>
-              <ManualControlBtn
-                cmd={"stop"}
-                onClick={handlePost}
-                isSelected={false}
-                disabled={isButtonDisabled}
-              >
+              <ManualControlBtn onClick={(e) => handlePost(e, 0)} isSelected={false}>
                 OFF
               </ManualControlBtn>
             </ManualControlBtnWrapper>
@@ -226,6 +299,14 @@ const MessageText = styled.p`
   font-size: 2vw;
   padding-bottom: 3px;
 `;
+const AutoModeSeletorText = styled.p``;
+const SlideTitle = styled.div`
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-bottom: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+`;
 //--------------------------------------//
 
 //---------------Wrapper-----------------//
@@ -243,6 +324,22 @@ const ManualControlBtnWrapper = styled.div`
   margin-top: 2%;
   border-radius: 20px;
   overflow: hidden;
+`;
+const AutoModeSeletorWrapper = styled.div`
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: grey;
+  font-weight: 100;
+`;
+const SliderWrapper = styled.div`
+  width: 100%;
+  padding: 10%;
+  color: black;
 `;
 //----------------------------------------//
 
@@ -274,8 +371,12 @@ const StyledRadio = styled.div`
   border-radius: 20px;
   background-color: #e4e4e4;
   border: 2px solid #dcdcdc;
+  &.autoControlOff:hover {
+    background-color: #8884d8;
+    color: white;
+  }
   &.autoControlOff {
-    background-color: ${({ isValueMode }) => (isValueMode ? "#8884D8" : "#E4E4E4")};
+    background-color: ${({ selected }) => (selected ? "#FFCD00" : "#E4E4E4")};
     border: none;
   }
   &.autoControlOn {
@@ -305,4 +406,10 @@ const DisabledManualControlBtn = styled.div`
   margin-top: 2%;
   background-color: #e4e4e4;
   border-radius: 20px;
+  > div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
