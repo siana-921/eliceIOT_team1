@@ -42,19 +42,17 @@ export default function SignupFunc() {
 
       setToken(access_token);
 
-      const redirectTimeout = setTimeout(() => {
+      timeoutId = setTimeout(() => {
         router.push("/login");
       }, 3000);
-
-      setRedirectTimeout(timeout);
     } else if (signup.error) {
       Swal.fire("가입 오류", signup.error, "error");
     }
 
     return () => {
-      clearTimeout(redirectTimeout);
+      clearTimeout(timeoutId);
     };
-  }, [signup, setToken, router, setCookie, redirectTimeout]);
+  }, [signup, setToken, router, setCookie]);
 
   const handlePhotoChange = (index) => {
     setSelectedPhoto(index + 1);
