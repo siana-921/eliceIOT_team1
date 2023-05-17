@@ -40,6 +40,10 @@ export default function MyPageBailsList() {
     setModalOpen(false);
   };
 
+  const addDevice = (device) => {
+    setDevices([...devices, device]);
+  };
+
   const handleDeviceClick = (deviceId) => {
     router.push(`/dashboard/${deviceId}`);
   };
