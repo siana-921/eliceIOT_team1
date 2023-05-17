@@ -19,9 +19,9 @@ const ComparisonAllChart = (data2) => {
 
   console.log(dailyAverage);
 
-  const data = sensorData.map((item, index) => ({
+  const data = dailyAverage.map((item, index) => ({
     name: `Day ${index + 1}`,
-    light: item.light / 100,
+    light: item.light,
     temp: item.temp,
     humidity: item.humidity,
     moisture: item.moisture,

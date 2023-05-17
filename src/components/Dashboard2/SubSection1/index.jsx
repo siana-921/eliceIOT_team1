@@ -6,13 +6,14 @@ import { sensorDataSelector } from "@store/selector";
 
 import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAllChart";
 import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart.jsx";
-//import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart.jsx";
+import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart.jsx";
 import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart.jsx";
 import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart.jsx";
 
 const SubSection1Contents = () => {
   const sensorData = useRecoilValue(sensorDataSelector);
-  const result = sensorData.reduce(
+
+  const calMinMax = sensorData.reduce(
     (acc, cur) => {
       if (cur.temp !== 0) {
         acc.temp.max = Math.max(acc.temp.max, cur.temp);
@@ -33,12 +34,24 @@ const SubSection1Contents = () => {
       return acc;
     },
     {
-      temp: { max: 0, min: 0 },
-      humidity: { max: 0, min: 0 },
-      light: { max: 0, min: 0 },
-      moisture: { max: 0, min: 0 },
+      temp: { max: 0, min: Infinity },
+      humidity: { max: 0, min: Infinity },
+      light: { max: 0, min: Infinity },
+      moisture: { max: 0, min: Infinity },
     }
   );
+
+  const result = {
+    ...calMinMax,
+    light: {
+      max: Math.floor(calMinMax.light.max / 150),
+      min: Math.floor(calMinMax.light.min / 150),
+    },
+    moisture: {
+      max: Math.floor(calMinMax.moisture.max / 23),
+      min: Math.floor(calMinMax.moisture.min / 23),
+    },
+  };
 
   return (
     <Main name="SubSection1Main">
@@ -74,7 +87,7 @@ const SubSection1Contents = () => {
             {result.moisture.max}/{result.moisture.min}
           </MaxAndMinValue>
         </Item7>
-        <Item8>{/*<WaterTankValChart></WaterTankValChart>*/}</Item8>
+        <Item8>{<WaterTankValChart></WaterTankValChart>}</Item8>
         <Item9>
           <EnviroMoistChart></EnviroMoistChart>
         </Item9>

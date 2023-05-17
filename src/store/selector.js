@@ -7,17 +7,21 @@ import {
   actuatorLogAtom,
 } from "@store/atoms";
 import { maxBy } from "lodash";
+import device000sensor from "@data/testingdata/device000sensor";
+import device000actuator from "@data/testingdata/device000actuator";
+
+const JSONdevice000sensor = JSON.parse(JSON.stringify(device000sensor));
+const JSONdevice000actuator = JSON.parse(JSON.stringify(device000actuator));
 
 // [셀렉터] 누적센서데이터 중 최신 데이터
 export const lastSensorDataSelector = selector({
   key: "lastSensorDataSelector",
   get: ({ get }) => {
-    const sensorData = get(sensorDataOriginAtom);
-    if (sensorDataOriginAtom.length > 0) {
-      return maxBy(sensorData, (data) => new Date(data.created_at).getTime());
-    } else {
-      return [];
+    let sensorDataOrigin = get(sensorDataOriginAtom);
+    if (Array.isArray(sensorDataOrigin) && sensorDataOrigin.length < 1) {
+      sensorDataOrigin = [...JSONdevice000sensor];
     }
+    return maxBy(sensorDataOrigin, (data) => new Date(data.created_at).getTime());
   },
 });
 
@@ -25,37 +29,43 @@ export const lastSensorDataSelector = selector({
 export const sensorDataSelector = selector({
   key: "sensorDataSelector",
   get: ({ get }) => {
-    const sensorDataOrigin = get(sensorDataOriginAtom);
+    let sensorDataOrigin = get(sensorDataOriginAtom);
 
-    if (sensorDataOrigin.length > 0) {
-      const data = sensorDataOrigin.map((item) => {
-        const unixTimeDate = new Date(item.created_at * 1000); //date 타입으로 저장
-
-        //YYYY/MM/DD 스트링으로 저장
-        const yyyy = unixTimeDate.getFullYear();
-        const mm = String(unixTimeDate.getMonth() + 1).padStart(2, "0");
-        const dd = String(unixTimeDate.getDate()).padStart(2, "0");
-        const formattedDate = `${yyyy}/${mm}/${dd}`;
-
-        //HH:mm:ss 스트링으로 저장
-        const hh = String(unixTimeDate.getHours()).padStart(2, "0");
-        const min = String(unixTimeDate.getMinutes()).padStart(2, "0");
-        const sec = String(unixTimeDate.getSeconds()).padStart(2, "0");
-        const formattedTime = `${hh}:${min}:${sec}`;
-
-        const newItem = {
-          ...item,
-          created_at: unixTimeDate,
-          date: formattedDate,
-          time: formattedTime,
-        };
-
-        return newItem;
-      });
-      return data;
-    } else {
-      return [];
+    if (Array.isArray(sensorDataOrigin) && sensorDataOrigin.length < 1) {
+      sensorDataOrigin = [...JSONdevice000sensor];
     }
+
+    const data = sensorDataOrigin.map((item) => {
+      let originDate = item.created_at;
+
+      if (originDate < 10000000000) {
+        originDate *= 1000;
+      }
+      const unixTimeDate = new Date(originDate); //date 타입으로 저장
+
+      //YYYY/MM/DD 스트링으로 저장
+      const yyyy = unixTimeDate.getFullYear();
+      const mm = String(unixTimeDate.getMonth() + 1).padStart(2, "0");
+      const dd = String(unixTimeDate.getDate()).padStart(2, "0");
+      const formattedDate = `${yyyy}/${mm}/${dd}`;
+
+      //HH:mm:ss 스트링으로 저장
+      const hh = String(unixTimeDate.getHours()).padStart(2, "0");
+      const min = String(unixTimeDate.getMinutes()).padStart(2, "0");
+      const sec = String(unixTimeDate.getSeconds()).padStart(2, "0");
+      const formattedTime = `${hh}:${min}:${sec}`;
+
+      const newItem = {
+        ...item,
+        created_at: unixTimeDate,
+        date: formattedDate,
+        time: formattedTime,
+      };
+
+      return newItem;
+    });
+    console.log(data);
+    return data;
   },
 });
 
@@ -64,7 +74,8 @@ export const dailyAverageSensorDataSelector = selector({
   key: "dailyAverageSensorDataSelector",
   get: ({ get }) => {
     const sensorData = get(sensorDataSelector);
-    const AverageData = [];
+
+    console.log(sensorData);
 
     const calSum = sensorData.reduce((acc, cur) => {
       if (acc.length === 0 || acc[acc.length - 1].date !== cur.date) {
@@ -77,7 +88,6 @@ export const dailyAverageSensorDataSelector = selector({
           sumHumidity: 0,
         });
       }
-
       acc[acc.length - 1].sumLight += cur.light;
       acc[acc.length - 1].sumMoisture += cur.moisture;
       acc[acc.length - 1].sumTemp += cur.temp;
@@ -87,16 +97,19 @@ export const dailyAverageSensorDataSelector = selector({
       return acc;
     }, []);
 
-    //서버연결되고나서 다시해야징
-    /*const calAvg = calSum.map((item) => {
-        const lightAvg = item.sumLight/item.count;
-        const moistureAvg = item.sumMoisture/cur.count;
-        const tempAvg = cur.sumTemp/cur.count;
-        const humidityAvg = cur.sumHumidity/cur.count;
-        return ({light: lightAvg , moisture: moistureAvg, temp: tempAvg, humidity : humidityAvg})
-    })*/
+    //최대값 기준과 백분율 반영
+    const MAXLUX = 150;
+    const MAXMOIST = 23;
 
-    return calSum;
+    const calAvg = calSum.map((item) => {
+      const lightAvg = Math.floor(item.sumLight / item.count / MAXLUX);
+      const moistureAvg = Math.floor(item.sumMoisture / item.count / MAXMOIST);
+      const tempAvg = Math.floor(item.sumTemp / item.count);
+      const humidityAvg = Math.floor(item.sumHumidity / item.count);
+      return { light: lightAvg, moisture: moistureAvg, temp: tempAvg, humidity: humidityAvg };
+    });
+
+    return calAvg;
   },
 });
 
