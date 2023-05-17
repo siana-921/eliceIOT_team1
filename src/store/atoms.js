@@ -62,8 +62,8 @@ export const deviceInfoAtom = atom({
 
 //디바이스 자동제어상태확인 (Origin: 언제나 객체 1개만 들어있는 배열로 옴)
 //api/auto/:device_id/status
-export const autoControlStateOriginAtom = atom({
-  key: "autoControlStateOriginAtom",
+export const autoControlConfigOriginAtom = atom({
+  key: "autoControlConfigOriginAtom",
   default: [
     {
       device_id: "unit001",
@@ -77,9 +77,18 @@ export const autoControlStateOriginAtom = atom({
 });
 
 //제어명령 누적 (객체배열)
-export const actuatorLogAtom = atom({
+export const actuatorLogOriginAtom = atom({
   key: "actuatorLogAtom",
-  default: [{ idx: 0, device_id: "test001", led: 0, pump: 0, fan: 0, created_at: 1682658179 }],
+  default: [
+    {
+      idx: 0,
+      device_id: "test001",
+      led: 0,
+      pump: 0,
+      fan: 0,
+      created_at: 1682658179,
+    },
+  ],
 });
 
 // ---------------------------------------------로그인---------------------------------------------------------

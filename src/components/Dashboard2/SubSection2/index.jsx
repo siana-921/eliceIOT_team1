@@ -5,8 +5,8 @@ import { debounce } from "lodash";
 import { axiosInstance, axiosTest } from "@baseURL";
 import { useState, useEffect, useRef } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { userInfoAtom, deviceInfoAtom, autoControlStateOriginAtom } from "@store/atoms";
-import { autoControlStateSeletor } from "@store/selector";
+import { userInfoAtom, deviceInfoAtom, autoControlConfigOriginAtom } from "@store/atoms";
+import { autoControlConfigSeletor } from "@store/selector";
 import Slider, { Range, handleRender } from "rc-slider";
 import "rc-slider/assets/index.css";
 import optimal from "@data/optimalGrowingCondition";
@@ -15,23 +15,33 @@ import ActuatorLogTable from "../elements/ActuatorLogTable";
 import { validateConfig } from "next/dist/server/config-shared";
 
 const SubSection2Contents = () => {
-  const [autoControlStateOrigin, setAutoControlStateOrigin] = useRecoilState(
-    autoControlStateOriginAtom
-  ); //현재 디바이스의 자동제어상태
-  const autoControlState = useRecoilValue(autoControlStateSeletor); //현재 디바이스의 자동제어상태
+  const [autoControlConfigOrigin, setAutoControlConfigOrigin] = useRecoilState(
+    autoControlConfigOriginAtom
+  ); //현재 디바이스의 자동제어상태(set용 아톰)
+  const autoControlConfig = useRecoilValue(autoControlConfigSeletor); //현재 디바이스의 자동제어상태(셀렉터)
   const [isValueMode, setIsValueMode] = useState(true);
-  const [isAutoControl, setIsAutoControl] = useState(autoControlState.status);
+  const [isAutoControl, setIsAutoControl] = useState(autoControlConfig.status);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [targetValue, setTargetValue] = useState(autoControlState.target_light);
+  const [targetValue, setTargetValue] = useState(autoControlConfig.target_light);
 
   const user = useRecoilValue(userInfoAtom); //현재 로그인된 유저의 정보 : default user001
   const device = useRecoilValue(deviceInfoAtom); //현재 로그인된 유저의 device : default unit001
   const { device_id } = device;
 
+  //POST성공후 GET해서 ATOMSET중이라 컴포넌트 렌더링때 GET안하고
+  //MainSection렌더링때 set된 ATOM데이터를 초기렌더링에 써도될듯?
+  /*
+  useEffect(()=>{
+    const 
+  },[])
+*/
+
+  //자동제어 토글버튼 onChange
   const handleAutoControlOnOff = () => {
     setIsAutoControl(!isAutoControl);
   };
 
+  //자동제어 모드 라디오버튼 onChange
   const handleRadioChange = (e) => {
     console.log(e.target.id);
     if (e.target.id === "setValueMode") {
@@ -41,7 +51,12 @@ const SubSection2Contents = () => {
     }
   };
 
-  //수동제어 핸들
+  //슬라이더 value onChange handler
+  const handleSlider = debounce(async (value) => {
+    setTargetValue(value);
+  }, 300);
+
+  //수동제어 POST (onClick handler)
   const handlePost = async (e, target) => {
     if (isButtonDisabled) {
       alert("이전 명령이 처리중입니다.");
@@ -60,13 +75,7 @@ const SubSection2Contents = () => {
     }
   };
 
-  //슬라이더 value onChange handler
-  const handleSlider = debounce(async (value) => {
-    console.log(value);
-    setTargetValue(value);
-  }, 300);
-
-  //자동제어 단추를 OFF한 경우 POST
+  //자동제어 POST (useEffect: isAutoControl)
   useEffect(() => {
     if (isAutoControl == false) {
       console.log("자동제어 모드를 종료합니다. 즉시제어 또는 자동제어 설정이 가능합니다.");
@@ -82,7 +91,7 @@ const SubSection2Contents = () => {
             .get(`/auto/${device_id}/status`)
             .then((getRes) => {
               console.log(getRes);
-              setAutoControlStateOrigin(getRes.data);
+              setAutoControlConfigOrigin(getRes.data);
             })
             .catch((getError) => {
               console.error(getError);
@@ -93,7 +102,7 @@ const SubSection2Contents = () => {
         });
     } else {
       console.log("자동제어 모드를 시작합니다.");
-      if (autoControlState.target_light !== targetValue) {
+      if (autoControlConfig.target_light !== targetValue) {
         const data = {
           status: 1,
           target_temp: parseInt(optimal.temp),
@@ -110,7 +119,7 @@ const SubSection2Contents = () => {
               .get(`/auto/${device_id}/status`)
               .then((getRes) => {
                 console.log(getRes);
-                setAutoControlStateOrigin(getRes.data);
+                setAutoControlConfigOrigin(getRes.data);
               })
               .catch((getError) => {
                 console.error(getError);
@@ -119,7 +128,7 @@ const SubSection2Contents = () => {
           .catch((error) => {
             console.error(error);
             alert("서버와의 통신에 실패했습니다.");
-            setTargetValue(autoControlState.target_light);
+            setTargetValue(autoControlConfig.target_light);
           });
       }
     }
@@ -148,13 +157,13 @@ const SubSection2Contents = () => {
                     paddingLeft: "10px",
                   }}
                 >
-                  {autoControlState.target_light}%
+                  {autoControlConfig.target_light}%
                 </span>
               </p>
               <p>
                 자동제어 시작일자 :
                 <span style={{ fontWeight: "700", paddingLeft: "10px" }}>
-                  {autoControlState.created_at}
+                  {autoControlConfig.created_at}
                 </span>
               </p>
             </>
@@ -237,7 +246,7 @@ const SubSection2Contents = () => {
                       <AutoModeSeletorText
                         style={{ color: "black", fontWeight: "100", fontSize: "2.5rem" }}
                       >
-                        ...누군가에게 맡기기
+                        ...목표 조도 세팅완료!
                       </AutoModeSeletorText>
                       <div style={{ position: "absolute", right: 0, opacity: "30%" }}>
                         <Image src="/images/alphago.png" alt="alphago" width={200} height={200} />
@@ -257,12 +266,8 @@ const SubSection2Contents = () => {
             </DisabledManualControlBtn>
           ) : (
             <ManualControlBtnWrapper>
-              <ManualControlBtn onClick={(e) => handlePost(e, 1)} isSelected={false}>
-                ON
-              </ManualControlBtn>
-              <ManualControlBtn onClick={(e) => handlePost(e, 0)} isSelected={false}>
-                OFF
-              </ManualControlBtn>
+              <ManualControlBtn onClick={(e) => handlePost(e, 1)}>ON</ManualControlBtn>
+              <ManualControlBtn onClick={(e) => handlePost(e, 0)}>OFF</ManualControlBtn>
             </ManualControlBtnWrapper>
           )}
         </Item3>
@@ -362,7 +367,7 @@ const AutoModeSeletorWrapper = styled.div`
   height: 100%;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: grey;
   font-weight: 100;
 `;

@@ -20,7 +20,6 @@ const MainSection4Content = () => {
 
   //슬라이더 value onChange handler-------------------------------------//
   const handleSlider = (value) => {
-    console.log(value);
     //여기에 슬라이드 value를 활용한 코드 작성
   };
   //--------------------------------------------------------------------//
@@ -56,12 +55,7 @@ const MainSection4Content = () => {
               bottom: 5,
             }}
           >
-            <Area
-              type="monotone"
-              dataKey="uv"
-              stroke="rgba(0,0,0,0.3)"
-              fill="rgba(0,0,0,0.2)"
-            />
+            <Area type="monotone" dataKey="uv" stroke="rgba(0,0,0,0.3)" fill="rgba(0,0,0,0.2)" />
           </AreaChart>
         </ResponsiveContainer>
       </ChartWrapper>
