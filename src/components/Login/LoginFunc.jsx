@@ -38,8 +38,8 @@ export default function LoginFunc() {
       const expires = new Date();
       expires.setTime(expires.getTime() + 60 * 60 * 1000);
 
-      setCookie("access_token", access_token, { expires, path: "/" });
-      setToken(access_token);
+      setCookie("access_token", accessToken, { expires, path: "/" });
+      setToken(accessToken);
       setLoggedIn(true);
     } else if (response.status === 403) {
       setMsg("가입되지 않은 계정입니다.");
