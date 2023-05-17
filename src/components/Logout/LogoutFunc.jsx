@@ -37,7 +37,7 @@ export default function LogoutFunc(props) {
         height: "100vh",
       }}
     >
-      <h2>시작 페이지</h2>
+      <button>마이페이지</button>
       <button onClick={onClickHandler}>로그아웃</button>
     </div>
   );

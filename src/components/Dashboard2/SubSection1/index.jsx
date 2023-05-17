@@ -2,53 +2,61 @@ import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 
 import { useRecoilValue } from "recoil";
-import { sensorDataSelector } from "@store/selector";
+import {
+  sensorDataSelector,
+  dailyAverageMaxMinSelector,
+  //dailyAverageSensorDataSelector,
+} from "@store/selector";
 
 import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAllChart";
 import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart.jsx";
-//import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart.jsx";
+import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart.jsx";
 import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart.jsx";
 import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart.jsx";
 
 const SubSection1Contents = () => {
   const sensorData = useRecoilValue(sensorDataSelector);
-  let result = {};
-  if (Array.isArray(sensorData) && sensorData.length > 1) {
-    result = sensorData.reduce(
-      (acc, cur) => {
-        if (cur.temp !== 0) {
-          acc.temp.max = Math.max(acc.temp.max, cur.temp);
-          acc.temp.min = Math.min(acc.temp.min, cur.temp);
-        }
-        if (cur.humidity !== 0) {
-          acc.humidity.max = Math.max(acc.humidity.max, cur.humidity);
-          acc.humidity.min = Math.min(acc.humidity.min, cur.humidity);
-        }
-        if (cur.light !== 0) {
-          acc.light.max = Math.max(acc.light.max, cur.light);
-          acc.light.min = Math.min(acc.light.min, cur.light);
-        }
-        if (cur.moisture !== 0) {
-          acc.moisture.max = Math.max(acc.moisture.max, cur.moisture);
-          acc.moisture.min = Math.min(acc.moisture.min, cur.moisture);
-        }
-        return acc;
-      },
-      {
-        temp: { max: 0, min: 0 },
-        humidity: { max: 0, min: 0 },
-        light: { max: 0, min: 0 },
-        moisture: { max: 0, min: 0 },
+
+  //필터링 전 origin sensorData기준으로 계산하는거라 셀렉터랑 다름!
+  const calMinMax = sensorData.reduce(
+    (acc, cur) => {
+      if (cur.temp !== 0) {
+        acc.temp.max = Math.max(acc.temp.max, cur.temp);
+        acc.temp.min = Math.min(acc.temp.min, cur.temp);
       }
-    );
-  } else {
-    result = {
-      temp: { max: sensorData.temp, min: sensorData.temp },
-      humidity: { max: sensorData.humidity, min: sensorData.humidity },
-      light: { max: sensorData.light, min: sensorData.light },
-      moisture: { max: sensorData.moisture, min: sensorData.moisture },
-    };
-  }
+      if (cur.humidity !== 0) {
+        acc.humidity.max = Math.max(acc.humidity.max, cur.humidity);
+        acc.humidity.min = Math.min(acc.humidity.min, cur.humidity);
+      }
+      if (cur.light !== 0) {
+        acc.light.max = Math.max(acc.light.max, cur.light);
+        acc.light.min = Math.min(acc.light.min, cur.light);
+      }
+      if (cur.moisture !== 0) {
+        acc.moisture.max = Math.max(acc.moisture.max, cur.moisture);
+        acc.moisture.min = Math.min(acc.moisture.min, cur.moisture);
+      }
+      return acc;
+    },
+    {
+      temp: { max: 0, min: Infinity },
+      humidity: { max: 0, min: Infinity },
+      light: { max: 0, min: Infinity },
+      moisture: { max: 0, min: Infinity },
+    }
+  );
+
+  const result = {
+    ...calMinMax,
+    light: {
+      max: Math.floor(calMinMax.light.max / 150),
+      min: Math.floor(calMinMax.light.min / 150),
+    },
+    moisture: {
+      max: Math.floor(calMinMax.moisture.max / 23),
+      min: Math.floor(calMinMax.moisture.min / 23),
+    },
+  };
 
   return (
     <Main name="SubSection1Main">
@@ -84,7 +92,7 @@ const SubSection1Contents = () => {
             {result.moisture.max}/{result.moisture.min}
           </MaxAndMinValue>
         </Item7>
-        <Item8>{/*<WaterTankValChart></WaterTankValChart>*/}</Item8>
+        <Item8>{<WaterTankValChart></WaterTankValChart>}</Item8>
         <Item9>
           <EnviroMoistChart></EnviroMoistChart>
         </Item9>
