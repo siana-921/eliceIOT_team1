@@ -75,8 +75,8 @@ export default function LoginFunc() {
       <LoginPageContents>
         <LoginPageCommentDiv>
           <h1>LOGIN</h1>
-          <h2>바질과 무제한 친해지리</h2>
-          <h3>다양한 센서들과 엑츄에이터들로 인생바질을 키워보세요</h3>
+          <h2>바질과 무제한 친해지리 🌿</h2>
+          <h3>다양한 센서들과 엑츄에이터들로 인생바질을 키워보세요 🌿</h3>
         </LoginPageCommentDiv>
         <LoginPageForm onSubmit={LoginFunc} method="post">
           <input type="text" value={id} onChange={(e) => setId(e.target.value)} placeholder="ID" />
@@ -89,12 +89,12 @@ export default function LoginFunc() {
           <button type="submit" disabled={loading}>
             Login
           </button>
-          <LoginPageSignupDiv>
-            <p>아직 가입을 하지 않았다면?</p>
-            <LoginPageSignupLink href="/signup">가입하러 가기</LoginPageSignupLink>
-          </LoginPageSignupDiv>
-          {msg}
         </LoginPageForm>
+        <LoginPageSignupDiv>
+          <p>아직 가입을 하지 않았다면?</p>
+          <LoginPageSignupLink href="/signup">가입하러 가기</LoginPageSignupLink>
+        </LoginPageSignupDiv>
+        {msg}
       </LoginPageContents>
     </LoginPage>
   );
@@ -127,6 +127,9 @@ const LoginPageCommentDiv = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
+  // border: 2px red solid;
+
+  width: 80%;
 
   & h1 {
     font-size: 70px;
@@ -135,8 +138,10 @@ const LoginPageCommentDiv = styled.div`
     text-align: center;
     margin-bottom: 25px;
   }
+
   & h3 {
     font-weight: 500;
+    font-size: 17px;
   }
 `;
 
@@ -154,7 +159,7 @@ const LoginPageForm = styled.form`
 
   & input {
     width: 100%;
-    height: 13%;
+    height: 18%;
     transition: background-color 0.8s;
     border: 1px rgba(228, 228, 228, 0.5) solid;
     border-radius: 5px;
@@ -174,7 +179,8 @@ const LoginPageForm = styled.form`
     cursor: pointer;
     width: 100%;
     margin: 20px;
-    height: 13%;
+    height: 18%;
+
     border-radius: 5px;
     border: none;
     transition: background-color 0.2s;
