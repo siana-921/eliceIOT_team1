@@ -14,11 +14,12 @@ export const userAtom = atom({
   key: "userAtom",
   default: {
     id: "user999",
-    fullname: "정수아",
+    fullname: "김정연",
     phone: "010-1234-5678",
     email: "basilfarm@gmail.com",
     picture: 1,
     device_id: "unit003",
+    created_at: 1,
   },
 });
 

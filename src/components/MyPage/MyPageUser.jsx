@@ -2,15 +2,12 @@ import { axiosInstance } from "@/api/base";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 // import { useCookies } from "react-cookie";
-import { tokenState } from "@/store/atoms";
-import { useRecoilValue } from "recoil";
+import { tokenState, userAtom } from "@/store/atoms";
+import { useRecoilValue, useRecoilState } from "recoil";
 
 export default function MyPageUser() {
   const token = useRecoilValue(tokenState);
-  const [id, setId] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [fullname, setFullName] = useState("");
+  const [user_info, setUserInfo] = useRecoilState(userAtom);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -24,10 +21,19 @@ export default function MyPageUser() {
           },
         });
         const { id, email, phone, fullname } = response.data;
-        setId(id);
-        setEmail(email);
-        setPhone(phone);
-        setFullName(fullname);
+
+        console.log(response);
+
+        setUserInfo({
+          id: response.data[0].id,
+          fullname: response.data[0].fullname,
+          phone: response.data[0].phone,
+          email: response.data[0].email,
+          picture: response.data[0].picture,
+          device_id: response.data[0].device_id,
+          created_at: response.data[0].created_at,
+        });
+
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -42,12 +48,12 @@ export default function MyPageUser() {
   return (
     <>
       <MyPageUserMain>
-        <MyPageTitle>👋 {fullname}님, 반가워요!</MyPageTitle>
+        <MyPageTitle>👋 {user_info.fullname}님, 반가워요!</MyPageTitle>
         <MyPageDiv>
           <MyPageInfoList>
-            <MyPageInfoItem>🪴 아이디 : {id}</MyPageInfoItem>
-            <MyPageInfoItem>✉️ 이메일 : {email}</MyPageInfoItem>
-            <MyPageInfoItem>📱 휴대폰번호 : {phone}</MyPageInfoItem>
+            <MyPageInfoItem>🪴 아이디 : {user_info.id}</MyPageInfoItem>
+            <MyPageInfoItem>✉️ 이메일 : {user_info.email}</MyPageInfoItem>
+            <MyPageInfoItem>📱 휴대폰번호 : {user_info.phone}</MyPageInfoItem>
           </MyPageInfoList>
         </MyPageDiv>
       </MyPageUserMain>

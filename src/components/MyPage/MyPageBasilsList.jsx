@@ -1,42 +1,49 @@
 import styled from "@emotion/styled";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import DeviceModal from "./DeviceModal";
 // import { useRecoilState } from "recoil";
 // import { defaultDeviceIdState } from "../../store/atoms";
 import { axiosInstance } from "@/api/base";
 import { useRouter } from "next/router";
-import { tokenState } from "@/store/atoms";
-import { useRecoilValue } from "recoil";
+import { tokenState, userAtom } from "@/store/atoms";
+import { useRecoilValue, useRecoilState } from "recoil";
 
 export default function MyPageBailsList() {
   const token = useRecoilValue(tokenState);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [id, setId] = useState("");
+  // const [id, setId] = useState("");
   const [picture, setPicture] = useState("");
   const [device_id, setDeviceId] = useState("");
   const [device_name, setFullName] = useState("");
   const [devices, setDevices] = useState([]);
 
+  const [user_info, setUserInfo] = useRecoilState(userAtom);
+
+  const addDevice = useCallback((device) => {
+    setDevices((prevDevices) => [...prevDevices, device]);
+  }, []);
+
   const router = useRouter();
 
   useEffect(() => {
+    console.log(user_info);
     // 여기서 기본 device id를 가져오는 로직을 구현
+    const { id } = user_info;
+
     const fetchDefaultDeviceId = async () => {
       try {
-        const response = await axiosInstance.get(`device/info`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axiosInstance.get(`device/info`, { id });
         const { picture, device_id, device_name } = response.data;
         setDeviceId(device_id);
         setPicture(picture);
         setFullName(device_name);
 
+        console.log(response);
+
         addDevice({
-          id: device_id,
-          image: picture,
-          name: device_name,
+          device_id: device_id,
+          picture: picture,
+          device_name: device_name,
         });
       } catch (error) {
         console.error("디바이스 목록 : 🚀디바이스 목록을 가져오는데 실패했습니다.", error);
@@ -44,7 +51,7 @@ export default function MyPageBailsList() {
     };
 
     fetchDefaultDeviceId();
-  }, [token]);
+  }, [token, addDevice, user_info]);
 
   const openModal = () => {
     setModalOpen(true);
@@ -52,10 +59,6 @@ export default function MyPageBailsList() {
 
   const closeModal = () => {
     setModalOpen(false);
-  };
-
-  const addDevice = (device) => {
-    setDevices([...devices, device]);
   };
 
   const handleDeviceClick = (deviceId) => {
