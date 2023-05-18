@@ -85,6 +85,15 @@ const BasilsListMain = styled.main`
     font-size: 40px;
     font-weight: 400;
   }
+
+  @media screen and (max-width: 428px) {
+    width: 100%;
+    margin: 20px;
+
+    & h2 {
+      font-size: 25px;
+    }
+  }
 `;
 
 const BasilListDiv = styled.div`
@@ -103,6 +112,19 @@ const BasilListDiv = styled.div`
     background-color: transparent;
     border: none;
     font-size: 16px;
+  }
+
+  @media screen and (max-width: 428px) {
+    flex-direction: column;
+    align-items: center;
+    margin: 30px;
+
+    font-size: 16px;
+
+    & button {
+      font-size: 14px;
+      margin: 7px;
+    }
   }
 `;
 
@@ -135,5 +157,9 @@ const BasilDeviceLists = styled.ul`
     margin-bottom: 10px;
     border: 10px solid transparent;
     border-color: rgba(0, 168, 107);
+  }
+
+  @media screen and (max-width: 428px) {
+    margin: 10px;
   }
 `;
