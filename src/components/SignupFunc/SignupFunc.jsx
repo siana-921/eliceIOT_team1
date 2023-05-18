@@ -74,13 +74,14 @@ export default function SignupFunc() {
         "8자 이상 16자 이하의 대소문자와 숫자를 포함해 입력해야 합니다.",
         "error"
       );
-    } else if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/)) {
-      return Swal.fire(
-        "Password 형식이 올바르지 않습니다.",
-        "8자 이상 16자 이하의 대소문자와 숫자를 포함해야 합니다.",
-        "error"
-      );
-    } else if (!fullname) {
+    } // else if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/)) {
+    //   return Swal.fire(
+    //     "Password 형식이 올바르지 않습니다.",
+    //     "8자 이상 16자 이하의 대소문자와 숫자를 포함해야 합니다.",
+    //     "error"
+    //   );
+    // }
+    else if (!fullname) {
       return Swal.fire("이름을 입력하세요.", "", "warning");
     } else if (!email) {
       return Swal.fire("이메일를 입력하세요.", "", "warning");
