@@ -138,7 +138,7 @@ export const formatAutoConfigSelector = selector({
   get: ({ get }) => {
     const origin = get(autoConfigAtom);
 
-    const date = origin.created_at;
+    const date = origin.created_at || "2023-01-01 01:01:01";
 
     const year = date.slice(0, 4);
     const month = date.slice(5, 7);

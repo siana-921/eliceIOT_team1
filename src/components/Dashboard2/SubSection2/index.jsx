@@ -21,7 +21,7 @@ const SubSection2Contents = () => {
   const [isValueMode, setIsValueMode] = useState(true);
   const [isAutoControl, setIsAutoControl] = useState(autoConfig.status);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [targetValue, setTargetValue] = useState(formatAutoConfigSelector.target_light || 10000);
+  const [targetValue, setTargetValue] = useState(formatAutoConfigSelector.target_light || 20);
 
   const user = useRecoilValue(userAtom); //현재 로그인된 유저의 정보 : default user001
   const device = useRecoilValue(deviceAtom); //현재 로그인된 유저의 device : default unit001
@@ -31,8 +31,6 @@ const SubSection2Contents = () => {
   useEffect(() => {
     console.log(`자동제어상태 : ${isAutoControl}`);
     console.log(`현재 로그인 정보 : ${user_id} ${device_id}`);
-    console.log(formatAutoConfig);
-    console.log(autoConfig);
 
     setTargetValue(formatAutoConfig.target_light);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -283,7 +281,7 @@ const SubSection2Contents = () => {
         </Item3>
         <Item4>
           <SmallTitleText>제어 기록</SmallTitleText>
-          <ActuatorLogTable category="light"></ActuatorLogTable>
+          <ActuatorLogTable category="led"></ActuatorLogTable>
         </Item4>
       </GridContainer>
     </Main>

@@ -5,12 +5,11 @@ import styled from "@emotion/styled";
 
 import unit000_actuator from "../../../data/user000/actuatorLog";
 
-const ActuatorLogTable = () => {
+const ActuatorLogTable = ({ category }) => {
   const dataAtom = useRecoilValue(formatActuatorSelector);
   const data = dataAtom.length > 0 ? dataAtom : unit000_actuator;
 
   const formatDate = (dateString) => {
-    console.log(dateString);
     const date = new Date(dateString);
     const formattedDate = `${String(date.getMonth() + 1).padStart(2, "0")} / ${String(
       date.getDate()
@@ -39,14 +38,18 @@ const ActuatorLogTable = () => {
           </tr>
         </Styled_thead>
         <Styled_tbody>
-          {data.slice(0, 10).map((row) => (
-            <Styled_tr key={row.id}>
-              <Styled_td>{formatDate(row.created_at)}</Styled_td>
-              <Styled_td>{formatTime(row.created_at)}</Styled_td>
-              <Styled_td>LED</Styled_td>
-              <Styled_td>{row.led === 255 ? "ON" : "OFF"}</Styled_td>
-            </Styled_tr>
-          ))}
+          {data.slice(0, 10).map((row) => {
+            if (parseInt(row[category]) > 0) {
+              return (
+                <Styled_tr key={row.id}>
+                  <Styled_td>{formatDate(row.created_at)}</Styled_td>
+                  <Styled_td>{formatTime(row.created_at)}</Styled_td>
+                  <Styled_td>{category}</Styled_td>
+                  <Styled_td>{row.led === 255 ? "ON" : "OFF"}</Styled_td>
+                </Styled_tr>
+              );
+            }
+          })}
         </Styled_tbody>
       </table>
     </Main>
