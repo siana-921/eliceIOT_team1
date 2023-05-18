@@ -1,7 +1,14 @@
 import Link from "next/link";
 import styled from "@emotion/styled";
+import { useRecoilValue } from "recoil";
+import { isLoggedInState } from "@store/atoms";
 
 export default function Home() {
+  const islogin = useRecoilValue(isLoggedInState);
+  useEffect(() => {
+    console.log(islogin);
+  }, [islogin]);
+
   return (
     <MainPage>
       <MainPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted></MainPageVideo>

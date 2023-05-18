@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRecoilValue } from "recoil";
 import {
-  dailyAverageSensorDataSelector,
+  dailyAverageSensorSelector,
   dailyAverageMaxMinSelector,
-  sensorDataSelector,
+  formatSensorSelector,
 } from "@store/selector";
 import { colorCode } from "@store/constValue";
 import {
@@ -18,7 +18,7 @@ import {
 } from "recharts";
 
 const ComparisonAllChart = () => {
-  const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
+  const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
   const dailyAverageMaxMin = useRecoilValue(dailyAverageMaxMinSelector);
 
   const data = dailyAverage.map((item, index) => ({
@@ -29,7 +29,6 @@ const ComparisonAllChart = () => {
     moisture: item.moisture,
   }));
 
-  console.log(dailyAverageMaxMin);
   return (
     <Main>
       <SensorTitleText>
@@ -108,7 +107,7 @@ const ComparisonAllChart = () => {
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="humidity"
+            dataKey="moisture"
             stroke={colorCode.lime}
             fill={colorCode.lime}
             isAnimationActive={false}
@@ -136,7 +135,7 @@ const ComparisonAllChart = () => {
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="moisture"
+            dataKey="humidity"
             stroke={colorCode.marine}
             fill={colorCode.marine}
             isAnimationActive={false}
