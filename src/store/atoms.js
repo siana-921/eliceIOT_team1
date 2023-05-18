@@ -75,7 +75,7 @@ export const actuatorAtom = atom({
 // ---------------------------------------------로그인---------------------------------------------------------
 
 // 토큰 관리(사용자 인증과 관련된 모든 페이지에 적용해야할 듯)
-// 사용 : signup
+// 사용 : login, mypage, dashboard
 export const tokenState = atom({
   key: "tokenState",
   default: "",

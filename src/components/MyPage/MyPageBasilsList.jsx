@@ -1,17 +1,20 @@
 import styled from "@emotion/styled";
 import React, { useState, useEffect } from "react";
 import DeviceModal from "./DeviceModal";
-import { useRecoilState } from "recoil";
-import { defaultDeviceIdState } from "../../store/atoms";
+// import { useRecoilState } from "recoil";
+// import { defaultDeviceIdState } from "../../store/atoms";
 import { axiosInstance } from "@/api/base";
 import { useRouter } from "next/router";
+import { tokenState } from "@/store/atoms";
+import { useRecoilValue } from "recoil";
 
 export default function MyPageBailsList() {
+  const token = useRecoilValue(tokenState);
   const [isModalOpen, setModalOpen] = useState(false);
   const [id, setId] = useState("");
   const [picture, setPicture] = useState("");
   const [device_id, setDeviceId] = useState("");
-  const [fullname, setFullName] = useState("");
+  const [device_name, setFullName] = useState("");
   const [devices, setDevices] = useState([]);
 
   const router = useRouter();
@@ -20,18 +23,28 @@ export default function MyPageBailsList() {
     // 여기서 기본 device id를 가져오는 로직을 구현
     const fetchDefaultDeviceId = async () => {
       try {
-        const response = await axiosInstance.get(`/user/sign_in/my_page`);
-        const { picture, device_id, fullname } = response.data;
+        const response = await axiosInstance.get(`device/info`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const { picture, device_id, device_name } = response.data;
         setDeviceId(device_id);
         setPicture(picture);
-        setFullName(fullname);
+        setFullName(device_name);
+
+        addDevice({
+          id: device_id,
+          image: picture,
+          name: device_name,
+        });
       } catch (error) {
-        console.error("🚀디바이스 목록을 가져오는데 실패했습니다.", error);
+        console.error("디바이스 목록 : 🚀디바이스 목록을 가져오는데 실패했습니다.", error);
       }
     };
 
     fetchDefaultDeviceId();
-  }, []);
+  }, [token]);
 
   const openModal = () => {
     setModalOpen(true);
@@ -51,7 +64,7 @@ export default function MyPageBailsList() {
 
   return (
     <BasilsListMain>
-      <h2>🪴 {fullname}님의 바질목록 🪴</h2>
+      <h2>🪴 {device_name}님의 바질목록 🪴</h2>
       <BasilListDiv>
         <p>새로운 바질이 추가되었나요?</p>
         <button onClick={openModal}> 등록하러 가기</button>

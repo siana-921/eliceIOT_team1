@@ -1,8 +1,12 @@
 import { axiosInstance } from "@/api/base";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
+// import { useCookies } from "react-cookie";
+import { tokenState } from "@/store/atoms";
+import { useRecoilValue } from "recoil";
 
 export default function MyPageUser() {
+  const token = useRecoilValue(tokenState);
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -14,7 +18,11 @@ export default function MyPageUser() {
     const fetchMyPageInfo = async () => {
       setLoading(true);
       try {
-        const response = await axiosInstance.get(`/user/sign_in/my_page`);
+        const response = await axiosInstance.get(`user/sign_in/my_page`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const { id, email, phone, fullname } = response.data;
         setId(id);
         setEmail(email);
@@ -23,13 +31,13 @@ export default function MyPageUser() {
         setLoading(false);
       } catch (err) {
         console.log(err);
-        console.log("API 호출에 실패했습니다.");
+        console.log("유저목록 : API 호출에 실패했습니다.");
         setLoading(false);
       }
     };
 
     fetchMyPageInfo();
-  }, []);
+  }, [token]);
 
   return (
     <>
