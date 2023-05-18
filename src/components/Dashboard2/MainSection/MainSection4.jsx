@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
-import Slider, { Range, handleRender } from "rc-slider";
-import "rc-slider/assets/index.css";
+import { useRecoilValue } from "recoil";
+import { latestSensorSelector } from "@/store/selector";
+
 import {
   AreaChart,
   Area,
@@ -12,17 +13,9 @@ import {
 } from "recharts";
 
 const MainSection4Content = () => {
-  //슬라이더 래퍼 영역 클릭시 부모 요소(section)에 onclick이벤트 전달 방지
-  const handleSlideronClick = (event) => {
-    event.stopPropagation();
-  };
-  //--------------------------------------------------------------------//
+  const latestData = useRecoilValue(latestSensorSelector);
 
-  //슬라이더 value onChange handler-------------------------------------//
-  const handleSlider = (value) => {
-    //여기에 슬라이드 value를 활용한 코드 작성
-  };
-  //--------------------------------------------------------------------//
+  const latestValue = latestData.humidity;
 
   return (
     <Main>
@@ -31,17 +24,16 @@ const MainSection4Content = () => {
       </BackTriangleWrapper>
       <SensorNameText>Humidity ──────────────────</SensorNameText>
       <DataValueText>
-        55<PercentText>%</PercentText>
+        {latestValue}
+        <PercentText>%</PercentText>
       </DataValueText>
-      <SliderWrapper onClick={handleSlideronClick}>
-        <SlideTitle>목표 제어 습도</SlideTitle>
-        <Slider min={0} max={100} defaultValue={50} onChange={handleSlider} />
-      </SliderWrapper>
+
       <RandomMessageWrapper>
-        <RandomMsg>바질의 최적습도는 60% 입니다</RandomMsg>
-        <RandomMsg>바질은 촉촉한 환경을 좋아해요</RandomMsg>
-        <RandomMsg>바질의 적정습도는 60~80% 입니다</RandomMsg>
+        <RandomMsg>바질의 최적온도는 26도 입니다</RandomMsg>
+        <RandomMsg>바질은 여름보다 겨울 나기가 더 힘들어요</RandomMsg>
+        <RandomMsg>바질의 적정온도는 15도 이상, 32도 이하입니다</RandomMsg>
       </RandomMessageWrapper>
+
       <ChartWrapper>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
@@ -55,7 +47,7 @@ const MainSection4Content = () => {
               bottom: 5,
             }}
           >
-            <Area type="monotone" dataKey="uv" stroke="rgba(0,0,0,0.3)" fill="rgba(0,0,0,0.2)" />
+            <Area type="monotone" dataKey="uv" stroke="rgba(0,0,0,0.3)" fill="rgba(0,0,0,0.1)" />
           </AreaChart>
         </ResponsiveContainer>
       </ChartWrapper>

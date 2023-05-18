@@ -3,8 +3,8 @@ import styled from "@emotion/styled";
 
 import { useRecoilValue } from "recoil";
 import {
-  sensorDataSelector,
-  dailyAverageMaxMinSelector,
+  formatSensorSelector,
+  //dailyAverageMaxMinSelector,
   //dailyAverageSensorDataSelector,
 } from "@store/selector";
 
@@ -15,7 +15,7 @@ import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistCha
 import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart.jsx";
 
 const SubSection1Contents = () => {
-  const sensorData = useRecoilValue(sensorDataSelector);
+  const sensorData = useRecoilValue(formatSensorSelector);
 
   //필터링 전 origin sensorData기준으로 계산하는거라 셀렉터랑 다름!
   const calMinMax = sensorData.reduce(

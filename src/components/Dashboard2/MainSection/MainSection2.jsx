@@ -1,27 +1,29 @@
 import styled from "@emotion/styled";
+import { useRecoilValue } from "recoil";
+import { latestSensorSelector } from "@/store/selector";
 
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { AreaChart, Area, ResponsiveContainer } from "recharts";
 
 const MainSection2Content = () => {
+  const latestData = useRecoilValue(latestSensorSelector);
+
+  const MAX_LIGHT = 20000;
+  const latestValue =
+    latestData.light / (0.01 * MAX_LIGHT) > 100 ? 100 : latestData.light / (0.01 * MAX_LIGHT);
+
   return (
     <Main>
       <BackTriangleWrapper>
         <BackTriangleShape></BackTriangleShape>
       </BackTriangleWrapper>
       <SensorNameText>Illuminance ──────────────────</SensorNameText>
-      <DataValueText>
-        87<PercentText>%</PercentText>
-      </DataValueText>
-      <DataValueNote>기준: 1000lux</DataValueNote>
-
+      <DataValueTextWrapper>
+        <DataValueText>
+          {latestValue}
+          <PercentText>%</PercentText>
+        </DataValueText>
+      </DataValueTextWrapper>
+      <DataValueNote>단위: lux</DataValueNote>
       <RandomMessageWrapper>
         <RandomMsg>바질의 최적온도는 26도 입니다</RandomMsg>
         <RandomMsg>바질은 여름보다 겨울 나기가 더 힘들어요</RandomMsg>
@@ -72,6 +74,12 @@ const ChartWrapper = styled.div`
   bottom: 0;
   margin-bottom: -10px;
 `;
+const DataValueTextWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 190px;
+  margin-top: -1.2rem;
+`;
 
 //----------------------------------
 
@@ -101,7 +109,9 @@ const BackTriangleShape = styled.div`
 
 const DataValueText = styled.p`
   font-size: 10rem;
-  margin-top: -1.2rem;
+  position: absolute;
+  bottom: 0;
+  left: 0%;
 `;
 const SensorNameText = styled.div`
   font-size: 3rem;
