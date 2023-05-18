@@ -71,7 +71,13 @@ export default function SignupFunc() {
     } else if (!password) {
       return Swal.fire(
         "Password를 입력하세요.",
-        "8자 이상 16자 이하의 대소문자와 숫자로 작성해야 합니다.",
+        "8자 이상 16자 이하의 대소문자와 숫자를 포함해 입력해야 합니다.",
+        "error"
+      );
+    } else if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/)) {
+      return Swal.fire(
+        "Password 형식이 올바르지 않습니다.",
+        "8자 이상 16자 이하의 대소문자와 숫자를 포함해야 합니다.",
         "error"
       );
     } else if (!fullname) {
@@ -126,7 +132,6 @@ export default function SignupFunc() {
       .post(`user/sign_up`, body)
       .then((res) => {
         console.log(res);
-        // alert(JSON.stringify(res));
         setLoading(false);
         setTimeout(() => {
           router.push("/login");
