@@ -151,19 +151,19 @@ export default function SignupFunc() {
           <h3>다양한 센서들과 엑츄에이터들로 인생바질을 키워보세요 🌿</h3>
         </SignupPageCommentDiv>
         <SignupPageForm onSubmit={SignupFunc} method="post">
-          <label htmlFor="id">ID*</label>
+          <label htmlFor="id">ID</label>
           <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
-          <label htmlFor="password">Password*</label>
+          <label htmlFor="password">Password</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <label htmlFor="fullname">Name*</label>
+          <label htmlFor="fullname">Name</label>
           <input type="text" value={fullname} onChange={(e) => setFullname(e.target.value)} />
-          <label htmlFor="email">Email*</label>
+          <label htmlFor="email">Email</label>
           <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <label htmlFor="phone">Phone Number*</label>
+          <label htmlFor="phone">Phone Number</label>
           <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
-          <label htmlFor="text">Device ID*</label>
+          <label htmlFor="text">Device ID</label>
           <input type="text" value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
-          <label htmlFor="text">Device Image*</label>
+          <label htmlFor="text">Device Image</label>
           <div>
             {deviceProfileImages.map((picture, index) => (
               <DeviceImage
@@ -217,6 +217,7 @@ const SignupPageCommentDiv = styled.div`
   text-align: left;
 
   width: 85%;
+
   // border: 2px red solid;
 
   margin-top: 15px;
@@ -227,7 +228,8 @@ const SignupPageCommentDiv = styled.div`
     font-weight: 700;
     color: #97c410;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
+    margin-top: 5px;
   }
   & h2 {
     font-size: 20px;
@@ -250,12 +252,18 @@ const SignupPageForm = styled.form`
   justify-content: center;
   align-items: center;
 
+  font-size: 13px;
+
   & label {
     text-align: left;
     // border: 2px red solid;
-    height: 50%;
+    height: 35%;
     width: 100%;
     margin: 5px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   & input {
@@ -279,7 +287,8 @@ const SignupPageForm = styled.form`
     cursor: pointer;
     width: 100%;
     height: 50%;
-    margin: 25px;
+    margin-bottom: 25px;
+    margin-top: 13px;
     border-radius: 5px;
     border: none;
     transition: background-color 0.2s;
@@ -293,7 +302,8 @@ const SignupPageForm = styled.form`
 `;
 
 const DeviceImage = styled.img`
-  width: 75px;
+  width: 70px;
+  height: 100%;
   margin-left: 15px;
   margin-right: 15px;
   cursor: pointer;
