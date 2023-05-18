@@ -17,10 +17,10 @@ export default function Home() {
         <MainPageLogo src="/images/logo.png" alt="logo" />
         <MainPageButtonDiv>
           <Link href="/login">
-            <MainPageButton>로그인</MainPageButton>
+            <MainPageButton>Login</MainPageButton>
           </Link>
           <Link href="/signup">
-            <MainPageButton>회원가입</MainPageButton>
+            <MainPageButton>Join</MainPageButton>
           </Link>
         </MainPageButtonDiv>
       </MainPageContents>
@@ -87,9 +87,8 @@ const MainPageButtonDiv = styled.div`
   transform: translate(-50%, -50%);
 `;
 const MainPageButton = styled.button`
-  background: #00a86b;
-  box-shadow: 0rem 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
+  border-radius: 25px;
+  // border: 0.5px #ffffff solid;
   border: none;
   cursor: pointer;
   height: 3.5rem;
@@ -99,4 +98,10 @@ const MainPageButton = styled.button`
   line-height: 2.3rem;
   color: #ffffff;
   margin: 10px;
+  background: #00a86b;
+  box-shadow: 0rem 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.25);
+
+  &: hover {
+    background-color: rgba(0, 168, 107, 0.9);
+  }
 `;
