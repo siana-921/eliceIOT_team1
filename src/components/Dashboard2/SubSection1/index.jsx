@@ -8,11 +8,11 @@ import {
   //dailyAverageSensorDataSelector,
 } from "@store/selector";
 
-import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAllChart";
-import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart.jsx";
-import WaterTankValChart from "@components/Dashboard2/Subsection1/WaterTankValChart.jsx";
-import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart.jsx";
-import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart.jsx";
+import ComparisonAllChart from "@/omponents/Dashboard2/SubSection1/ComparisonAllChart";
+import DotsChart from "@components/Dashboard2/SubSection1/DotsChart.jsx";
+import WaterTankValChart from "@components/Dashboard2/SubSection1/WaterTankValChart.jsx";
+import EnviroMoistChart from "@components/Dashboard2/SubSection1/EnviroMoistChart.jsx";
+import DayAndNightTempChart from "@components/Dashboard2/SubSection1/DayAndNightTempChart.jsx";
 
 const SubSection1Contents = () => {
   const sensorData = useRecoilValue(formatSensorSelector);
