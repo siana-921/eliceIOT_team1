@@ -85,7 +85,6 @@ const MainPageButtonDiv = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    // border: 2px red solid;
   }
 `;
 const MainPageButton = styled.button`
