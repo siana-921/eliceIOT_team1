@@ -4,10 +4,10 @@ import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@store/atoms";
 
 export default function Home() {
-  const islogin = useRecoilValue(isLoggedInState);
-  useEffect(() => {
-    console.log(islogin);
-  }, [islogin]);
+  // const islogin = useRecoilValue(isLoggedInState);
+  // useEffect(() => {
+  //   console.log(islogin);
+  // }, [islogin]);
 
   return (
     <MainPage>
