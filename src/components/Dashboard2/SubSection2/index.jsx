@@ -19,7 +19,7 @@ const SubSection2Contents = () => {
   const formatAutoConfig = useRecoilValue(formatAutoConfigSelector); //현재 디바이스의 자동제어상태(셀렉터)
 
   const [isValueMode, setIsValueMode] = useState(true);
-  const [isAutoControl, setIsAutoControl] = useState(formatAutoConfigSelector.status);
+  const [isAutoControl, setIsAutoControl] = useState(autoConfig[0].status);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [targetValue, setTargetValue] = useState(formatAutoConfigSelector.target_light || 10000);
 
@@ -232,6 +232,7 @@ const SubSection2Contents = () => {
                           max={20000}
                           step={100}
                           value={targetValue || 10000}
+                          defaultValue={10000}
                           onChange={handleSlider}
                         />
                       </SliderWrapper>

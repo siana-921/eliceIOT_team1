@@ -51,7 +51,7 @@ export const autoConfigAtom = atom({
       status: 1,
       target_temp: 20,
       target_moisture: 70,
-      target_light: 40,
+      target_light: 4000,
       created_at: "2023-05-12T12:26:40.000Z",
     },
   ],
