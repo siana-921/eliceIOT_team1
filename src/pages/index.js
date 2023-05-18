@@ -10,10 +10,10 @@ export default function Home() {
         <MainPageLogo src="/images/logo.png" alt="logo" />
         <MainPageButtonDiv>
           <Link href="/login">
-            <MainPageButton>로그인</MainPageButton>
+            <MainPageButton>Login</MainPageButton>
           </Link>
           <Link href="/signup">
-            <MainPageButton>회원가입</MainPageButton>
+            <MainPageButton>Join</MainPageButton>
           </Link>
         </MainPageButtonDiv>
       </MainPageContents>
