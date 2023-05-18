@@ -1,47 +1,32 @@
 import { selector } from "recoil";
-import {
-  sensorDataOriginAtom,
-  userInfoAtom,
-  deviceInfoAtom,
-  autoControlConfigOriginAtom,
-  actuatorLogOriginAtom,
-} from "@store/atoms";
+import { userAtom, deviceAtom, autoConfigAtom, sensorAtom, actuatorAtom } from "@store/atoms";
 import { maxBy } from "lodash";
-import device000sensor from "@data/testingdata/device000sensor";
-import device000actuator from "@data/testingdata/device000actuator";
+import device000sensor from "@data/user000/sensorLog";
+import device000actuator from "@data/user000/actuatorLog";
 
 const JSONdevice000sensor = JSON.parse(JSON.stringify(device000sensor));
 const JSONdevice000actuator = JSON.parse(JSON.stringify(device000actuator));
 
-// [셀렉터] 누적센서데이터 중 최신 데이터
-export const lastSensorDataSelector = selector({
-  key: "lastSensorDataSelector",
+// [셀렉터:필터] 누적센서데이터 중 최신 데이터
+export const latestSensorSelector = selector({
+  key: "latestSensorSelector",
   get: ({ get }) => {
-    let sensorDataOrigin = get(sensorDataOriginAtom);
-    if (Array.isArray(sensorDataOrigin) && sensorDataOrigin.length < 1) {
-      sensorDataOrigin = [...JSONdevice000sensor];
-    }
-    return maxBy(sensorDataOrigin, (data) => new Date(data.created_at).getTime());
+    let origin = get(sensorAtom) || JSONdevice000sensor;
+    return maxBy(origin, (data) => new Date(data.created_at).getTime());
+    //return [];
   },
 });
 
-//[셀렉터] 누적센서데이터의 created_at을 DATE와 TIME으로 분리하여 저장
-export const sensorDataSelector = selector({
-  key: "sensorDataSelector",
+//[셀렉터:포맷] 누적센서데이터의 created_at을 DATE와 TIME으로 분리하여 저장
+export const formatSensorSelector = selector({
+  key: "formatSensorSelector",
   get: ({ get }) => {
-    let sensorDataOrigin = get(sensorDataOriginAtom);
+    let origin = get(sensorAtom) || JSONdevice000sensor;
 
-    if (Array.isArray(sensorDataOrigin) && sensorDataOrigin.length < 1) {
-      sensorDataOrigin = [...JSONdevice000sensor];
-    }
+    const data = origin.map((item) => {
+      const unixTimeMS = item.created_at < 10000000000 ? item.created_at * 1000 : item.created_at;
 
-    const data = sensorDataOrigin.map((item) => {
-      let originDate = item.created_at;
-
-      if (originDate < 10000000000) {
-        originDate *= 1000;
-      }
-      const unixTimeDate = new Date(originDate); //date 타입으로 저장
+      const unixTimeDate = new Date(unixTimeMS); //date 타입으로 저장
 
       //YYYY/MM/DD 스트링으로 저장
       const yyyy = unixTimeDate.getFullYear();
@@ -64,20 +49,17 @@ export const sensorDataSelector = selector({
 
       return newItem;
     });
-    console.log(data);
     return data;
   },
 });
 
-// [셀렉터] 하루 평균 센서데이터를 저장한 배열
-export const dailyAverageSensorDataSelector = selector({
-  key: "dailyAverageSensorDataSelector",
+// [셀렉터:계산] 하루 평균 센서데이터를 저장한 배열
+export const dailyAverageSensorSelector = selector({
+  key: "dailyAverageSensorSelector",
   get: ({ get }) => {
-    const sensorData = get(sensorDataSelector);
+    const origin = get(formatSensorSelector) || JSONdevice000sensor;
 
-    console.log(sensorData);
-
-    const calSum = sensorData.reduce((acc, cur) => {
+    const calSum = origin.reduce((acc, cur) => {
       if (acc.length === 0 || acc[acc.length - 1].date !== cur.date) {
         acc.push({
           date: cur.date,
@@ -112,13 +94,13 @@ export const dailyAverageSensorDataSelector = selector({
     return calAvg;
   },
 });
-// [셀렉터] 일별 평균 센서값 배열의 최소, 최대값 계산
+// [셀렉터:계산] 일별 평균 센서값 배열의 최소, 최대값 계산
 export const dailyAverageMaxMinSelector = selector({
   key: "dailyAverageMaxMinSelector",
   get: ({ get }) => {
-    const dailyAverageSensorData = get(dailyAverageSensorDataSelector);
+    const origin = get(dailyAverageSensorSelector) || JSONdevice000sensor;
 
-    const res = dailyAverageSensorData.reduce(
+    const res = origin.reduce(
       (acc, cur) => {
         if (cur.temp !== 0) {
           acc.temp.max = Math.max(acc.temp.max, cur.temp);
@@ -150,14 +132,14 @@ export const dailyAverageMaxMinSelector = selector({
   },
 });
 
-// [셀렉터] 자동제어 상태 포맷 변경 (배열->단일객체, unixTime->string)
-export const autoControlConfigSeletor = selector({
-  key: "autoControlConfigSeletor",
+// [셀렉터:포맷] 자동제어상태 배열->단일객체, unixTime->string
+export const formatAutoConfigSelector = selector({
+  key: "formatAutoConfigSelector",
   get: ({ get }) => {
-    const autoControlConfigOrigin = get(autoControlConfigOriginAtom);
+    const origin = get(autoConfigAtom);
 
-    if (autoControlConfigOrigin.length > 0) {
-      const date = autoControlConfigOrigin[0].created_at;
+    if (origin.length > 0) {
+      const date = origin[0].created_at;
 
       const year = date.slice(0, 4);
       const month = date.slice(5, 7);
@@ -168,18 +150,18 @@ export const autoControlConfigSeletor = selector({
 
       const dateString = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
 
-      const newObject = { ...autoControlConfigOrigin[0], created_at: dateString };
+      const newObject = { ...origin[0], created_at: dateString };
 
       return newObject;
     }
   },
 });
 
-// [셀렉터] 누적 액츄에이터 로그
-export const actuatorLogSelector = selector({
-  key: "actuatorLogSelector",
+// [셀렉터:포맷] 누적 액츄에이터 로그 unixtime*1000
+export const formatActuatorSelector = selector({
+  key: "formatActuatorSelector",
   get: ({ get }) => {
-    const origin = get(actuatorLogOriginAtom);
+    const origin = get(actuatorAtom);
 
     const newLog = origin.map((item) => {
       return { ...item, created_at: item.created_at * 1000 };

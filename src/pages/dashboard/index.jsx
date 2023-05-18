@@ -1,15 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { colorCode } from "@store/constValue";
-import { useRecoilState, useRecoilValue, useRecoilCallback } from "recoil";
-import {
-  deviceInfoAtom,
-  sensorDataOriginAtom,
-  actuatorLogOriginAtom,
-  autoControlConfigOriginAtom,
-} from "@store/atoms";
-import { dailyAverageSensorDataSelector, sensorDataSelector } from "@store/selector";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userAtom, deviceAtom, sensorAtom, actuatorAtom, autoConfigAtom } from "@store/atoms";
+import { dailyAverageSensorSelector, formatSensorSelector } from "@store/selector";
 import { axiosTest, axiosInstance } from "@baseURL";
+import user000_sensor from "@data/user000/sensorLog";
+import unit000_actuator from "@data/user000/actuatorLog";
 
 import LodingComponent from "@/components/elements/loading";
 
@@ -43,50 +40,67 @@ function useInterval(callback, delay) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////
+
 const Dashboard = (props) => {
+  //---컴포넌트 내부 STATE
   const [activatedSection, setActivatedSection] = useState(1);
   const [popUpSection, setPopUpSection] = useState(1);
   const [spreadSection, setSpreadSection] = useState(1);
   const [isAnySectionActivated, setIsAnySectionActivated] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [sensorDataOrigin, setSensorDataOrigin] = useRecoilState(sensorDataOriginAtom);
-  const [actuatorDataOrigin, setActuatorDataOrigin] = useRecoilState(actuatorLogOriginAtom);
-  const [autoControlConfigOrigin, setAutoControlConfigOrigin] = useRecoilState(
-    autoControlConfigOriginAtom
-  );
-  const sensorData = useRecoilValue(sensorDataSelector);
-  const device = useRecoilValue(deviceInfoAtom);
-  //데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
-  const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
+  //---구독한 ATOM
+  const [user, setUser] = useRecoilState(userAtom);
+  const [device, setDevice] = useRecoilState(deviceAtom);
+  const [autoConfig, setAutoConfig] = useRecoilState(autoConfigAtom);
+  const [sensor, setSensor] = useRecoilState(sensorAtom);
+  const [actuator, setActuator] = useRecoilState(actuatorAtom);
+  //---구독한 SELECTOR
+  const sensorS = useRecoilValue(formatSensorSelector);
+  //---데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
+  const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
 
-  //첫 마운트 SSR
+  //---LOCALSTORAGE에서 확인할 용도ㅎ.. 센서 데이터와 액츄에이터 데이터는 최근꺼만
   useEffect(() => {
-    if (Array.isArray(props.sensorDataOrigin) && props.sensorDataOrigin.length > 10) {
-      setSensorDataOrigin(props.senserDataOrigin);
-    } else {
-      console.log("sensor log에 빈 배열이 들어오고 있음. 디폴트 사용");
-    }
-    if (Array.isArray(props.actuatorDataOrigin) && props.actuatorDataOrigin.length > 0) {
-      setActuatorDataOrigin(props.actuatorDataOrigin);
-    } else {
-      console.log("actuator log에 빈 배열이 들어오고 있음. 디폴트 사용");
-    }
-    if (Array.isArray(props.autoControlConfig) && props.autoControlConfig.length > 0) {
-      setAutoControlConfigOrigin(props.autoControlConfig);
-    } else {
-      console.log("autoControlConfig에 빈 배열이 들어오고 있음. 디폴트 사용");
-    }
-  }),
-    [];
+    const latestSensor = sensor[sensor.length - 1];
+    const latestActuator = actuator[actuator.length - 1];
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("device", JSON.stringify(device));
+    localStorage.setItem("autoConfig", JSON.stringify(autoConfig)); //배열에서 꺼내는 셀렉터라 걍 아톰꺼씀
+    localStorage.setItem("latestSensor", JSON.stringify(latestSensor));
+    localStorage.setItem("latestActuator", JSON.stringify(latestActuator));
+  }, [user, device, sensor, actuator, autoConfig]);
 
-  //서버에서 받아온 SENSOR DATA가 10분치가 안되면... 걍 디폴트 더미 씀(3분마다 요청)
+  //---첫 마운트 SSR
+  useEffect(() => {
+    if (Array.isArray(props.sensor) && props.sensor.length > 10) {
+      setSensor(props.senser);
+    } else {
+      console.log("SSR : sensor log가 없거나 사용하기에 충분하지 않음. 더미 사용");
+      setSensor(JSON.parse(JSON.stringify(user000_sensor)));
+    }
+    if (Array.isArray(props.actuator) && props.actuator.length > 0) {
+      setActuator(props.actuator);
+    } else {
+      console.log("SSR : actuator log가 없거나 사용하기에 충분하지 않음. 더미 사용");
+      setActuator(JSON.parse(JSON.stringify(unit000_actuator)));
+    }
+    if (Array.isArray(props.autoConfig) && props.autoConfig.length > 0) {
+      setAutoConfig(props.autoConfig);
+    } else {
+      console.log("SSR : autoConfig에 빈 배열이 들어오고 있음. 디폴트 사용");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //---3분마다 센서로그 GET 요청
   useInterval(async () => {
-    const device_id = "unit001";
     try {
-      const res = await axiosInstance.get(`/sensors/${device_id}?start_time=0`);
+      console.log(`센서값을 요청할 유저 : ${device.id}`);
+      const res = await axiosInstance.get(`/sensors/${device.id}?start_time=0`);
       const data = res.data;
+      //10개 이하의 데이터가 오는경우 ATOM에 반영하지 않고 ATOM에 있는거 씀
       if (Array.isArray(data) && data.length > 10) {
-        setSensorDataOrigin(res.data);
+        setSensor(res.data);
         console.log("3 MIN INTERVAL GET SENSOR");
       }
     } catch (err) {
@@ -241,6 +255,7 @@ const MainContent = styled.div`
   height: 100vh;
   color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : "transparent")};
+  overflow: hidden;
   &:hover {
     background-color: #8884d8;
     color: #fff;
@@ -252,12 +267,43 @@ const SubContent = styled.div`
   color: ${({ fontColor }) => (fontColor ? fontColor : "#000000")};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : "#ffffff")};
 `;
+
 //--------------------------------------
 
 export async function getServerSideProps(context) {
-  //최초 렌더링용 데이터 (갱신과는 상관없음)
+  const { query } = context;
+  const userId = query.userId || "user999";
+  const deviceId = query.deviceId || "unit003";
 
-  /*현재 데이터가 충분하지 않아 START_TIME을 따로 계산할 필요 없음
+  console.log(userId, deviceId);
+  let resProps = {};
+  /*
+  try {
+    console.log(`=========GET ${deviceId} DEVICE SENSOR LOG DATA=========`);
+    const sensor = await axiosInstance.get(`/sensors/${deviceId}?start_time=0`);
+    resProps.sensor = sensor.data;
+  } catch (err) {
+    resProps.sensor = [];
+    console.error(err);
+  } */
+  try {
+    console.log(`=========GET ${deviceId} DEVICE ACTUATOR LOG DATA=========`);
+    const actuator = await axiosInstance.get(`/actuators/${deviceId}?start_time=0`);
+    resProps.actuator = actuator.data;
+  } catch (err) {
+    resProps.actuator = [];
+    console.error(err);
+  }
+  try {
+    console.log(`=========GET ${deviceId} DEVICE AUTO CONTROL CONFIG=========`);
+    const autoConfig = await axiosInstance.get(`/auto/${deviceId}/status`);
+    resProps.autoConfig = autoConfig.data;
+  } catch (err) {
+    resProps.autoConfig = [];
+    console.error(err);
+  }
+
+  /*현재 데이터가 충분하지 않아 START_TIME을 따로 계산할 필요 없어서 내려둠
   const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
   const today = new Date();
   const startDate = new Date(today.getTime() - DAYS_TO_LOAD * 24 * 60 * 60 * 1000);
@@ -265,45 +311,7 @@ export async function getServerSideProps(context) {
   console.log(`START_DATE : ${startDate}`);
   */
 
-  const { query } = context;
-  const userId = query.userId || "user001";
-  const deviceId = query.deviceId || "unit001";
-
-  console.log(userId, deviceId);
-  const resProps = {};
-
-  try {
-    console.log(`=========GET ${deviceId} DEVICE SENSOR LOG DATA=========`);
-    const getSensorRes = await axiosInstance.get(`/sensors/${deviceId}?start_time=0`);
-    const sensorDataOrigin = getSensorRes.data;
-    //console.log(sensorDataOrigin);
-    resProps.sensorDataOrigin = sensorDataOrigin;
-  } catch (err) {
-    resProps.sensorDataOrigin = [];
-    console.error(err);
-  }
-  try {
-    console.log(`=========GET ${deviceId} DEVICE ACTUATOR LOG DATA=========`);
-    const getActuatorDataRes = await axiosInstance.get(`/actuators/${deviceId}?start_time=0`);
-    const actuatorDataOrigin = getActuatorDataRes.data;
-    console.log(actuatorDataOrigin);
-    resProps.actuatorDataOrigin = actuatorDataOrigin;
-  } catch (err) {
-    resProps.actuatorDataOrigin = [];
-    console.error(err);
-  }
-  try {
-    console.log(`=========GET ${deviceId} DEVICE AUTO CONTROL CONFIG=========`);
-    const getAutoControlRes = await axiosInstance.get(`/auto/${deviceId}/status`);
-    const autoControlConfig = getAutoControlRes.data;
-    //console.log(autoControlConfig);
-    resProps.autoControlConfig = autoControlConfig;
-  } catch (err) {
-    resProps.autoControlConfig = [];
-    console.error(err);
-  }
-
   return {
-    props: resProps,
+    props: { resProps },
   };
 }

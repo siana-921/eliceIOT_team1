@@ -1,48 +1,43 @@
 import { atom } from "recoil";
+import device000sensor from "@data/user000/sensorLog";
+const JSONdevice000sensor = JSON.parse(JSON.stringify(device000sensor));
 
 export const allDeviceSensorAtom = atom({
   key: "allDeviceSensorAtom",
-  default: [],
-});
-
-//누적 센서 데이터 (객체배열)
-export const sensorDataOriginAtom = atom({
-  key: "sensorDataOriginAtom",
-  default: [],
+  default: JSONdevice000sensor,
 });
 
 //아무런 로그인 정보가 없을때는 테스트를 위해
 //user001 의 unit001 을 관리중이라고 침
 //유저 정보 (단일객체)
-export const userInfoAtom = atom({
-  key: "userInfoAtom",
+export const userAtom = atom({
+  key: "userAtom",
   default: {
-    id: "user001",
-    name: "알 수 없는 유저",
-    phone: "010-0000-0000",
-    email: "Basil@Farm.com",
+    id: "user999",
+    fullname: "정수아",
+    phone: "010-1234-5678",
+    email: "basilfarm@gmail.com",
     picture: 1,
-    created_at: "2023-04-24",
-    device: "unit001",
+    device_id: "unit003",
   },
 });
 
 //디바이스 정보 (단일객체)
-export const deviceInfoAtom = atom({
-  key: "deviceInfoAtom",
+export const deviceAtom = atom({
+  key: "deviceAtom",
   default: {
-    id: "unit001",
-    name: "야생의바질",
-    species: "basil",
-    autoMode: false,
-    created_at: "2023-04-24",
+    device_id: "unit003",
+    device_name: "야생의바질",
+    device_type: "esp32",
+    device_macAddress: "12:34:56:78",
+    picture: 1,
   },
 });
 
 //디바이스 자동제어상태확인 (Origin: 언제나 객체 1개만 들어있는 배열로 옴)
 //api/auto/:device_id/status
-export const autoControlConfigOriginAtom = atom({
-  key: "autoControlConfigOriginAtom",
+export const autoConfigAtom = atom({
+  key: "autoConfigAtom",
   default: [
     {
       device_id: "unit001",
@@ -55,9 +50,15 @@ export const autoControlConfigOriginAtom = atom({
   ],
 });
 
+//누적 센서 데이터 (객체배열)
+export const sensorAtom = atom({
+  key: "sensorAtom",
+  default: JSONdevice000sensor,
+});
+
 //제어명령 누적 (객체배열)
-export const actuatorLogOriginAtom = atom({
-  key: "actuatorLogOriginAtom",
+export const actuatorAtom = atom({
+  key: "actuatorAtom",
   default: [
     {
       idx: 0,

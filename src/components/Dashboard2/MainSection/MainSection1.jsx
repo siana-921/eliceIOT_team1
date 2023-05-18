@@ -3,13 +3,13 @@ import Image from "next/image";
 
 import { useRouter } from "next/router";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { userInfoAtom, deviceInfoAtom, isLoggedInState } from "@store/atoms";
-import { autoControlConfigSeletor } from "@store/selector";
+import { userAtom, deviceAtom, isLoggedInState } from "@store/atoms";
+import { formatAutoConfigSelector } from "@store/selector";
 
 const MainSection1Content = () => {
-  const user = useRecoilValue(userInfoAtom);
-  const device = useRecoilValue(deviceInfoAtom);
-  const autoControlConfig = useRecoilValue(autoControlConfigSeletor);
+  const user = useRecoilValue(userAtom);
+  const device = useRecoilValue(deviceAtom);
+  const autoConfig = useRecoilValue(formatAutoConfigSelector);
   const [islogin, setIslogin] = useRecoilState(isLoggedInState);
 
   const router = useRouter();
@@ -31,14 +31,14 @@ const MainSection1Content = () => {
         <Profileimage></Profileimage>
       </ProfileImageWrapper>
       <TitleWrapper>
-        <UserNameText>{user.name}님의</UserNameText>
-        <PlantNameText>{device.name}</PlantNameText>
+        <UserNameText>{user.fullname}님의</UserNameText>
+        <PlantNameText>{device.device_name}</PlantNameText>
       </TitleWrapper>
       <ContentsWrapper>
-        <SubTitleText>{`${device.created_at}에 태어남`}</SubTitleText>
+        <SubTitleText>{`${device.device_macAddress} ${device.device_type}`}</SubTitleText>
         <SubTitleText>현재상태</SubTitleText>
         <SubTitleText>
-          {autoControlConfig.status ? "자동제어가 실행중입니다." : "자동제어가 실행중이 아닙니다."}
+          {autoConfig.status ? "자동제어가 실행중입니다." : "자동제어가 실행중이 아닙니다."}
         </SubTitleText>
       </ContentsWrapper>
       <NavWrapper>

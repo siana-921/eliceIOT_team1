@@ -1,12 +1,12 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { actuatorLogSelector } from "@store/selector";
+import { formatActuatorSelector } from "@store/selector";
 
-import device000actuator from "../../../data/testingdata/device000actuator";
+import unit000_actuator from "../../../data/user000/actuatorLog";
 
 const ActuatorLogTable = () => {
-  const dataAtom = useRecoilValue(actuatorLogSelector);
-  const data = dataAtom.length > 0 ? dataAtom : device000actuator;
+  const dataAtom = useRecoilValue(formatActuatorSelector);
+  const data = dataAtom.length > 0 ? dataAtom : unit000_actuator;
 
   console.log(data);
 
