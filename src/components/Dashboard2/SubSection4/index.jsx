@@ -19,7 +19,7 @@ const SubSection2Contents = () => {
   const formatAutoConfig = useRecoilValue(formatAutoConfigSelector); //현재 디바이스의 자동제어상태(셀렉터)
 
   const [isValueMode, setIsValueMode] = useState(true);
-  const [isAutoControl, setIsAutoControl] = useState(formatAutoConfigSelector.status);
+  const [isAutoControl, setIsAutoControl] = useState(autoConfig.status);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [targetValue, setTargetValue] = useState(formatAutoConfigSelector.target_light || 10000);
 
@@ -32,6 +32,7 @@ const SubSection2Contents = () => {
     console.log(`자동제어상태 : ${isAutoControl}`);
     console.log(`현재 로그인 정보 : ${user_id} ${device_id}`);
     console.log(formatAutoConfig);
+    console.log(autoConfig);
 
     setTargetValue(formatAutoConfig.target_light);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -232,6 +233,7 @@ const SubSection2Contents = () => {
                           max={20000}
                           step={100}
                           value={targetValue || 10000}
+                          defaultValue={10000}
                           onChange={handleSlider}
                         />
                       </SliderWrapper>

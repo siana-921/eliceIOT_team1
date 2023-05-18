@@ -138,22 +138,20 @@ export const formatAutoConfigSelector = selector({
   get: ({ get }) => {
     const origin = get(autoConfigAtom);
 
-    if (origin.length > 0) {
-      const date = origin[0].created_at;
+    const date = origin.created_at;
 
-      const year = date.slice(0, 4);
-      const month = date.slice(5, 7);
-      const day = date.slice(8, 10);
-      const hours = date.slice(11, 13);
-      const minutes = date.slice(14, 16);
-      const seconds = date.slice(17, 19);
+    const year = date.slice(0, 4);
+    const month = date.slice(5, 7);
+    const day = date.slice(8, 10);
+    const hours = date.slice(11, 13);
+    const minutes = date.slice(14, 16);
+    const seconds = date.slice(17, 19);
 
-      const dateString = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
+    const dateString = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
 
-      const newObject = { ...origin[0], created_at: dateString };
+    const newObject = { ...origin, created_at: dateString };
 
-      return newObject;
-    }
+    return newObject;
   },
 });
 

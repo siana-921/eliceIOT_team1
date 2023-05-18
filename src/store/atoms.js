@@ -2,11 +2,6 @@ import { atom } from "recoil";
 import device000sensor from "@data/user000/sensorLog";
 const JSONdevice000sensor = JSON.parse(JSON.stringify(device000sensor));
 
-export const allDeviceSensorAtom = atom({
-  key: "allDeviceSensorAtom",
-  default: JSONdevice000sensor,
-});
-
 //현재 로그인한 녀석의 정보 (단일객체)
 export const clientAtom = atom({
   key: "clientAtom",
@@ -45,16 +40,14 @@ export const deviceAtom = atom({
 //api/auto/:device_id/status
 export const autoConfigAtom = atom({
   key: "autoConfigAtom",
-  default: [
-    {
-      device_id: "unit001",
-      status: 1,
-      target_temp: 20,
-      target_moisture: 70,
-      target_light: 4000,
-      created_at: "2023-05-12T12:26:40.000Z",
-    },
-  ],
+  default: {
+    device_id: "unit001",
+    status: 1,
+    target_temp: 20,
+    target_moisture: 70,
+    target_light: 4000,
+    created_at: "2023-05-12T12:26:40.000Z",
+  },
 });
 
 //누적 센서 데이터 (객체배열)

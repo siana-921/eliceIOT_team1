@@ -67,45 +67,55 @@ const Dashboard = (props) => {
   //---데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
   const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
 
-  //---LOCALSTORAGE에서 확인할 용도ㅎ.. 센서 데이터와 액츄에이터 데이터는 최근꺼만
+  //---첫 마운트때 ATOM에 데이터 세팅 (센서, 액츄에이터, 자동제어상태)
   useEffect(() => {
-    const latestSensor = sensor[sensor.length - 1];
-    const latestActuator = actuator[actuator.length - 1];
+    const fetchSensor = async () => {
+      try {
+        const res = await axiosInstance.get(`/sensors/${client.device_id}?start_time=0`);
+        setSensor(res.data);
+        return res.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    const fetchActuator = async () => {
+      try {
+        const res = await axiosInstance.get(`/actuators/${client.device_id}?start_time=0`);
+        setActuator(res.data);
+        return res.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    const fetchAutoConfig = async () => {
+      try {
+        const res = await axiosInstance.get(`/auto/${client.device_id}/status`);
+        setAutoConfig(res.data[0]);
+        return res.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchSensor();
+    fetchActuator();
+    fetchAutoConfig();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //---LOCALSTORAGE에서 확인할 용도ㅎ.. 센서 데이터와 액츄에이터 데이터는 최근꺼만
+  /*
+  useEffect(() => {
+    console.log(sensor);
+    const latestSensor = sensor[sensor?.length - 1];
+    const latestActuator = actuator[actuator?.length - 1];
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("device", JSON.stringify(device));
     localStorage.setItem("autoConfig", JSON.stringify(autoConfig)); //배열에서 꺼내는 셀렉터라 걍 아톰꺼씀
     localStorage.setItem("latestSensor", JSON.stringify(latestSensor));
     localStorage.setItem("latestActuator", JSON.stringify(latestActuator));
-  }, [user, device, sensor, actuator, autoConfig]);
-
-  //---첫 마운트 SSR
-  const { resProps } = props;
-  useEffect(() => {
-    if (Array.isArray(resProps.sensor) && resProps.sensor.length > 10) {
-      setSensor(resProps.senser);
-    } else {
-      console.log("SSR : sensor log가 없거나 사용하기에 충분하지 않음. 더미 사용");
-      setSensor(JSON.parse(JSON.stringify(user000_sensor)));
-    }
-    if (Array.isArray(resProps.actuator) && resProps.actuator.length > 0) {
-      setActuator(resProps.actuator);
-    } else {
-      console.log("SSR : actuator log가 없거나 사용하기에 충분하지 않음. 더미 사용");
-      setActuator(JSON.parse(JSON.stringify(unit000_actuator)));
-    }
-    if (Array.isArray(resProps.autoConfig) && resProps.autoConfig.length > 0) {
-      setAutoConfig(resProps.autoConfig);
-    } else {
-      console.log("SSR : autoConfig에 빈 배열이 들어오고 있음. 디폴트 사용");
-    }
-    //유저와 디바이스는 마이페이지에서 ATOM에 저장되었어야하지만 로그인이 잘안되고있어서 걍여기서함!
-    if (resProps.client) {
-      setClient(resProps.client);
-    } else {
-      console.log("SSR : 클라이언트 정보가 없음. 디폴트(user999, unit003) 사용");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user, device, sensor, actuator, autoConfig]);*/
 
   //---3분마다 센서로그 GET 요청
   useInterval(async () => {
@@ -295,7 +305,6 @@ export async function getServerSideProps(context) {
   console.log(userId, deviceId);
   let resProps = {};
   resProps.client = { user_id: userId, device_id: deviceId };
-
   /*
   try {
     console.log(`=========GET ${deviceId} DEVICE SENSOR LOG DATA=========`);
@@ -304,11 +313,12 @@ export async function getServerSideProps(context) {
   } catch (err) {
     resProps.sensor = [];
     console.error(err);
-  } */
+  }
   try {
     console.log(`=========GET ${deviceId} DEVICE ACTUATOR LOG DATA=========`);
     const actuator = await axiosInstance.get(`/actuators/${deviceId}?start_time=0`);
     resProps.actuator = actuator.data;
+    console.log(resProps.actuator);
   } catch (err) {
     resProps.actuator = [];
     console.error(err);
@@ -321,7 +331,7 @@ export async function getServerSideProps(context) {
     resProps.autoConfig = [];
     console.error(err);
   }
-
+*/
   /*현재 데이터가 충분하지 않아 START_TIME을 따로 계산할 필요 없어서 내려둠
   const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
   const today = new Date();
