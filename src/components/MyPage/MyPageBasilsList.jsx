@@ -51,7 +51,7 @@ export default function MyPageBailsList() {
 
   return (
     <BasilsListMain>
-      <h2> {fullname}님의 바질목록</h2>
+      <h2>🪴 {fullname}님의 바질목록 🪴</h2>
       <BasilListDiv>
         <p>새로운 바질이 추가되었나요?</p>
         <button onClick={openModal}> 등록하러 가기</button>
