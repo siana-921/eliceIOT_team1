@@ -32,12 +32,13 @@ export default function LoginFunc() {
     console.log(response);
     if (response.status === 200) {
       setMsg(id + "님, 로그인 되었습니다! 반가워요 😊");
-
       setLoggedIn(true);
     } else if (response.status === 403) {
       setMsg("가입되지 않은 계정입니다.");
     } else if (response.status === 401) {
       setMsg("로그인에 실패하였습니다.");
+    } else if (response.status === 405) {
+      setMsg("비밀번호가 일치하지 않습니다.");
     } else {
       setMsg("알 수 없는 오류가 발생했습니다." + JSON.stringify(response));
     }
@@ -162,7 +163,7 @@ const LoginPageForm = styled.form`
     height: 18%;
     transition: background-color 0.8s;
     border: 1px rgba(228, 228, 228, 0.5) solid;
-    border-radius: 5px;
+    border-radius: 13px;
     margin: 15px;
 
     &:focus {
@@ -181,7 +182,7 @@ const LoginPageForm = styled.form`
     margin: 20px;
     height: 18%;
 
-    border-radius: 5px;
+    border-radius: 13px;
     border: none;
     transition: background-color 0.2s;
 
