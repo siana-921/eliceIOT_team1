@@ -12,6 +12,7 @@ export default function MyPageBailsList() {
   const [picture, setPicture] = useState("");
   const [device_id, setDeviceId] = useState("");
   const [fullname, setFullName] = useState("");
+  const [devices, setDevices] = useState([]);
 
   const router = useRouter();
 
