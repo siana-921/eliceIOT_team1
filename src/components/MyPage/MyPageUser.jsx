@@ -54,6 +54,11 @@ const MyPageUserMain = styled.main`
   background-color: rgba(217, 217, 217, 0.3);
 
   text-align: center;
+
+  @media screen and (max-width: 428px) {
+    width: 100%;
+    border-radius: 0;
+  }
 `;
 
 const MyPageTitle = styled.h1`
@@ -61,11 +66,18 @@ const MyPageTitle = styled.h1`
   font-weight: 400;
 
   margin: 20px;
+  @media screen and (max-width: 428px) {
+    font-size: 30px;
+  }
 `;
 
 const MyPageDiv = styled.div`
   margin-top: 35px;
   margin-bottom: 20px;
+  @media screen and (max-width: 428px) {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
 `;
 
 const MyPageInfoList = styled.ul``;
@@ -73,4 +85,9 @@ const MyPageInfoList = styled.ul``;
 const MyPageInfoItem = styled.li`
   font-size: 21px;
   margin: 10px;
+
+  @media screen and (max-width: 428px) {
+    font-size: 16px;
+    margin: 5px;
+  }
 `;
