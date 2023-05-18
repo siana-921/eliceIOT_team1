@@ -3,31 +3,35 @@ import React, { useState, useEffect } from "react";
 import DeviceModal from "./DeviceModal";
 import { useRecoilState } from "recoil";
 import { defaultDeviceIdState } from "../../store/atoms";
-import { AxiosInstance } from "axios";
+import { axiosInstance } from "@/api/base";
 import { useRouter } from "next/router";
 
 export default function MyPageBailsList() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [id, setId] = useState("");
+  const [picture, setPicture] = useState("");
+  const [device_id, setDeviceId] = useState("");
+  const [fullname, setFullName] = useState("");
   const [devices, setDevices] = useState([]);
-  const [defaultDeviceId, setDefaultDeviceId] = useRecoilState(defaultDeviceIdState);
+
   const router = useRouter();
 
   useEffect(() => {
     // 여기서 기본 device id를 가져오는 로직을 구현
     const fetchDefaultDeviceId = async () => {
       try {
-        // 서버로부터 유저의 기본 device id를 가져온다고 가정(unit01)
-        const response = await AxiosInstance.get(`/device/info`);
-        const { defaultDeviceId, devices } = response.data;
-        setDefaultDeviceId(defaultDeviceId);
-        setDevices(devices);
+        const response = await axiosInstance.get(`/user/sign_in/my_page`);
+        const { picture, device_id, fullname } = response.data;
+        setDeviceId(device_id);
+        setPicture(picture);
+        setFullName(fullname);
       } catch (error) {
-        console.error("기본 디바이스 ID를 가져오는데 실패했습니다.", error);
+        console.error("🚀디바이스 목록을 가져오는데 실패했습니다.", error);
       }
     };
 
     fetchDefaultDeviceId();
-  }, [setDefaultDeviceId]);
+  }, []);
 
   const openModal = () => {
     setModalOpen(true);
@@ -47,7 +51,7 @@ export default function MyPageBailsList() {
 
   return (
     <BasilsListMain>
-      <h2>김정연님의 바질목록</h2>
+      <h2>🪴 {fullname}님의 바질목록 🪴</h2>
       <BasilListDiv>
         <p>새로운 바질이 추가되었나요?</p>
         <button onClick={openModal}> 등록하러 가기</button>
@@ -81,6 +85,15 @@ const BasilsListMain = styled.main`
     font-size: 40px;
     font-weight: 400;
   }
+
+  @media screen and (max-width: 428px) {
+    width: 100%;
+    margin: 20px;
+
+    & h2 {
+      font-size: 25px;
+    }
+  }
 `;
 
 const BasilListDiv = styled.div`
@@ -99,6 +112,19 @@ const BasilListDiv = styled.div`
     background-color: transparent;
     border: none;
     font-size: 16px;
+  }
+
+  @media screen and (max-width: 428px) {
+    flex-direction: column;
+    align-items: center;
+    margin: 30px;
+
+    font-size: 16px;
+
+    & button {
+      font-size: 14px;
+      margin: 7px;
+    }
   }
 `;
 
@@ -131,5 +157,9 @@ const BasilDeviceLists = styled.ul`
     margin-bottom: 10px;
     border: 10px solid transparent;
     border-color: rgba(0, 168, 107);
+  }
+
+  @media screen and (max-width: 428px) {
+    margin: 10px;
   }
 `;

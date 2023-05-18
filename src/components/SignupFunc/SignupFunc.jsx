@@ -26,7 +26,7 @@ export default function SignupFunc() {
 
   // const setToken = useSetRecoilState(tokenState);
   const [signup, setSignup] = useRecoilState(signupState);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedPicture, setSelectedPicture] = useState(null);
   //  const [cookies, setCookie] = useCookies(["access_token"]);
 
   const router = useRouter();
@@ -54,12 +54,12 @@ export default function SignupFunc() {
     };
   }, [signup, setToken, router, setCookie]);
 */
-  const handlePhotoChange = (index) => {
-    setSelectedPhoto(index + 1);
+  const handlePictureChange = (index) => {
+    setSelectedPicture(index + 1);
   };
 
-  const getSelectedPhotoIndex = (photo) => {
-    const index = deviceProfileImages.indexOf(photo);
+  const getSelectedPictureIndex = (picture) => {
+    const index = deviceProfileImages.indexOf(picture);
     return index !== -1 ? index + 1 : null;
   };
 
@@ -71,16 +71,23 @@ export default function SignupFunc() {
     } else if (!password) {
       return Swal.fire(
         "Password를 입력하세요.",
-        "8자 이상 16자 이하의 대소문자와 숫자로 작성해야 합니다.",
+        "8자 이상 16자 이하의 대소문자와 숫자를 포함해 입력해야 합니다.",
         "error"
       );
-    } else if (!fullname) {
+    } // else if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/)) {
+    //   return Swal.fire(
+    //     "Password 형식이 올바르지 않습니다.",
+    //     "8자 이상 16자 이하의 대소문자와 숫자를 포함해야 합니다.",
+    //     "error"
+    //   );
+    // }
+    else if (!fullname) {
       return Swal.fire("이름을 입력하세요.", "", "warning");
     } else if (!email) {
       return Swal.fire("이메일를 입력하세요.", "", "warning");
     } else if (!phone) {
       return Swal.fire("휴대폰번호를 입력하세요.", "", "warning");
-    } else if (!selectedPhoto) {
+    } else if (!selectedPicture) {
       return Swal.fire("디바이스 이미지를 선택해주세요.", "이미지 선택은 필수입니다.", "warning");
     } else if (!deviceId) {
       return Swal.fire("디바이스 아이디를 입력해주세요.", "", "warning");
@@ -93,7 +100,7 @@ export default function SignupFunc() {
       email: email,
       phone: phone,
       device_id: deviceId,
-      photo: selectedPhoto,
+      picture: selectedPicture,
     };
 
     setLoading(true);
@@ -126,7 +133,6 @@ export default function SignupFunc() {
       .post(`user/sign_up`, body)
       .then((res) => {
         console.log(res);
-        // alert(JSON.stringify(res));
         setLoading(false);
         setTimeout(() => {
           router.push("/login");
@@ -147,30 +153,30 @@ export default function SignupFunc() {
       <SignupPageContents>
         <SignupPageCommentDiv>
           <h1>JOIN</h1>
-          <h2>바질과 무제한 친해지리</h2>
-          <h3>다양한 센서들과 엑츄에이터들로 인생바질을 키워보세요</h3>
+          <h2>바질과 무제한 친해지리 🌿</h2>
+          <h3>다양한 센서들과 엑츄에이터들로 인생바질을 키워보세요 🌿</h3>
         </SignupPageCommentDiv>
         <SignupPageForm onSubmit={SignupFunc} method="post">
-          <label htmlFor="id">ID*</label>
+          <label htmlFor="id">ID</label>
           <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
-          <label htmlFor="password">Password*</label>
+          <label htmlFor="password">Password</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <label htmlFor="fullname">Name*</label>
+          <label htmlFor="fullname">Name</label>
           <input type="text" value={fullname} onChange={(e) => setFullname(e.target.value)} />
-          <label htmlFor="email">Email*</label>
+          <label htmlFor="email">Email</label>
           <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <label htmlFor="phone">Phone Number*</label>
+          <label htmlFor="phone">Phone Number</label>
           <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
-          <label htmlFor="text">Device ID*</label>
+          <label htmlFor="text">Device ID</label>
           <input type="text" value={deviceId} onChange={(e) => setDeviceId(e.target.value)} />
-          <label htmlFor="text">Device Image*</label>
+          <label htmlFor="text">Device Image</label>
           <div>
-            {deviceProfileImages.map((photo, index) => (
+            {deviceProfileImages.map((picture, index) => (
               <DeviceImage
                 key={index}
-                onClick={() => handlePhotoChange(index)}
-                selected={selectedPhoto === index + 1}
-                src={photo}
+                onClick={() => handlePictureChange(index)}
+                selected={selectedPicture === index + 1}
+                src={picture}
                 alt={`Device Profile ${index + 1}`}
               />
             ))}
@@ -191,8 +197,10 @@ const SingupPageDiv = styled.div`
   align-items: center;
   position: relative;
 
-  height: 83%;
-  width: 30%;
+  // border: 2px red solid;
+
+  height: 85%;
+  width: 35%;
   border-radius: 10px;
 
   background-color: #ffffff;
@@ -215,17 +223,19 @@ const SignupPageCommentDiv = styled.div`
   text-align: left;
 
   width: 85%;
+
   // border: 2px red solid;
 
   margin-top: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 
   & h1 {
     font-size: 60px;
     font-weight: 700;
     color: #97c410;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
+    margin-top: 5px;
   }
   & h2 {
     font-size: 20px;
@@ -248,12 +258,18 @@ const SignupPageForm = styled.form`
   justify-content: center;
   align-items: center;
 
+  font-size: 13px;
+
   & label {
     text-align: left;
     // border: 2px red solid;
-    height: 50%;
+    height: 35%;
     width: 100%;
     margin: 5px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   & input {
@@ -277,7 +293,8 @@ const SignupPageForm = styled.form`
     cursor: pointer;
     width: 100%;
     height: 50%;
-    margin: 25px;
+    margin-bottom: 25px;
+    margin-top: 13px;
     border-radius: 5px;
     border: none;
     transition: background-color 0.2s;
@@ -291,9 +308,10 @@ const SignupPageForm = styled.form`
 `;
 
 const DeviceImage = styled.img`
-  width: 60px;
-  margin-left: 10px;
-  margin-right: 10px;
+  width: 70px;
+  height: 100%;
+  margin-left: 15px;
+  margin-right: 15px;
   cursor: pointer;
   border-radius: 50px;
   opacity: ${({ selected }) => (selected ? 1 : 0.5)};

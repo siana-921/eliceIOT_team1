@@ -4,10 +4,10 @@ import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@store/atoms";
 
 export default function Home() {
-  const islogin = useRecoilValue(isLoggedInState);
-  useEffect(() => {
-    console.log(islogin);
-  }, [islogin]);
+  // const islogin = useRecoilValue(isLoggedInState);
+  // useEffect(() => {
+  //   console.log(islogin);
+  // }, [islogin]);
 
   return (
     <MainPage>
@@ -17,10 +17,10 @@ export default function Home() {
         <MainPageLogo src="/images/logo.png" alt="logo" />
         <MainPageButtonDiv>
           <Link href="/login">
-            <MainPageButton>로그인</MainPageButton>
+            <MainPageButton>Login</MainPageButton>
           </Link>
           <Link href="/signup">
-            <MainPageButton>회원가입</MainPageButton>
+            <MainPageButton>Join</MainPageButton>
           </Link>
         </MainPageButtonDiv>
       </MainPageContents>
@@ -48,20 +48,6 @@ const MainPageContents = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translate3d(0, 100%, 0);
-    }
-    to {
-      opacity: 1;
-      transform: translateZ(0);
-    }
-
-    position: relative;
-    animation: fadeInUp 1s;
-  }
 `;
 const MainPageText = styled.h1`
   position: absolute;
@@ -71,12 +57,21 @@ const MainPageText = styled.h1`
   font-size: 2rem;
 
   color: #ffffff;
+
+  @media screen and (max-width: 428px) {
+    font-size: 1.5rem;
+    top: 40%;
+  }
 `;
 const MainPageLogo = styled.img`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media screen and (max-width: 428px) {
+    width: 70%;
+  }
 `;
 const MainPageButtonDiv = styled.div`
   display: flex;
@@ -85,11 +80,16 @@ const MainPageButtonDiv = styled.div`
   top: 67%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media screen and (max-width: 428px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 const MainPageButton = styled.button`
-  background: #00a86b;
-  box-shadow: 0rem 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
+  border-radius: 25px;
+  // border: 0.5px #ffffff solid;
   border: none;
   cursor: pointer;
   height: 3.5rem;
@@ -99,4 +99,19 @@ const MainPageButton = styled.button`
   line-height: 2.3rem;
   color: #ffffff;
   margin: 10px;
+  background: #00a86b;
+  box-shadow: 0rem 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.25);
+
+  &: hover {
+    background-color: rgba(0, 168, 107, 0.9);
+  }
+
+  @media screen and (max-width: 428px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 7rem;
+    height: 3rem;
+    font-size: 1rem;
+  }
 `;

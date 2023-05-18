@@ -5,35 +5,35 @@ import { debounce } from "lodash";
 import { axiosInstance, axiosTest } from "@baseURL";
 import { useState, useEffect, useRef } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { userInfoAtom, deviceInfoAtom, autoControlConfigOriginAtom } from "@store/atoms";
-import { autoControlConfigSeletor } from "@store/selector";
+import { userAtom, deviceAtom, autoConfigAtom } from "@store/atoms";
+import { formatAutoConfigSelector } from "@store/selector";
 import Slider, { Range, handleRender } from "rc-slider";
 import "rc-slider/assets/index.css";
 import optimal from "@data/optimalGrowingCondition";
+import { colorCode } from "@store/constValue";
 
 import ActuatorLogTable from "../elements/ActuatorLogTable";
 
 const SubSection2Contents = () => {
-  const [autoControlConfigOrigin, setAutoControlConfigOrigin] = useRecoilState(
-    autoControlConfigOriginAtom
-  ); //현재 디바이스의 자동제어상태(set용 아톰)
-  const autoControlConfig = useRecoilValue(autoControlConfigSeletor); //현재 디바이스의 자동제어상태(셀렉터)
-  const [isValueMode, setIsValueMode] = useState(true);
-  const [isAutoControl, setIsAutoControl] = useState(autoControlConfig.status);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [targetValue, setTargetValue] = useState(autoControlConfig.target_light || 50);
+  const [autoConfig, setAutoConfig] = useRecoilState(autoConfigAtom); //현재 디바이스의 자동제어상태(set용 아톰)
+  const formatAutoConfig = useRecoilValue(formatAutoConfigSelector); //현재 디바이스의 자동제어상태(셀렉터)
 
-  const user = useRecoilValue(userInfoAtom); //현재 로그인된 유저의 정보 : default user001
-  const device = useRecoilValue(deviceInfoAtom); //현재 로그인된 유저의 device : default unit001
-  const { id: device_id } = device;
+  const [isValueMode, setIsValueMode] = useState(true);
+  const [isAutoControl, setIsAutoControl] = useState(autoConfig[0].status);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [targetValue, setTargetValue] = useState(formatAutoConfigSelector.target_light || 10000);
+
+  const user = useRecoilValue(userAtom); //현재 로그인된 유저의 정보 : default user001
+  const device = useRecoilValue(deviceAtom); //현재 로그인된 유저의 device : default unit001
+  const { device_id } = device;
   const { id: user_id } = user;
 
   useEffect(() => {
     console.log(`자동제어상태 : ${isAutoControl}`);
-    console.log(`현재 로그인 정보 : ${(user_id, device_id)}`);
-    console.log(autoControlConfig);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    setTargetValue(autoControlConfig.target_light);
+    console.log(`현재 로그인 정보 : ${user_id} ${device_id}`);
+    console.log(formatAutoConfig);
+
+    setTargetValue(formatAutoConfig.target_light);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -58,7 +58,7 @@ const SubSection2Contents = () => {
           axiosInstance
             .get(`/auto/${device_id}/status`)
             .then((getRes) => {
-              setAutoControlConfigOrigin(getRes.data);
+              setAutoConfig(getRes.data);
             })
             .catch((getError) => {
               console.error(getError);
@@ -83,7 +83,7 @@ const SubSection2Contents = () => {
           axiosInstance
             .get(`/auto/${device_id}/status`)
             .then((getRes) => {
-              setAutoControlConfigOrigin(getRes.data);
+              setAutoConfig(getRes.data);
             })
             .catch((getError) => {
               console.error(getError);
@@ -92,7 +92,7 @@ const SubSection2Contents = () => {
         .catch((error) => {
           console.error(error);
           alert("서버와의 통신에 실패했습니다.");
-          setTargetValue(autoControlConfig.target_light);
+          setTargetValue(formatAutoConfigSelector.target_light);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -155,17 +155,17 @@ const SubSection2Contents = () => {
                   style={{
                     fontSize: "2rem",
                     fontWeight: "700",
-                    color: "#8884d8",
+                    color: colorCode.lavender,
                     paddingLeft: "10px",
                   }}
                 >
-                  {targetValue} lux
+                  {formatAutoConfig.target_light} lux
                 </span>
               </p>
               <p>
                 자동제어 시작일자 :
                 <span style={{ fontWeight: "700", paddingLeft: "10px" }}>
-                  {autoControlConfig.created_at}
+                  {formatAutoConfig.created_at}
                 </span>
               </p>
             </>
@@ -225,13 +225,14 @@ const SubSection2Contents = () => {
                     <AutoModeSeletorWrapper>
                       <SliderWrapper>
                         <SlideTitle>
-                          목표 제어 조도<span>{targetValue ? targetValue : 0}lux</span>
+                          목표 제어 조도<span>{targetValue ? targetValue : 10000}lux</span>
                         </SlideTitle>
                         <Slider
                           min={0}
                           max={20000}
                           step={100}
-                          value={targetValue}
+                          value={targetValue || 10000}
+                          defaultValue={10000}
                           onChange={handleSlider}
                         />
                       </SliderWrapper>
