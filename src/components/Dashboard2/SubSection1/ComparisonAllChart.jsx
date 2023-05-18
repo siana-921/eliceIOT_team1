@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useRecoilValue } from "recoil";
 import {
-  dailyAverageSensorDataSelector,
+  dailyAverageSensorSelector,
   dailyAverageMaxMinSelector,
-  sensorDataSelector,
+  formatSensorSelector,
 } from "@store/selector";
 import { colorCode } from "@store/constValue";
 import {
@@ -18,7 +18,7 @@ import {
 } from "recharts";
 
 const ComparisonAllChart = () => {
-  const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
+  const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
   const dailyAverageMaxMin = useRecoilValue(dailyAverageMaxMinSelector);
 
   const data = dailyAverage.map((item, index) => ({

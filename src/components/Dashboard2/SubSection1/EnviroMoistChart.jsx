@@ -8,11 +8,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useRecoilValue } from "recoil";
-import { dailyAverageSensorDataSelector } from "@store/selector";
+import { dailyAverageSensorSelector } from "@store/selector";
 import { colorCode } from "@store/constValue";
 
 const EnviroMoistChart = () => {
-  const dailyAverage = useRecoilValue(dailyAverageSensorDataSelector);
+  const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
   const data = dailyAverage.map((item, index) => ({
     name: `Day ${index + 1}`,
     light: item.light,
