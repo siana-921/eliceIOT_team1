@@ -41,20 +41,6 @@ const MainPageContents = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translate3d(0, 100%, 0);
-    }
-    to {
-      opacity: 1;
-      transform: translateZ(0);
-    }
-
-    position: relative;
-    animation: fadeInUp 1s;
-  }
 `;
 const MainPageText = styled.h1`
   position: absolute;
@@ -64,12 +50,21 @@ const MainPageText = styled.h1`
   font-size: 2rem;
 
   color: #ffffff;
+
+  @media screen and (max-width: 428px) {
+    font-size: 1.5rem;
+    top: 40%;
+  }
 `;
 const MainPageLogo = styled.img`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media screen and (max-width: 428px) {
+    width: 70%;
+  }
 `;
 const MainPageButtonDiv = styled.div`
   display: flex;
@@ -78,6 +73,13 @@ const MainPageButtonDiv = styled.div`
   top: 67%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media screen and (max-width: 428px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // border: 2px red solid;
+  }
 `;
 const MainPageButton = styled.button`
   border-radius: 25px;
@@ -96,5 +98,14 @@ const MainPageButton = styled.button`
 
   &: hover {
     background-color: rgba(0, 168, 107, 0.9);
+  }
+
+  @media screen and (max-width: 428px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 7rem;
+    height: 3rem;
+    font-size: 1rem;
   }
 `;
