@@ -162,7 +162,10 @@ export const formatActuatorSelector = selector({
     const origin = get(actuatorAtom);
 
     const newLog = origin.map((item) => {
-      return { ...item, created_at: item.created_at * 1000 };
+      return {
+        ...item,
+        created_at: item.created_at < 10000000000 ? item.created_at * 1000 : item.created_at,
+      };
     });
 
     return newLog;

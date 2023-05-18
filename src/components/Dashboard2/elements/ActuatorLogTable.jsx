@@ -9,17 +9,21 @@ const ActuatorLogTable = () => {
   const dataAtom = useRecoilValue(formatActuatorSelector);
   const data = dataAtom.length > 0 ? dataAtom : unit000_actuator;
 
-  console.log(data);
-
   const formatDate = (dateString) => {
+    console.log(dateString);
     const date = new Date(dateString);
-    const formattedDate = `${date.getMonth() + 1} / ${date.getDate()}`;
+    const formattedDate = `${String(date.getMonth() + 1).padStart(2, "0")} / ${String(
+      date.getDate()
+    ).padStart(2, "0")}`;
     return formattedDate;
   };
 
   const formatTime = (dateString) => {
     const date = new Date(dateString);
-    const formattedTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    const formattedTime = `${date.getHours()}:${String(date.getMinutes()).padStart(
+      2,
+      "0"
+    )}:${String(date.getSeconds()).padStart(2, "0")}`;
     return formattedTime;
   };
 
