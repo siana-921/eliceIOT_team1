@@ -147,8 +147,8 @@ export default function SignupFunc() {
       <SignupPageContents>
         <SignupPageCommentDiv>
           <h1>JOIN</h1>
-          <h2>바질과 무제한 친해지리</h2>
-          <h3>다양한 센서들과 엑츄에이터들로 인생바질을 키워보세요</h3>
+          <h2>바질과 무제한 친해지리 🌿</h2>
+          <h3>다양한 센서들과 엑츄에이터들로 인생바질을 키워보세요 🌿</h3>
         </SignupPageCommentDiv>
         <SignupPageForm onSubmit={SignupFunc} method="post">
           <label htmlFor="id">ID*</label>
@@ -191,8 +191,10 @@ const SingupPageDiv = styled.div`
   align-items: center;
   position: relative;
 
-  height: 83%;
-  width: 30%;
+  // border: 2px red solid;
+
+  height: 85%;
+  width: 35%;
   border-radius: 10px;
 
   background-color: #ffffff;
@@ -218,7 +220,7 @@ const SignupPageCommentDiv = styled.div`
   // border: 2px red solid;
 
   margin-top: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 
   & h1 {
     font-size: 60px;
@@ -291,9 +293,9 @@ const SignupPageForm = styled.form`
 `;
 
 const DeviceImage = styled.img`
-  width: 60px;
-  margin-left: 10px;
-  margin-right: 10px;
+  width: 75px;
+  margin-left: 15px;
+  margin-right: 15px;
   cursor: pointer;
   border-radius: 50px;
   opacity: ${({ selected }) => (selected ? 1 : 0.5)};
