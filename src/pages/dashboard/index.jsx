@@ -2,7 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { colorCode } from "@store/constValue";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userAtom, deviceAtom, sensorAtom, actuatorAtom, autoConfigAtom } from "@store/atoms";
+import {
+  userAtom,
+  deviceAtom,
+  sensorAtom,
+  actuatorAtom,
+  autoConfigAtom,
+  clientAtom,
+} from "@store/atoms";
 import { dailyAverageSensorSelector, formatSensorSelector } from "@store/selector";
 import { axiosTest, axiosInstance } from "@baseURL";
 import user000_sensor from "@data/user000/sensorLog";
@@ -54,6 +61,7 @@ const Dashboard = (props) => {
   const [autoConfig, setAutoConfig] = useRecoilState(autoConfigAtom);
   const [sensor, setSensor] = useRecoilState(sensorAtom);
   const [actuator, setActuator] = useRecoilState(actuatorAtom);
+  const [client, setClient] = useRecoilState(clientAtom);
   //---구독한 SELECTOR
   const sensorS = useRecoilValue(formatSensorSelector);
   //---데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
@@ -71,23 +79,30 @@ const Dashboard = (props) => {
   }, [user, device, sensor, actuator, autoConfig]);
 
   //---첫 마운트 SSR
+  const { resProps } = props;
   useEffect(() => {
-    if (Array.isArray(props.sensor) && props.sensor.length > 10) {
-      setSensor(props.senser);
+    if (Array.isArray(resProps.sensor) && resProps.sensor.length > 10) {
+      setSensor(resProps.senser);
     } else {
       console.log("SSR : sensor log가 없거나 사용하기에 충분하지 않음. 더미 사용");
       setSensor(JSON.parse(JSON.stringify(user000_sensor)));
     }
-    if (Array.isArray(props.actuator) && props.actuator.length > 0) {
-      setActuator(props.actuator);
+    if (Array.isArray(resProps.actuator) && resProps.actuator.length > 0) {
+      setActuator(resProps.actuator);
     } else {
       console.log("SSR : actuator log가 없거나 사용하기에 충분하지 않음. 더미 사용");
       setActuator(JSON.parse(JSON.stringify(unit000_actuator)));
     }
-    if (Array.isArray(props.autoConfig) && props.autoConfig.length > 0) {
-      setAutoConfig(props.autoConfig);
+    if (Array.isArray(resProps.autoConfig) && resProps.autoConfig.length > 0) {
+      setAutoConfig(resProps.autoConfig);
     } else {
       console.log("SSR : autoConfig에 빈 배열이 들어오고 있음. 디폴트 사용");
+    }
+    //유저와 디바이스는 마이페이지에서 ATOM에 저장되었어야하지만 로그인이 잘안되고있어서 걍여기서함!
+    if (resProps.client) {
+      setClient(resProps.client);
+    } else {
+      console.log("SSR : 클라이언트 정보가 없음. 디폴트(user999, unit003) 사용");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -95,13 +110,15 @@ const Dashboard = (props) => {
   //---3분마다 센서로그 GET 요청
   useInterval(async () => {
     try {
-      console.log(`센서값을 요청할 유저 : ${device.id}`);
-      const res = await axiosInstance.get(`/sensors/${device.id}?start_time=0`);
+      const res = await axiosInstance.get(`/sensors/${client.device_id}?start_time=0`);
       const data = res.data;
       //10개 이하의 데이터가 오는경우 ATOM에 반영하지 않고 ATOM에 있는거 씀
       if (Array.isArray(data) && data.length > 10) {
         setSensor(res.data);
-        console.log("3 MIN INTERVAL GET SENSOR");
+        console.log(`[ATOM-SET] Sensor : ${client.user_id}, ${client.device_id}`);
+      } else {
+        //10개 이하일때 뭐가오나 보기나 보자
+        console.log(res);
       }
     } catch (err) {
       console.error(err);
@@ -277,6 +294,8 @@ export async function getServerSideProps(context) {
 
   console.log(userId, deviceId);
   let resProps = {};
+  resProps.client = { user_id: userId, device_id: deviceId };
+
   /*
   try {
     console.log(`=========GET ${deviceId} DEVICE SENSOR LOG DATA=========`);

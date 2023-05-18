@@ -25,12 +25,12 @@ const SubSection2Contents = () => {
 
   const user = useRecoilValue(userAtom); //현재 로그인된 유저의 정보 : default user001
   const device = useRecoilValue(deviceAtom); //현재 로그인된 유저의 device : default unit001
-  const { id: device_id } = device;
+  const { device_id } = device;
   const { id: user_id } = user;
 
   useEffect(() => {
     console.log(`자동제어상태 : ${isAutoControl}`);
-    console.log(`현재 로그인 정보 : ${(user_id, device_id)}`);
+    console.log(`현재 로그인 정보 : ${user_id} ${device_id}`);
     console.log(formatAutoConfig);
 
     setTargetValue(formatAutoConfig.target_light);

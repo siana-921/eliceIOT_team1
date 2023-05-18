@@ -7,8 +7,15 @@ export const allDeviceSensorAtom = atom({
   default: JSONdevice000sensor,
 });
 
-//아무런 로그인 정보가 없을때는 테스트를 위해
-//user001 의 unit001 을 관리중이라고 침
+//현재 로그인한 녀석의 정보 (단일객체)
+export const clientAtom = atom({
+  key: "clientAtom",
+  default: {
+    user_id: "user999",
+    device_id: "unit003",
+  },
+});
+
 //유저 정보 (단일객체)
 export const userAtom = atom({
   key: "userAtom",
