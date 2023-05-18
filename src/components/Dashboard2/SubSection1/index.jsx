@@ -10,7 +10,7 @@ import {
 
 import ComparisonAllChart from "@/components/Dashboard2/SubSection1/ComparisonAllChart";
 import DotsChart from "@/components/Dashboard2/SubSection1/DotsChart.jsx";
-import WaterTankValChart from "@components/dashboard2/Subsection1/WaterTankValChart.jsx";
+import WaterTankValChart from "@components/Dashboard2/Subsection1/WaterTankValChart.jsx";
 import EnviroMoistChart from "@/components/Dashboard2/SubSection1/EnviroMoistChart.jsx";
 import DayAndNightTempChart from "@/components/Dashboard2/SubSection1/DayAndNightTempChart.jsx";
 
