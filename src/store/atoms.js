@@ -16,11 +16,12 @@ export const userAtom = atom({
   key: "userAtom",
   default: {
     id: "user999",
-    fullname: "정수아",
+    fullname: "김정연",
     phone: "010-1234-5678",
     email: "basilfarm@gmail.com",
     picture: 1,
     device_id: "unit003",
+    created_at: 1,
   },
 });
 
@@ -75,7 +76,7 @@ export const actuatorAtom = atom({
 // ---------------------------------------------로그인---------------------------------------------------------
 
 // 토큰 관리(사용자 인증과 관련된 모든 페이지에 적용해야할 듯)
-// 사용 : signup
+// 사용 : login, mypage, dashboard
 export const tokenState = atom({
   key: "tokenState",
   default: "",
