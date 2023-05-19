@@ -1,6 +1,6 @@
 import { selector } from "recoil";
 import { userAtom, deviceAtom, autoConfigAtom, sensorAtom, actuatorAtom } from "@store/atoms";
-import { maxBy } from "lodash";
+import { maxBy, meanBy } from "lodash";
 import device000sensor from "@data/user000/sensorLog";
 import device000actuator from "@data/user000/actuatorLog";
 
@@ -139,7 +139,7 @@ export const formatAutoConfigSelector = selector({
     const origin = get(autoConfigAtom);
 
     const date = origin.created_at || "2023-01-01 01:01:01";
-
+    /*
     const year = date.slice(0, 4);
     const month = date.slice(5, 7);
     const day = date.slice(8, 10);
@@ -148,7 +148,8 @@ export const formatAutoConfigSelector = selector({
     const seconds = date.slice(17, 19);
 
     const dateString = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
-
+*/
+    const dateString = "2023-01-01 01:01:01";
     const newObject = { ...origin, created_at: dateString };
 
     return newObject;
@@ -172,6 +173,66 @@ export const formatActuatorSelector = selector({
   },
 });
 
+export const dayAndNightSelector = selector({
+  key: "dayAndNightSelector",
+  get: ({ get }) => {
+    const origin = get(formatSensorSelector);
+
+    const calArr = origin.reduce((acc, cur) => {
+      if (acc.length === 0 || acc[acc.length - 1].date !== cur.date) {
+        acc.push({
+          date: cur.date,
+          day: [],
+          night: [],
+        });
+      }
+
+      const hour = parseInt(cur.time.substr(0, 2));
+
+      if (hour >= 6 && hour <= 18) {
+        acc[acc.length - 1].day.push(cur);
+        /*
+        acc[acc.length - 1].daySum.sumLight += cur.light;
+        acc[acc.length - 1].daySum.sumMoisture += cur.moisture;
+        acc[acc.length - 1].daySum.sumTemp += cur.temp;
+        acc[acc.length - 1].daySum.sumHumidity += cur.humidity;
+        acc[acc.length - 1].daySum.count++;
+        */
+      } else {
+        acc[acc.length - 1].night.push(cur);
+        /*
+        acc[acc.length - 1].nightSum.sumLight += cur.light;
+        acc[acc.length - 1].nightSum.sumMoisture += cur.moisture;
+        acc[acc.length - 1].nightSum.sumTemp += cur.temp;
+        acc[acc.length - 1].nightSum.sumHumidity += cur.humidity;
+        acc[acc.length - 1].nightSum.count++;
+        */
+      }
+
+      return acc;
+    }, []);
+
+    const newArr = calArr.map((item) => {
+      const dayAvg = {
+        temp: meanBy(item.day, "temp").toFixed(1),
+        light: meanBy(item.day, "light").toFixed(0),
+        moisture: meanBy(item.day, "moisture").toFixed(0),
+        humidity: meanBy(item.day, "humidity").toFixed(0),
+      };
+      const nightAvg = {
+        temp: meanBy(item.night, "temp").toFixed(1),
+        light: meanBy(item.night, "light").toFixed(0),
+        moisture: meanBy(item.night, "moisture").toFixed(0),
+        humidity: meanBy(item.night, "humidity").toFixed(0),
+      };
+
+      const res = { ...item, dayAvg: dayAvg, nightAvg: nightAvg };
+      return res;
+    });
+
+    return newArr;
+  },
+});
 // [셀렉터] 온도에 관한 모든 데이터
 /*export const temperatureAtom = selector({
   key: "temperatureAtom",

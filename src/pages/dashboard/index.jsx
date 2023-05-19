@@ -10,7 +10,11 @@ import {
   autoConfigAtom,
   clientAtom,
 } from "@store/atoms";
-import { dailyAverageSensorSelector, formatSensorSelector } from "@store/selector";
+import {
+  dailyAverageSensorSelector,
+  formatSensorSelector,
+  dayAndNightSelector,
+} from "@store/selector";
 import { axiosTest, axiosInstance } from "@baseURL";
 import user000_sensor from "@data/user000/sensorLog";
 import unit000_actuator from "@data/user000/actuatorLog";
@@ -64,6 +68,7 @@ const Dashboard = (props) => {
   const [client, setClient] = useRecoilState(clientAtom);
   //---구독한 SELECTOR
   const sensorS = useRecoilValue(formatSensorSelector);
+  const dayAndNight = useRecoilValue(dayAndNightSelector);
   //---데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
   const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
 

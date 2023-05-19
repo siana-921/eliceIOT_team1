@@ -21,8 +21,6 @@ const ComparisonAllChart = () => {
   const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
   const dailyAverageMaxMin = useRecoilValue(dailyAverageMaxMinSelector);
 
-  console.log(dailyAverage);
-
   const data = dailyAverage.map((item, index) => ({
     name: `Day ${index + 1}`,
     light: item.light,
