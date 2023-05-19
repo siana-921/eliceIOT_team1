@@ -56,7 +56,7 @@ export default function MyPageBailsList() {
 
   const profileImage = [
     "url(/images/profile/cat.jpeg)",
-    "url(/images/profile/dog.jpg)",
+    "url(/images/profile/dog2.png)",
     "url(/images/profile/samyangbasil.png)",
     "url(/images/profile/freshbasil.png)",
     "url(/images/profile/basilpesto.png)",
@@ -73,19 +73,19 @@ export default function MyPageBailsList() {
       <BasilDeviceLists>
         <li onClick={handleDeviceClick}>
           <div className="device-item">
-            <div className="device-image" style={{ backgroundImage: profileImage[3] }} />
+            <ImageDiv className="device-image" style={{ backgroundImage: profileImage[3] }} />
             <span>싱싱한 바질</span>
           </div>
         </li>
         <li onClick={handleDeviceClick}>
           <div className="device-item">
-            <div className="device-image" style={{ backgroundImage: profileImage[4] }} />
+            <ImageDiv className="device-image" style={{ backgroundImage: profileImage[4] }} />
             <span>바질페스토</span>
           </div>
         </li>
         <li onClick={handleDeviceClick}>
           <div className="device-item">
-            <div
+            <ImageDiv
               className="device-image"
               style={{
                 backgroundImage: profileImage[device.device_picture - 1] || profileImage[0],
@@ -96,7 +96,7 @@ export default function MyPageBailsList() {
         </li>
         <li onClick={handleDeviceClick}>
           <div className="device-item">
-            <div className="device-image" style={{ backgroundImage: profileImage[1] }} />
+            <ImageDiv className="device-image" style={{ backgroundImage: profileImage[1] }} />
             <span>댕댕</span>
           </div>
         </li>
@@ -104,6 +104,12 @@ export default function MyPageBailsList() {
     </BasilsListMain>
   );
 }
+
+const ImageDiv = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const BasilsListMain = styled.main`
   width: 70%;
@@ -138,7 +144,6 @@ const BasilListDiv = styled.div`
     margin-left: 10px;
     color: #107d8e;
     font-weight: 700;
-    cursor: pointer;
     background-color: transparent;
     border: none;
     font-size: 16px;
