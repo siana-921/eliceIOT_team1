@@ -46,15 +46,29 @@ const SubSection1Contents = () => {
     }
   );
 
+  if (calMinMax.light > 1000) {
+  }
   const result = {
     ...calMinMax,
     light: {
-      max: Math.floor(calMinMax.light.max / 150),
-      min: Math.floor(calMinMax.light.min / 150),
+      max:
+        calMinMax.light.max >= 1000
+          ? `${(calMinMax.light.max / 1000).toFixed(0)}K`
+          : calMinMax.light.max,
+      min:
+        calMinMax.light.min >= 1000
+          ? `${(calMinMax.light.min / 1000).toFixed(0)}K`
+          : calMinMax.light.min,
     },
     moisture: {
-      max: Math.floor(calMinMax.moisture.max / 23),
-      min: Math.floor(calMinMax.moisture.min / 23),
+      max:
+        calMinMax.moisture.max >= 1000
+          ? `${(calMinMax.moisture.max / 1000).toFixed(1)}K`
+          : calMinMax.moisture.max,
+      min:
+        calMinMax.moisture.min >= 1000
+          ? `${(calMinMax.moisture.min / 1000).toFixed(1)}K`
+          : calMinMax.moisture.min,
     },
   };
 
@@ -69,28 +83,56 @@ const SubSection1Contents = () => {
           <DayAndNightTempChart></DayAndNightTempChart>
         </Item2>
         <Item3>
-          <MaxAndMinTitle>최고조도 | 최저조도</MaxAndMinTitle>
-          <MaxAndMinValue>
-            {result.light.max}/{result.light.min}
-          </MaxAndMinValue>
+          <MaxAndMinContainer>
+            <MaxAndMinTitleArea>조도</MaxAndMinTitleArea>
+            <MaxAndMinSubTitleArea>
+              <div>MAX</div>
+              <div>MIN</div>
+            </MaxAndMinSubTitleArea>
+            <MaxAndMinTextArea>
+              <div className="maxmindiv">{result.light.max}</div>
+              <div className="maxmindiv">{result.light.min}</div>
+            </MaxAndMinTextArea>
+          </MaxAndMinContainer>
         </Item3>
         <Item5>
-          <MaxAndMinTitle>최고온도 | 최저온도</MaxAndMinTitle>
-          <MaxAndMinValue>
-            {result.temp.max}/{result.temp.min}
-          </MaxAndMinValue>
+          <MaxAndMinContainer>
+            <MaxAndMinTitleArea>온도</MaxAndMinTitleArea>
+            <MaxAndMinSubTitleArea>
+              <div>MAX</div>
+              <div>MIN</div>
+            </MaxAndMinSubTitleArea>
+            <MaxAndMinTextArea>
+              <div className="maxmindiv">{result.temp.max}</div>
+              <div className="maxmindiv">{result.temp.min}</div>
+            </MaxAndMinTextArea>
+          </MaxAndMinContainer>
         </Item5>
         <Item6>
-          <MaxAndMinTitle>최고대기습도 | 최저대기습도</MaxAndMinTitle>
-          <MaxAndMinValue>
-            {result.humidity.max}/{result.humidity.min}
-          </MaxAndMinValue>
+          <MaxAndMinContainer>
+            <MaxAndMinTitleArea>대기습도</MaxAndMinTitleArea>
+            <MaxAndMinSubTitleArea>
+              <div>MAX</div>
+              <div>MIN</div>
+            </MaxAndMinSubTitleArea>
+            <MaxAndMinTextArea>
+              <div className="maxmindiv">{result.humidity.max}</div>
+              <div className="maxmindiv">{result.humidity.min}</div>
+            </MaxAndMinTextArea>
+          </MaxAndMinContainer>
         </Item6>
         <Item7>
-          <MaxAndMinTitle>최고토양수분 | 최저토양수분</MaxAndMinTitle>
-          <MaxAndMinValue>
-            {result.moisture.max}/{result.moisture.min}
-          </MaxAndMinValue>
+          <MaxAndMinContainer>
+            <MaxAndMinTitleArea>토양수분</MaxAndMinTitleArea>
+            <MaxAndMinSubTitleArea>
+              <div>MAX</div>
+              <div>MIN</div>
+            </MaxAndMinSubTitleArea>
+            <MaxAndMinTextArea>
+              <div className="maxmindiv">{result.moisture.max}</div>
+              <div className="maxmindiv">{result.moisture.min}</div>
+            </MaxAndMinTextArea>
+          </MaxAndMinContainer>
         </Item7>
         <Item8>{<WaterTankValChart></WaterTankValChart>}</Item8>
         <Item9>
@@ -109,6 +151,24 @@ const Main = styled.div`
   height: 100vh;
   display: flex;
   padding: 20px 20px 20px 0;
+
+  @media (max-width: 768px) {
+    .maxmindiv {
+      font-size: 24px;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .maxmindiv {
+      font-size: 32px;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .maxmindiv {
+      font-size: 52px;
+    }
+  }
 `;
 
 //------------텍스트 스타일------------//
@@ -124,7 +184,54 @@ const MaxAndMinValue = styled.div`
   justify-content: center;
   transform: translateX(-50%) translateY(-40%);
 `;
+//-------------------------------------//
 
+//-------------Wrapper--------------//
+const MaxAndMinContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 10px 10px 0px 10px;
+  > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+const MaxAndMinTitleArea = styled.div`
+  width: 100%;
+  height: 20%;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 10px;
+  background-color: black;
+  color: white;
+`;
+const MaxAndMinSubTitleArea = styled.div`
+  width: 100%;
+  height: 20%;
+  font-size: 14px;
+  > div {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+const MaxAndMinTextArea = styled.div`
+  display: flex;
+  width: 100%;
+  height: 55%;
+  > div {
+    font-size: 50px;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
 //-------------------------------------//
 
 //-------------그리드 레이아웃--------------//

@@ -14,89 +14,102 @@ import { colorCode } from "@store/constValue";
 
 import ActuatorLogTable from "../elements/ActuatorLogTable";
 
-const SubSection2Contents = () => {
+const SubSection3Contents = () => {
   const [autoConfig, setAutoConfig] = useRecoilState(autoConfigAtom); //현재 디바이스의 자동제어상태(set용 아톰)
   const formatAutoConfig = useRecoilValue(formatAutoConfigSelector); //현재 디바이스의 자동제어상태(셀렉터)
 
   const [isValueMode, setIsValueMode] = useState(true);
-  const [isAutoControl, setIsAutoControl] = useState(formatAutoConfigSelector.status);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [targetValue, setTargetValue] = useState(formatAutoConfigSelector.target_light || 10000);
+  const [targetValue, setTargetValue] = useState(
+    formatAutoConfigSelector.target_moisture || parseInt(optimal.light)
+  );
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const user = useRecoilValue(userAtom); //현재 로그인된 유저의 정보 : default user001
   const device = useRecoilValue(deviceAtom); //현재 로그인된 유저의 device : default unit001
-  const { id: device_id } = device;
+  const { device_id } = device;
   const { id: user_id } = user;
 
   useEffect(() => {
-    console.log(`자동제어상태 : ${isAutoControl}`);
-    console.log(`현재 로그인 정보 : ${(user_id, device_id)}`);
-    console.log(formatAutoConfig);
+    console.log(`자동제어상태 : ${formatAutoConfig.status}`);
+    console.log(`현재 로그인 정보 : ${user_id} ${device_id}`);
 
     setTargetValue(formatAutoConfig.target_light);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [autoConfig]);
 
   //자동제어 토글버튼 onChange
   const handleAutoControlOnOff = () => {
-    setIsAutoControl((prevIsAutoControl) => !prevIsAutoControl);
+    setAutoConfig((prev) => {
+      return { ...prev, status: !autoConfig.status };
+    });
   };
 
   useEffect(() => {
-    if (isAutoControl === false) {
-      console.log("자동제어 모드를 종료합니다. 즉시제어 또는 자동제어 설정이 가능합니다.");
-      const data = {
-        status: 0,
-        target_temp: null,
-        target_moisture: null,
-        target_light: null,
-      };
+    if (isLoaded) {
+      if (formatAutoConfig.status === false) {
+        console.log("자동제어 모드를 종료합니다. 즉시제어 또는 자동제어 설정이 가능합니다.");
+        const data = {
+          status: 0,
+          target_temp: null,
+          target_moisture: null,
+          target_light: null,
+        };
 
-      axiosInstance
-        .post(`/auto/${device_id}`, data)
-        .then((postRes) => {
-          axiosInstance
-            .get(`/auto/${device_id}/status`)
-            .then((getRes) => {
-              setAutoConfig(getRes.data);
-            })
-            .catch((getError) => {
-              console.error(getError);
+        axiosInstance
+          .post(`/auto/${device_id}`, data)
+          .then((postRes) => {
+            axiosInstance
+              .get(`/auto/${device_id}/status`)
+              .then((getRes) => {
+                console.log(getRes);
+                setAutoConfig(getRes.data[0]);
+              })
+              .catch((getError) => {
+                console.error(getError);
+              });
+          })
+          .catch((postError) => {
+            console.error(postError);
+          });
+      } else if (formatAutoConfig.status === true) {
+        console.log("자동제어 모드를 시작합니다.");
+        const data = {
+          status: 1,
+          target_temp: parseInt(optimal.temp),
+          target_moisture: parseInt(optimal.moist),
+          target_light: targetValue || 1500,
+        };
+        console.log("아래의 데이터로 자동제어 POST 합니다!");
+        console.log(data);
+        axiosInstance
+          .post(`/auto/${device_id}`, data)
+          .then((postRes) => {
+            axiosInstance
+              .get(`/auto/${device_id}/status`)
+              .then((getRes) => {
+                console.log(getRes);
+                setAutoConfig(getRes.data[0]);
+              })
+              .catch((getError) => {
+                console.error(getError);
+              });
+          })
+          .catch((error) => {
+            console.error(error);
+            alert("서버와의 통신에 실패했습니다.");
+            setTargetValue(formatAutoConfigSelector.target_light);
+            setIsAutoControl((prev) => {
+              return !prev;
             });
-        })
-        .catch((postError) => {
-          console.error(postError);
-        });
-    } else if (isAutoControl === true) {
-      console.log("자동제어 모드를 시작합니다.");
-      const data = {
-        status: 1,
-        target_temp: parseInt(optimal.temp),
-        target_moisture: parseInt(optimal.moist),
-        target_light: targetValue,
-      };
-      console.log("아래의 데이터로 자동제어 POST 합니다!");
-      console.log(data);
-      axiosInstance
-        .post(`/auto/${device_id}`, data)
-        .then((postRes) => {
-          axiosInstance
-            .get(`/auto/${device_id}/status`)
-            .then((getRes) => {
-              setAutoConfig(getRes.data);
-            })
-            .catch((getError) => {
-              console.error(getError);
-            });
-        })
-        .catch((error) => {
-          console.error(error);
-          alert("서버와의 통신에 실패했습니다.");
-          setTargetValue(formatAutoConfigSelector.target_light);
-        });
+          });
+      }
+    } else {
+      console.log("로딩중");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAutoControl]);
+  }, [autoConfig.status]);
+
   //자동제어 모드 라디오버튼 onChange
   const handleRadioChange = (e) => {
     console.log(e.target.id);
@@ -129,7 +142,7 @@ const SubSection2Contents = () => {
       console.log(postres);
     } catch (err) {
       console.error(err);
-      alert("서버와의 통신에 실패했습니다.");
+      //alert("서버와의 통신에 실패했습니다.");
     }
   };
   //자동제어 POST (useEffect: isAutoControl)
@@ -137,6 +150,11 @@ const SubSection2Contents = () => {
   useEffect(() => {
     !isValueMode && setTargetValue(parseInt(optimal.light));
   }, [isValueMode]);
+
+  useEffect(() => {
+    setIsLoaded(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   //--------------------------------------------------------------------//
 
   return (
@@ -144,7 +162,7 @@ const SubSection2Contents = () => {
       <GridContainer>
         <Item1>
           <TitleText>자동제어</TitleText>
-          {isAutoControl ? (
+          {formatAutoConfig.status ? (
             <>
               <MessageText>현재 자동제어가 동작하고 있습니다</MessageText>
               <br />
@@ -197,7 +215,7 @@ const SubSection2Contents = () => {
             <label>
               <Switch
                 onChange={handleAutoControlOnOff}
-                checked={isAutoControl}
+                checked={formatAutoConfig.status ? true : false}
                 onColor="#00b7d8"
                 offColor="#B8B8B8"
                 checkedIcon={false}
@@ -208,7 +226,7 @@ const SubSection2Contents = () => {
         </Item1>
         <Item2>
           <TitleText>자동제어 설정</TitleText>
-          {isAutoControl ? (
+          {formatAutoConfig.status ? (
             <RadioWrapper>
               <StyledRadio id="valueBasedControl" className="autoControlOn">
                 <div>자동제어 동작 중에는 설정할 수 없습니다</div>
@@ -225,13 +243,14 @@ const SubSection2Contents = () => {
                     <AutoModeSeletorWrapper>
                       <SliderWrapper>
                         <SlideTitle>
-                          목표 제어 조도<span>{targetValue ? targetValue : 10000}lux</span>
+                          목표 조도<span>{targetValue ? `${targetValue} lux` : "1500 lux"} </span>
                         </SlideTitle>
                         <Slider
                           min={0}
                           max={20000}
-                          step={100}
-                          value={targetValue || 10000}
+                          step={1000}
+                          value={targetValue || 15000}
+                          defaultValue={20}
                           onChange={handleSlider}
                         />
                       </SliderWrapper>
@@ -268,7 +287,7 @@ const SubSection2Contents = () => {
         </Item2>
         <Item3>
           <SmallTitleText>즉시 제어 (LED)</SmallTitleText>
-          {isAutoControl ? (
+          {formatAutoConfig.status ? (
             <DisabledManualControlBtn>
               <div>자동제어 동작 중에는 설정할 수 없습니다</div>
             </DisabledManualControlBtn>
@@ -281,14 +300,14 @@ const SubSection2Contents = () => {
         </Item3>
         <Item4>
           <SmallTitleText>제어 기록</SmallTitleText>
-          <ActuatorLogTable category="light"></ActuatorLogTable>
+          <ActuatorLogTable category="led"></ActuatorLogTable>
         </Item4>
       </GridContainer>
     </Main>
   );
 };
 
-export default SubSection2Contents;
+export default SubSection3Contents;
 
 const Main = styled.div`
   width: 75vw;
@@ -419,7 +438,7 @@ const StyledRadio = styled.div`
     color: white;
   }
   &.autoControlOff {
-    background-color: ${({ selected }) => (selected ? "#FFCD00" : "#E4E4E4")};
+    background-color: ${({ selected }) => (selected ? "#FFC900" : "#E4E4E4")};
     border: none;
   }
   &.autoControlOn {

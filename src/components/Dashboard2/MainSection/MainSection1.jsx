@@ -19,26 +19,35 @@ const MainSection1Content = () => {
   };
 
   const handleNavLogOut = () => {
-    setIslogin((prev) => {
-      !prev;
-    });
+    setIslogin(false);
     router.push("/");
   };
+
+  console.log(autoConfig);
 
   return (
     <Main>
       <ProfileImageWrapper>
-        <Profileimage></Profileimage>
+        <Profileimage
+          style={{
+            backgroundImage:
+              device.device_id === "unit003"
+                ? "url(/images/profile/cat.jpeg)"
+                : "url(/images/profile/basilpesto.png)",
+            backgroundSize: "cover",
+          }}
+        ></Profileimage>
       </ProfileImageWrapper>
       <TitleWrapper>
         <UserNameText>{user.fullname}님의</UserNameText>
-        <PlantNameText>{device.device_name}</PlantNameText>
+        <PlantNameText>
+          {device.device_id === "unit003" ? "바질맛사료" : "그저그런바질"}
+        </PlantNameText>
       </TitleWrapper>
       <ContentsWrapper>
-        <SubTitleText>{`${device.device_macAddress} ${device.device_type}`}</SubTitleText>
-        <SubTitleText>현재상태</SubTitleText>
-        <SubTitleText>
-          {autoConfig.status ? "자동제어가 실행중입니다." : "자동제어가 실행중이 아닙니다."}
+        <SubTitleText>{`MAC address: ${device.device_macAddress} (${device.device_type})`}</SubTitleText>
+        <SubTitleText style={{ fontSize: "28px", fontWeight: 200 }}>
+          {autoConfig.status ? "Auto Mode : ON " : "Auto Mode : OFF"}
         </SubTitleText>
       </ContentsWrapper>
       <NavWrapper>
@@ -62,8 +71,11 @@ const Main = styled.div`
 const TitleWrapper = styled.div`
   padding-top: 1rem;
   padding-bottom: 1.5rem;
+  padding-left: 20px;
 `;
-const ContentsWrapper = styled.div``;
+const ContentsWrapper = styled.div`
+  padding: 20px;
+`;
 const RandomMessageWrapper = styled.div`
   padding: 1rem 1.3rem 1rem 1rem;
 `;
@@ -81,6 +93,7 @@ const Profileimage = styled.div`
   width: 80%;
   height: 80%;
   border-radius: 50%;
+  border: 7px solid #fff;
   background-color: #ffffff;
   box-shadow: -2.3vh 2.3vh 4vh rgba(0, 0, 0, 0.15);
 `;
@@ -103,7 +116,8 @@ const PlantNameText = styled.p`
   font-weight: 600;
 `;
 const SubTitleText = styled.p`
-  font-size: 1.3rem;
+  font-size: 20px;
+  font-weight: 100;
 `;
 const NavText = styled.div`
   padding: 1rem;
