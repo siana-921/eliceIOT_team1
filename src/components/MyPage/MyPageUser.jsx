@@ -51,7 +51,7 @@ export default function MyPageUser() {
         <MyPageTitle>👋 {user_info.fullname}님, 반가워요!</MyPageTitle>
         <MyPageDiv>
           <MyPageInfoList>
-            <MyPageInfoItem>🪴 아이디 : {user_info.id}</MyPageInfoItem>
+            <MyPageInfoItem>💝 아이디 : {user_info.id}</MyPageInfoItem>
             <MyPageInfoItem>✉️ 이메일 : {user_info.email}</MyPageInfoItem>
             <MyPageInfoItem>📱 휴대폰번호 : {user_info.phone}</MyPageInfoItem>
           </MyPageInfoList>
