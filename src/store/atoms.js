@@ -46,7 +46,7 @@ export const autoConfigAtom = atom({
     target_temp: 20,
     target_moisture: 70,
     target_light: 4000,
-    created_at: "2023-05-12T12:26:40.000Z",
+    created_at: 1682658179000,
   },
 });
 
@@ -67,7 +67,7 @@ export const actuatorAtom = atom({
       pump: 0,
       fan: 0,
       peltier: 0,
-      created_at: 1682658179,
+      created_at: 1682658179000,
     },
   ],
 });

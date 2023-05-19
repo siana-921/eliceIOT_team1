@@ -21,8 +21,7 @@ const DayAndNightTempChart = () => {
     nightHumidity: parseInt(item.nightAvg.humidity),
   }));
 
-  console.log(dayAndNight);
-
+  //일단 온도만 쓰는걸로
   const dayMax = maxBy(chartData, "dayTemp");
   const nightMax = maxBy(chartData, "nightTemp");
   const dayMin = minBy(chartData, "dayTemp");
@@ -30,10 +29,7 @@ const DayAndNightTempChart = () => {
 
   const maxVal = dayMax.dayTemp > nightMax.nightTemp ? dayMax.dayTemp : nightMax.nightTemp;
   const minVal = dayMin.dayTemp < nightMin.nightTemp ? dayMin.dayTemp : nightMin.nightTemp;
-  const yScale = scaleLinear()
-    .domain([minVal - 1, maxVal + 1])
-    .nice();
-  console.log(maxVal, minVal);
+
   return (
     <Main>
       <ResponsiveContainer width="100%" height="100%">
@@ -49,7 +45,13 @@ const DayAndNightTempChart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
+          <XAxis
+            dataKey="date"
+            tickFormatter={(date) => {
+              const [year, month, day] = date.split("/");
+              return `${month}/${day}`;
+            }}
+          />
           <YAxis domain={[minVal - 0.3, maxVal + 0.3]} />
           <Tooltip />
           <Bar dataKey="dayTemp" fill={colorCode.yellow} />

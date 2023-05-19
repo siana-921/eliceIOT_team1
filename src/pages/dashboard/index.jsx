@@ -14,6 +14,7 @@ import {
   dailyAverageSensorSelector,
   formatSensorSelector,
   dayAndNightSelector,
+  formatAutoConfigSelector,
 } from "@store/selector";
 import { axiosTest, axiosInstance } from "@baseURL";
 import user000_sensor from "@data/user000/sensorLog";
@@ -68,9 +69,7 @@ const Dashboard = (props) => {
   const [client, setClient] = useRecoilState(clientAtom);
   //---구독한 SELECTOR
   const sensorS = useRecoilValue(formatSensorSelector);
-  const dayAndNight = useRecoilValue(dayAndNightSelector);
-  //---데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
-  const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
+  const autoConfigS = useRecoilValue(formatAutoConfigSelector);
 
   //---첫 마운트때 ATOM에 데이터 세팅 (센서, 액츄에이터, 자동제어상태)
   useEffect(() => {
@@ -95,6 +94,7 @@ const Dashboard = (props) => {
     const fetchAutoConfig = async () => {
       try {
         const res = await axiosInstance.get(`/auto/${client.device_id}/status`);
+        console.log(res.data[0]);
         setAutoConfig(res.data[0]);
         return res.data;
       } catch (error) {
@@ -138,7 +138,7 @@ const Dashboard = (props) => {
     } catch (err) {
       console.error(err);
     }
-  }, 180000);
+  }, 60000);
 
   //section onClick시 트랜지션 동작에 필요한 상태 세팅------------------//
   useEffect(() => {

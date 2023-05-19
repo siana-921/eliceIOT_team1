@@ -138,18 +138,17 @@ export const formatAutoConfigSelector = selector({
   get: ({ get }) => {
     const origin = get(autoConfigAtom);
 
-    const date = origin.created_at || "2023-01-01 01:01:01";
-    /*
-    const year = date.slice(0, 4);
-    const month = date.slice(5, 7);
-    const day = date.slice(8, 10);
-    const hours = date.slice(11, 13);
-    const minutes = date.slice(14, 16);
-    const seconds = date.slice(17, 19);
+    const date = new Date(origin.created_at || 1682658179000);
+
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
 
     const dateString = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
-*/
-    const dateString = "2023-01-01 01:01:01";
+
     const newObject = { ...origin, created_at: dateString };
 
     return newObject;
@@ -219,38 +218,3 @@ export const dayAndNightSelector = selector({
     return newArr;
   },
 });
-// [셀렉터] 온도에 관한 모든 데이터
-/*export const temperatureAtom = selector({
-  key: "temperatureAtom",
-  get: ({ get }) => {
-    const sensorData = get(sensorDataAtom); //배열객체 -api연결완료
-    const autoControlConfig = get(autoControlConfigAtom); //단일객체
-    const actuatorLog = get(actuatorLogAtom); //배열객체
-
-    const latestTemp = sensorData[sensorData.length - 1].temp; //최신온도값(단일)
-    const isAutoControl = autoControlConfig.status; //autoControlConfig가 배열이라면 수정필요(현재 단일객체에서 뽑은 단일값)
-
-    let isAutoTemp = false;
-    let autoStartAt = 0;
-    //온도에 대한 자동제어가 진행중인지, 진행중이라면 언제부터 진행중인지 저장(단일)
-    if (isAutoControl && autoControlConfig.target_temp) {
-      isAutoTemp = true;
-      autoStartAt = autoControlConfig.created_at;
-    } else {
-      isAutoTemp = false;
-      autoStartAt = 0;
-    }
-    //액츄에이터가 작동된 로그 중에 FAN을 작동한(나중에 펠티어로 교체...)로그만 필터링한 새로운 (배열)
-    const tempLog = actuatorLog.filter((obj) => obj.fan > 0);
-
-    const res = {
-      latestTemp: latestTemp,
-      isAutoControl: isAutoControl,
-      isAutoTemp: isAutoTemp,
-      autoStartAt: autoStartAt,
-      log: tempLog,
-    };
-    return res;
-  },
-});
-*/
