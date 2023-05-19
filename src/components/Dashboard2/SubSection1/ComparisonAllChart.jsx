@@ -21,6 +21,8 @@ const ComparisonAllChart = () => {
   const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
   const dailyAverageMaxMin = useRecoilValue(dailyAverageMaxMinSelector);
 
+  console.log(dailyAverage);
+
   const data = dailyAverage.map((item, index) => ({
     name: `Day ${index + 1}`,
     light: item.light,
@@ -47,7 +49,7 @@ const ComparisonAllChart = () => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis domain={[0, dailyAverageMaxMin.temp.max * 1.5]} />
+          <YAxis domain={[dailyAverageMaxMin.temp.min - 1, dailyAverageMaxMin.temp.max + 1]} />
           <Tooltip />
           <Area
             type="monotone"
@@ -74,8 +76,8 @@ const ComparisonAllChart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" domain={[50, 150]} />
-          <YAxis />
+          <XAxis dataKey="name" />
+          <YAxis domain={[dailyAverageMaxMin.light.min - 1, dailyAverageMaxMin.light.max + 1]} />
           <Tooltip />
           <Area
             type="monotone"
@@ -102,8 +104,10 @@ const ComparisonAllChart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" domain={[50, 150]} />
-          <YAxis />
+          <XAxis dataKey="name" />
+          <YAxis
+            domain={[dailyAverageMaxMin.moisture.min - 1, dailyAverageMaxMin.moisture.max + 1]}
+          />
           <Tooltip />
           <Area
             type="monotone"
@@ -130,8 +134,10 @@ const ComparisonAllChart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" domain={[50, 150]} />
-          <YAxis />
+          <XAxis dataKey="name" />
+          <YAxis
+            domain={[dailyAverageMaxMin.humidity.min - 1, dailyAverageMaxMin.humidity.max + 1]}
+          />
           <Tooltip />
           <Area
             type="monotone"
