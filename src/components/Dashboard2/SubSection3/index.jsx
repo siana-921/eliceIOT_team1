@@ -21,7 +21,9 @@ const SubSection3Contents = () => {
   const [isValueMode, setIsValueMode] = useState(true);
   //const [isAutoControl, setIsAutoControl] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [targetValue, setTargetValue] = useState(formatAutoConfigSelector.target_temp || 60);
+  const [targetValue, setTargetValue] = useState(
+    formatAutoConfigSelector.target_temp || parseFloat(optimal.temp)
+  );
   const [isLoaded, setIsLoaded] = useState(false);
 
   const user = useRecoilValue(userAtom); //현재 로그인된 유저의 정보 : default user001
@@ -34,6 +36,7 @@ const SubSection3Contents = () => {
     console.log(`현재 로그인 정보 : ${user_id} ${device_id}`);
 
     setTargetValue(formatAutoConfig.target_temp);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoConfig]);
 
@@ -71,11 +74,11 @@ const SubSection3Contents = () => {
           .catch((postError) => {
             console.error(postError);
           });
-      } else if (formatAutoConfig.status === true && targetValue > 0) {
+      } else if (formatAutoConfig.status === true) {
         console.log("자동제어 모드를 시작합니다.");
         const data = {
           status: 1,
-          target_temp: targetValue,
+          target_temp: targetValue || 20,
           target_moisture: parseInt(optimal.moist),
           target_light: parseInt(optimal.light),
         };
@@ -242,12 +245,12 @@ const SubSection3Contents = () => {
                     <AutoModeSeletorWrapper>
                       <SliderWrapper>
                         <SlideTitle>
-                          목표 제어 온도<span>{targetValue ? targetValue : 20 + "°C"}</span>
+                          목표 온도<span>{targetValue ? `${targetValue}°C` : "20°C"} </span>
                         </SlideTitle>
                         <Slider
                           min={0}
                           max={40}
-                          step={0.1}
+                          step={1}
                           value={targetValue || 20}
                           defaultValue={20}
                           onChange={handleSlider}
