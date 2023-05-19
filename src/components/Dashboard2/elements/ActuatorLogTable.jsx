@@ -38,10 +38,10 @@ const ActuatorLogTable = ({ category }) => {
           </tr>
         </Styled_thead>
         <Styled_tbody>
-          {data.slice(0, 10).map((row) => {
+          {data.slice(0, 10).map((row, index) => {
             if (parseInt(row[category]) > 0) {
               return (
-                <Styled_tr key={row.id}>
+                <Styled_tr key={index}>
                   <Styled_td>{formatDate(row.created_at)}</Styled_td>
                   <Styled_td>{formatTime(row.created_at)}</Styled_td>
                   <Styled_td>{category}</Styled_td>

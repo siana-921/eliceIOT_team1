@@ -137,7 +137,6 @@ export const formatAutoConfigSelector = selector({
   key: "formatAutoConfigSelector",
   get: ({ get }) => {
     const origin = get(autoConfigAtom);
-
     const date = new Date(origin.created_at || 1682658179000);
 
     const year = date.getFullYear();
@@ -150,7 +149,9 @@ export const formatAutoConfigSelector = selector({
     const dateString = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
 
     const newObject = { ...origin, created_at: dateString };
-
+    console.log("자동제어상태셀렉터호출");
+    console.log(origin);
+    console.log(newObject);
     return newObject;
   },
 });

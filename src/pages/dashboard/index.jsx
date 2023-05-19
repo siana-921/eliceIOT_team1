@@ -10,17 +10,8 @@ import {
   autoConfigAtom,
   clientAtom,
 } from "@store/atoms";
-import {
-  dailyAverageSensorSelector,
-  formatSensorSelector,
-  dayAndNightSelector,
-  formatAutoConfigSelector,
-} from "@store/selector";
+import { formatSensorSelector, formatAutoConfigSelector } from "@store/selector";
 import { axiosTest, axiosInstance } from "@baseURL";
-import user000_sensor from "@data/user000/sensorLog";
-import unit000_actuator from "@data/user000/actuatorLog";
-
-import LodingComponent from "@/components/elements/loading";
 
 import MainSection1Content from "@components/Dashboard2/MainSection/MainSection1";
 import MainSection2Content from "@components/Dashboard2/MainSection/MainSection2";
@@ -94,7 +85,6 @@ const Dashboard = (props) => {
     const fetchAutoConfig = async () => {
       try {
         const res = await axiosInstance.get(`/auto/${client.device_id}/status`);
-        console.log(res.data[0]);
         setAutoConfig(res.data[0]);
         return res.data;
       } catch (error) {
@@ -106,21 +96,11 @@ const Dashboard = (props) => {
     fetchActuator();
     fetchAutoConfig();
 
+    Promise.all([fetchSensor(), fetchActuator(), fetchAutoConfig()]).then(() => {
+      setIsLoaded(true);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  //---LOCALSTORAGE에서 확인할 용도ㅎ.. 센서 데이터와 액츄에이터 데이터는 최근꺼만
-  /*
-  useEffect(() => {
-    console.log(sensor);
-    const latestSensor = sensor[sensor?.length - 1];
-    const latestActuator = actuator[actuator?.length - 1];
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("device", JSON.stringify(device));
-    localStorage.setItem("autoConfig", JSON.stringify(autoConfig)); //배열에서 꺼내는 셀렉터라 걍 아톰꺼씀
-    localStorage.setItem("latestSensor", JSON.stringify(latestSensor));
-    localStorage.setItem("latestActuator", JSON.stringify(latestActuator));
-  }, [user, device, sensor, actuator, autoConfig]);*/
 
   //---3분마다 센서로그 GET 요청
   useInterval(async () => {
@@ -163,87 +143,93 @@ const Dashboard = (props) => {
   //--------------------------------------------------------------------//
 
   return (
-    <Main>
-      <Section
-        sectionIndex={1}
-        spreadSection={spreadSection}
-        popUpSection={popUpSection}
-        activatedSection={activatedSection}
-        isAnySectionActivated={isAnySectionActivated}
-        bgColor={colorCode.lime}
-        bgGradient={colorCode.green}
-      >
-        <Contents>
-          <MainContent
-            fontColor="#FFFFFF"
-            onClick={() => {
-              handleMainContentClick(1);
-            }}
+    <>
+      {isLoaded ? (
+        <Main>
+          <Section
+            sectionIndex={1}
+            spreadSection={spreadSection}
+            popUpSection={popUpSection}
+            activatedSection={activatedSection}
+            isAnySectionActivated={isAnySectionActivated}
+            bgColor={colorCode.lime}
+            bgGradient={colorCode.green}
           >
-            <MainSection1Content />
-          </MainContent>
-          <SubContent>{activatedSection == 1 && <SubSection1Contents />}</SubContent>
-        </Contents>
-      </Section>
-      <Section
-        sectionIndex={2}
-        spreadSection={spreadSection}
-        popUpSection={popUpSection}
-        activatedSection={activatedSection}
-        isAnySectionActivated={isAnySectionActivated}
-        bgColor="#ffdd00"
-        bgGradient="#FFBF00"
-      >
-        <Contents>
-          <MainContent
-            onClick={() => {
-              handleMainContentClick(2);
-            }}
+            <Contents>
+              <MainContent
+                fontColor="#FFFFFF"
+                onClick={() => {
+                  handleMainContentClick(1);
+                }}
+              >
+                <MainSection1Content />
+              </MainContent>
+              <SubContent>{activatedSection == 1 && <SubSection1Contents />}</SubContent>
+            </Contents>
+          </Section>
+          <Section
+            sectionIndex={2}
+            spreadSection={spreadSection}
+            popUpSection={popUpSection}
+            activatedSection={activatedSection}
+            isAnySectionActivated={isAnySectionActivated}
+            bgColor="#ffdd00"
+            bgGradient="#FFBF00"
           >
-            <MainSection2Content />
-          </MainContent>
-          <SubContent>{activatedSection == 2 && <SubSection2Contents />}</SubContent>
-        </Contents>
-      </Section>
-      <Section
-        sectionIndex={3}
-        spreadSection={spreadSection}
-        popUpSection={popUpSection}
-        activatedSection={activatedSection}
-        bgColor={colorCode.paleorange}
-        bgGradient={colorCode.orange}
-      >
-        <Contents>
-          <MainContent
-            onClick={() => {
-              handleMainContentClick(3);
-            }}
+            <Contents>
+              <MainContent
+                onClick={() => {
+                  handleMainContentClick(2);
+                }}
+              >
+                <MainSection2Content />
+              </MainContent>
+              <SubContent>{activatedSection == 2 && <SubSection2Contents />}</SubContent>
+            </Contents>
+          </Section>
+          <Section
+            sectionIndex={3}
+            spreadSection={spreadSection}
+            popUpSection={popUpSection}
+            activatedSection={activatedSection}
+            bgColor={colorCode.paleorange}
+            bgGradient={colorCode.orange}
           >
-            <MainSection3Content />
-          </MainContent>
-          <SubContent>{activatedSection == 3 && <SubSection3Contents />}</SubContent>
-        </Contents>
-      </Section>
-      <Section
-        sectionIndex={4}
-        spreadSection={spreadSection}
-        popUpSection={popUpSection}
-        activatedSection={activatedSection}
-        bgColor="#00B7D8"
-        bgGradient="#00B7D8"
-      >
-        <Contents>
-          <MainContent
-            onClick={() => {
-              handleMainContentClick(4);
-            }}
+            <Contents>
+              <MainContent
+                onClick={() => {
+                  handleMainContentClick(3);
+                }}
+              >
+                <MainSection3Content />
+              </MainContent>
+              <SubContent>{activatedSection == 3 && <SubSection3Contents />}</SubContent>
+            </Contents>
+          </Section>
+          <Section
+            sectionIndex={4}
+            spreadSection={spreadSection}
+            popUpSection={popUpSection}
+            activatedSection={activatedSection}
+            bgColor="#00B7D8"
+            bgGradient="#00B7D8"
           >
-            <MainSection4Content />
-          </MainContent>
-          <SubContent>{activatedSection == 4 && <SubSection4Contents />}</SubContent>
-        </Contents>
-      </Section>
-    </Main>
+            <Contents>
+              <MainContent
+                onClick={() => {
+                  handleMainContentClick(4);
+                }}
+              >
+                <MainSection4Content />
+              </MainContent>
+              <SubContent>{activatedSection == 4 && <SubSection4Contents />}</SubContent>
+            </Contents>
+          </Section>
+        </Main>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 
@@ -304,8 +290,8 @@ const SubContent = styled.div`
 
 export async function getServerSideProps(context) {
   const { query } = context;
-  const userId = query.userId || "user999";
-  const deviceId = query.deviceId || "unit003";
+  const userId = query.user_id || "user999";
+  const deviceId = query.device_id || "unit003";
 
   console.log(userId, deviceId);
   let resProps = {};

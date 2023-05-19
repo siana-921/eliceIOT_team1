@@ -267,7 +267,7 @@ const SubSection2Contents = () => {
           )}
         </Item2>
         <Item3>
-          <SmallTitleText>즉시 제어 (LED)</SmallTitleText>
+          <SmallTitleText>즉시 제어 (물주기)</SmallTitleText>
           {isAutoControl ? (
             <DisabledManualControlBtn>
               <div>자동제어 동작 중에는 설정할 수 없습니다</div>

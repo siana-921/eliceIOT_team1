@@ -16,7 +16,7 @@ export const userAtom = atom({
   key: "userAtom",
   default: {
     id: "user999",
-    fullname: "김정연",
+    fullname: "김디폴트",
     phone: "010-1234-5678",
     email: "basilfarm@gmail.com",
     picture: 1,
@@ -25,7 +25,7 @@ export const userAtom = atom({
   },
 });
 
-//디바이스 정보 (단일객체)
+//디바이스 정보 (배열로 오지만 set할때 0번째 인덱스를 set -> 단일객체)
 export const deviceAtom = atom({
   key: "deviceAtom",
   default: {

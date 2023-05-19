@@ -1,92 +1,106 @@
 import styled from "@emotion/styled";
 import React, { useState, useEffect, useCallback } from "react";
 import DeviceModal from "./DeviceModal";
-// import { useRecoilState } from "recoil";
-// import { defaultDeviceIdState } from "../../store/atoms";
 import { axiosInstance } from "@/api/base";
 import { useRouter } from "next/router";
-import { tokenState, userAtom } from "@/store/atoms";
 import { useRecoilValue, useRecoilState } from "recoil";
+import { tokenState, userAtom, deviceAtom } from "@/store/atoms";
 
 export default function MyPageBailsList() {
   const token = useRecoilValue(tokenState);
   const [isModalOpen, setModalOpen] = useState(false);
-  // const [id, setId] = useState("");
-  const [picture, setPicture] = useState("");
-  const [device_id, setDeviceId] = useState("");
-  const [device_name, setFullName] = useState("");
-  const [devices, setDevices] = useState([]);
 
-  const [user_info, setUserInfo] = useRecoilState(userAtom);
-
-  const addDevice = useCallback((device) => {
-    setDevices((prevDevices) => [...prevDevices, device]);
-  }, []);
+  const [user, setUser] = useRecoilState(userAtom);
+  const [device, setDevice] = useRecoilState(deviceAtom);
+  const device_id = user.device_id;
 
   const router = useRouter();
 
   useEffect(() => {
-    console.log(user_info);
-    // 여기서 기본 device id를 가져오는 로직을 구현
-    const { id } = user_info;
+    console.log(user);
+    console.log(device);
+  }, [user, device]);
 
+  useEffect(() => {
     const fetchDefaultDeviceId = async () => {
       try {
-        const response = await axiosInstance.get(`device/info`, { id });
-        const { picture, device_id, device_name } = response.data;
-        setDeviceId(device_id);
-        setPicture(picture);
-        setFullName(device_name);
+        const response = await axiosInstance.get(`device/info/${device_id}`);
 
         console.log(response);
-
-        addDevice({
-          device_id: device_id,
-          picture: picture,
-          device_name: device_name,
-        });
+        response.data[0] && setDevice(response.data[0]);
       } catch (error) {
         console.error("디바이스 목록 : 🚀디바이스 목록을 가져오는데 실패했습니다.", error);
       }
     };
 
     fetchDefaultDeviceId();
-  }, [token, addDevice, user_info]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const openModal = () => {
-    setModalOpen(true);
+    //setModalOpen(true);
+    alert("지금은 1인 1디바이스입니다 예..");
   };
 
   const closeModal = () => {
-    setModalOpen(false);
+    //setModalOpen(false);
   };
 
-  const handleDeviceClick = (deviceId) => {
-    router.push(`/dashboard/${deviceId}`);
+  const handleDeviceClick = () => {
+    router.push({
+      pathname: "./dashboard",
+      query: { user_id: user.id, device_id: device.device_id },
+    });
   };
+  const addDevice = () => {};
+
+  const profileImage = [
+    "url(/images/profile/cat.jpeg)",
+    "url(/images/profile/dog.jpg)",
+    "url(/images/profile/samyangbasil.png)",
+    "url(/images/profile/freshbasil.png)",
+    "url(/images/profile/basilpesto.png)",
+  ];
 
   return (
     <BasilsListMain>
-      <h2>🪴 {device_name}님의 바질목록 🪴</h2>
+      <h2>🪴 {user.fullname}님의 바질목록 🪴</h2>
       <BasilListDiv>
         <p>새로운 바질이 추가되었나요?</p>
         <button onClick={openModal}> 등록하러 가기</button>
       </BasilListDiv>
-      <DeviceModal isOpen={isModalOpen} closeModal={closeModal} addDevice={addDevice} />
-      {devices.length === 0 ? (
-        <p>No devices added.</p>
-      ) : (
-        <BasilDeviceLists>
-          {devices.map((device, index) => (
-            <li key={index} onClick={() => handleDeviceClick(device.id)}>
-              <div className="device-item">
-                <div className="device-image" style={{ backgroundImage: `url(${device.image})` }} />
-                <span>{device.name}</span>
-              </div>
-            </li>
-          ))}
-        </BasilDeviceLists>
-      )}
+      {/*<DeviceModal isOpen={isModalOpen} closeModal={closeModal} addDevice={addDevice} />*/}
+      <BasilDeviceLists>
+        <li onClick={handleDeviceClick}>
+          <div className="device-item">
+            <div className="device-image" style={{ backgroundImage: profileImage[3] }} />
+            <span>싱싱한 바질</span>
+          </div>
+        </li>
+        <li onClick={handleDeviceClick}>
+          <div className="device-item">
+            <div className="device-image" style={{ backgroundImage: profileImage[4] }} />
+            <span>바질페스토</span>
+          </div>
+        </li>
+        <li onClick={handleDeviceClick}>
+          <div className="device-item">
+            <div
+              className="device-image"
+              style={{
+                backgroundImage: profileImage[device.device_picture - 1] || profileImage[0],
+              }}
+            />
+            <span>바질맛사료</span>
+          </div>
+        </li>
+        <li onClick={handleDeviceClick}>
+          <div className="device-item">
+            <div className="device-image" style={{ backgroundImage: profileImage[1] }} />
+            <span>댕댕</span>
+          </div>
+        </li>
+      </BasilDeviceLists>
     </BasilsListMain>
   );
 }
