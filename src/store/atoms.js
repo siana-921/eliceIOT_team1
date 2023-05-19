@@ -2,27 +2,30 @@ import { atom } from "recoil";
 import device000sensor from "@data/user000/sensorLog";
 const JSONdevice000sensor = JSON.parse(JSON.stringify(device000sensor));
 
-export const allDeviceSensorAtom = atom({
-  key: "allDeviceSensorAtom",
-  default: JSONdevice000sensor,
+//현재 로그인한 녀석의 정보 (단일객체)
+export const clientAtom = atom({
+  key: "clientAtom",
+  default: {
+    user_id: "user999",
+    device_id: "unit003",
+  },
 });
 
-//아무런 로그인 정보가 없을때는 테스트를 위해
-//user001 의 unit001 을 관리중이라고 침
 //유저 정보 (단일객체)
 export const userAtom = atom({
   key: "userAtom",
   default: {
     id: "user999",
-    fullname: "정수아",
+    fullname: "김디폴트",
     phone: "010-1234-5678",
     email: "basilfarm@gmail.com",
     picture: 1,
     device_id: "unit003",
+    created_at: 1,
   },
 });
 
-//디바이스 정보 (단일객체)
+//디바이스 정보 (배열로 오지만 set할때 0번째 인덱스를 set -> 단일객체)
 export const deviceAtom = atom({
   key: "deviceAtom",
   default: {
@@ -38,16 +41,14 @@ export const deviceAtom = atom({
 //api/auto/:device_id/status
 export const autoConfigAtom = atom({
   key: "autoConfigAtom",
-  default: [
-    {
-      device_id: "unit001",
-      status: 1,
-      target_temp: 20,
-      target_moisture: 70,
-      target_light: 40,
-      created_at: "2023-05-12T12:26:40.000Z",
-    },
-  ],
+  default: {
+    device_id: "unit001",
+    status: 1,
+    target_temp: 20,
+    target_moisture: 70,
+    target_light: 4000,
+    created_at: 1682658179000,
+  },
 });
 
 //누적 센서 데이터 (객체배열)
@@ -67,7 +68,7 @@ export const actuatorAtom = atom({
       pump: 0,
       fan: 0,
       peltier: 0,
-      created_at: 1682658179,
+      created_at: 1682658179000,
     },
   ],
 });
@@ -75,7 +76,7 @@ export const actuatorAtom = atom({
 // ---------------------------------------------로그인---------------------------------------------------------
 
 // 토큰 관리(사용자 인증과 관련된 모든 페이지에 적용해야할 듯)
-// 사용 : signup
+// 사용 : login, mypage, dashboard
 export const tokenState = atom({
   key: "tokenState",
   default: "",
