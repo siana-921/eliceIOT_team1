@@ -10,12 +10,8 @@ import {
   autoConfigAtom,
   clientAtom,
 } from "@store/atoms";
-import { dailyAverageSensorSelector, formatSensorSelector } from "@store/selector";
+import { formatSensorSelector, formatAutoConfigSelector } from "@store/selector";
 import { axiosTest, axiosInstance } from "@baseURL";
-import user000_sensor from "@data/user000/sensorLog";
-import unit000_actuator from "@data/user000/actuatorLog";
-
-import LodingComponent from "@/components/elements/loading";
 
 import MainSection1Content from "@components/Dashboard2/MainSection/MainSection1";
 import MainSection2Content from "@components/Dashboard2/MainSection/MainSection2";
@@ -64,46 +60,45 @@ const Dashboard = (props) => {
   const [client, setClient] = useRecoilState(clientAtom);
   //---구독한 SELECTOR
   const sensorS = useRecoilValue(formatSensorSelector);
-  //---데일리애버리지는 나중에 테스트 끝나면 subsection1에서만 가져와도 될듯
-  const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
+  const autoConfigS = useRecoilValue(formatAutoConfigSelector);
 
-  //---LOCALSTORAGE에서 확인할 용도ㅎ.. 센서 데이터와 액츄에이터 데이터는 최근꺼만
+  //---첫 마운트때 ATOM에 데이터 세팅 (센서, 액츄에이터, 자동제어상태)
   useEffect(() => {
-    const latestSensor = sensor[sensor.length - 1];
-    const latestActuator = actuator[actuator.length - 1];
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("device", JSON.stringify(device));
-    localStorage.setItem("autoConfig", JSON.stringify(autoConfig)); //배열에서 꺼내는 셀렉터라 걍 아톰꺼씀
-    localStorage.setItem("latestSensor", JSON.stringify(latestSensor));
-    localStorage.setItem("latestActuator", JSON.stringify(latestActuator));
-  }, [user, device, sensor, actuator, autoConfig]);
+    const fetchSensor = async () => {
+      try {
+        const res = await axiosInstance.get(`/sensors/${client.device_id}?start_time=0`);
+        setSensor(res.data);
+        return res.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    const fetchActuator = async () => {
+      try {
+        const res = await axiosInstance.get(`/actuators/${client.device_id}?start_time=0`);
+        setActuator(res.data);
+        return res.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    const fetchAutoConfig = async () => {
+      try {
+        const res = await axiosInstance.get(`/auto/${client.device_id}/status`);
+        setAutoConfig(res.data[0]);
+        return res.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  //---첫 마운트 SSR
-  const { resProps } = props;
-  useEffect(() => {
-    if (Array.isArray(resProps.sensor) && resProps.sensor.length > 10) {
-      setSensor(resProps.senser);
-    } else {
-      console.log("SSR : sensor log가 없거나 사용하기에 충분하지 않음. 더미 사용");
-      setSensor(JSON.parse(JSON.stringify(user000_sensor)));
-    }
-    if (Array.isArray(resProps.actuator) && resProps.actuator.length > 0) {
-      setActuator(resProps.actuator);
-    } else {
-      console.log("SSR : actuator log가 없거나 사용하기에 충분하지 않음. 더미 사용");
-      setActuator(JSON.parse(JSON.stringify(unit000_actuator)));
-    }
-    if (Array.isArray(resProps.autoConfig) && resProps.autoConfig.length > 0) {
-      setAutoConfig(resProps.autoConfig);
-    } else {
-      console.log("SSR : autoConfig에 빈 배열이 들어오고 있음. 디폴트 사용");
-    }
-    //유저와 디바이스는 마이페이지에서 ATOM에 저장되었어야하지만 로그인이 잘안되고있어서 걍여기서함!
-    if (resProps.client) {
-      setClient(resProps.client);
-    } else {
-      console.log("SSR : 클라이언트 정보가 없음. 디폴트(user999, unit003) 사용");
-    }
+    fetchSensor();
+    fetchActuator();
+    fetchAutoConfig();
+
+    Promise.all([fetchSensor(), fetchActuator(), fetchAutoConfig()]).then(() => {
+      setIsLoaded(true);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -123,7 +118,7 @@ const Dashboard = (props) => {
     } catch (err) {
       console.error(err);
     }
-  }, 180000);
+  }, 60000);
 
   //section onClick시 트랜지션 동작에 필요한 상태 세팅------------------//
   useEffect(() => {
@@ -148,87 +143,93 @@ const Dashboard = (props) => {
   //--------------------------------------------------------------------//
 
   return (
-    <Main>
-      <Section
-        sectionIndex={1}
-        spreadSection={spreadSection}
-        popUpSection={popUpSection}
-        activatedSection={activatedSection}
-        isAnySectionActivated={isAnySectionActivated}
-        bgColor={colorCode.lime}
-        bgGradient={colorCode.green}
-      >
-        <Contents>
-          <MainContent
-            fontColor="#FFFFFF"
-            onClick={() => {
-              handleMainContentClick(1);
-            }}
+    <>
+      {isLoaded ? (
+        <Main>
+          <Section
+            sectionIndex={1}
+            spreadSection={spreadSection}
+            popUpSection={popUpSection}
+            activatedSection={activatedSection}
+            isAnySectionActivated={isAnySectionActivated}
+            bgColor={colorCode.lime}
+            bgGradient={colorCode.green}
           >
-            <MainSection1Content />
-          </MainContent>
-          <SubContent>{activatedSection == 1 && <SubSection1Contents />}</SubContent>
-        </Contents>
-      </Section>
-      <Section
-        sectionIndex={2}
-        spreadSection={spreadSection}
-        popUpSection={popUpSection}
-        activatedSection={activatedSection}
-        isAnySectionActivated={isAnySectionActivated}
-        bgColor="#ffdd00"
-        bgGradient="#FFBF00"
-      >
-        <Contents>
-          <MainContent
-            onClick={() => {
-              handleMainContentClick(2);
-            }}
+            <Contents>
+              <MainContent
+                fontColor="#FFFFFF"
+                onClick={() => {
+                  handleMainContentClick(1);
+                }}
+              >
+                <MainSection1Content />
+              </MainContent>
+              <SubContent>{activatedSection == 1 && <SubSection1Contents />}</SubContent>
+            </Contents>
+          </Section>
+          <Section
+            sectionIndex={2}
+            spreadSection={spreadSection}
+            popUpSection={popUpSection}
+            activatedSection={activatedSection}
+            isAnySectionActivated={isAnySectionActivated}
+            bgColor="#ffdd00"
+            bgGradient="#FFBF00"
           >
-            <MainSection2Content />
-          </MainContent>
-          <SubContent>{activatedSection == 2 && <SubSection2Contents />}</SubContent>
-        </Contents>
-      </Section>
-      <Section
-        sectionIndex={3}
-        spreadSection={spreadSection}
-        popUpSection={popUpSection}
-        activatedSection={activatedSection}
-        bgColor={colorCode.paleorange}
-        bgGradient={colorCode.orange}
-      >
-        <Contents>
-          <MainContent
-            onClick={() => {
-              handleMainContentClick(3);
-            }}
+            <Contents>
+              <MainContent
+                onClick={() => {
+                  handleMainContentClick(2);
+                }}
+              >
+                <MainSection2Content />
+              </MainContent>
+              <SubContent>{activatedSection == 2 && <SubSection2Contents />}</SubContent>
+            </Contents>
+          </Section>
+          <Section
+            sectionIndex={3}
+            spreadSection={spreadSection}
+            popUpSection={popUpSection}
+            activatedSection={activatedSection}
+            bgColor={colorCode.paleorange}
+            bgGradient={colorCode.orange}
           >
-            <MainSection3Content />
-          </MainContent>
-          <SubContent>{activatedSection == 3 && <SubSection3Contents />}</SubContent>
-        </Contents>
-      </Section>
-      <Section
-        sectionIndex={4}
-        spreadSection={spreadSection}
-        popUpSection={popUpSection}
-        activatedSection={activatedSection}
-        bgColor="#00B7D8"
-        bgGradient="#00B7D8"
-      >
-        <Contents>
-          <MainContent
-            onClick={() => {
-              handleMainContentClick(4);
-            }}
+            <Contents>
+              <MainContent
+                onClick={() => {
+                  handleMainContentClick(3);
+                }}
+              >
+                <MainSection3Content />
+              </MainContent>
+              <SubContent>{activatedSection == 3 && <SubSection3Contents />}</SubContent>
+            </Contents>
+          </Section>
+          <Section
+            sectionIndex={4}
+            spreadSection={spreadSection}
+            popUpSection={popUpSection}
+            activatedSection={activatedSection}
+            bgColor="#00B7D8"
+            bgGradient="#00B7D8"
           >
-            <MainSection4Content />
-          </MainContent>
-          <SubContent>{activatedSection == 4 && <SubSection4Contents />}</SubContent>
-        </Contents>
-      </Section>
-    </Main>
+            <Contents>
+              <MainContent
+                onClick={() => {
+                  handleMainContentClick(4);
+                }}
+              >
+                <MainSection4Content />
+              </MainContent>
+              <SubContent>{activatedSection == 4 && <SubSection4Contents />}</SubContent>
+            </Contents>
+          </Section>
+        </Main>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 
@@ -289,13 +290,12 @@ const SubContent = styled.div`
 
 export async function getServerSideProps(context) {
   const { query } = context;
-  const userId = query.userId || "user999";
-  const deviceId = query.deviceId || "unit003";
+  const userId = query.user_id || "user999";
+  const deviceId = query.device_id || "unit003";
 
   console.log(userId, deviceId);
   let resProps = {};
   resProps.client = { user_id: userId, device_id: deviceId };
-
   /*
   try {
     console.log(`=========GET ${deviceId} DEVICE SENSOR LOG DATA=========`);
@@ -304,11 +304,12 @@ export async function getServerSideProps(context) {
   } catch (err) {
     resProps.sensor = [];
     console.error(err);
-  } */
+  }
   try {
     console.log(`=========GET ${deviceId} DEVICE ACTUATOR LOG DATA=========`);
     const actuator = await axiosInstance.get(`/actuators/${deviceId}?start_time=0`);
     resProps.actuator = actuator.data;
+    console.log(resProps.actuator);
   } catch (err) {
     resProps.actuator = [];
     console.error(err);
@@ -321,7 +322,7 @@ export async function getServerSideProps(context) {
     resProps.autoConfig = [];
     console.error(err);
   }
-
+*/
   /*현재 데이터가 충분하지 않아 START_TIME을 따로 계산할 필요 없어서 내려둠
   const DAYS_TO_LOAD = 29; // 4주 + 1일(당일)
   const today = new Date();

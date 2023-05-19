@@ -1,8 +1,4 @@
 import LoginFunc from "@/components/Login/LoginFunc";
-import { axiosInstance } from "@/api/base";
-import LoginIntroduction from "@/components/Login/LoginIntroduction";
-import { useEffect } from "react";
-import axios from "axios";
 
 import styled from "@emotion/styled";
 
@@ -12,48 +8,12 @@ export default function LoginPage() {
       <LoginPageVideo src="/images/backgroundVideo.mp4" loop autoPlay muted />
       <LoginPageContents>
         <LoginPageContainer>
-          {/* <LoginIntroduction /> */}
           <LoginFunc />
         </LoginPageContainer>
       </LoginPageContents>
     </LoginPageMain>
   );
 }
-
-// export async function getServerSideProps(context) {
-//   try {
-//     // 코치님이 알려주신 부분 : context.req.headers.cookie["~~~~"]
-//     const cookieValue = context.req.headers.cookie ? context.req.headers.cookie : undefined;
-
-//     const response = await axios.get("pages/api/mockup/userinfo", {
-//       headers: {
-//         // 쿠키를 요청 헤더에 추가
-//         Cookie: cookieValue,
-//       },
-//     });
-
-//     const loginData = response.data;
-
-//     return {
-//       props: {
-//         loginData,
-//       },
-//     };
-//   } catch (err) {
-//     console.log(err.response);
-//     const statusCode = err.response ? err.response.status : "🚨에러발생";
-
-//     return {
-//       props: {
-//         loginData: null,
-//         err: {
-//           statusCode,
-//           title: statusCode,
-//         },
-//       },
-//     };
-//   }
-// }
 
 const LoginPageMain = styled.main`
   position: relative;
