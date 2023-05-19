@@ -191,22 +191,8 @@ export const dayAndNightSelector = selector({
 
       if (hour >= 6 && hour <= 18) {
         acc[acc.length - 1].day.push(cur);
-        /*
-        acc[acc.length - 1].daySum.sumLight += cur.light;
-        acc[acc.length - 1].daySum.sumMoisture += cur.moisture;
-        acc[acc.length - 1].daySum.sumTemp += cur.temp;
-        acc[acc.length - 1].daySum.sumHumidity += cur.humidity;
-        acc[acc.length - 1].daySum.count++;
-        */
       } else {
         acc[acc.length - 1].night.push(cur);
-        /*
-        acc[acc.length - 1].nightSum.sumLight += cur.light;
-        acc[acc.length - 1].nightSum.sumMoisture += cur.moisture;
-        acc[acc.length - 1].nightSum.sumTemp += cur.temp;
-        acc[acc.length - 1].nightSum.sumHumidity += cur.humidity;
-        acc[acc.length - 1].nightSum.count++;
-        */
       }
 
       return acc;
