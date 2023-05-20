@@ -1,61 +1,41 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { colorCode } from "@store/constValue";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import styled from "@emotion/styled";
-
-const data = [
-  {
-    name: "Day 1",
-    day: 4320,
-    night: 2400,
-    optimal: 3000,
-  },
-  {
-    name: "Day 2",
-    day: 3000,
-    night: 1398,
-    optimal: 3000,
-  },
-  {
-    name: "Day 3",
-    day: 2000,
-    night: 980,
-    optimal: 3000,
-  },
-  {
-    name: "Day 4",
-    day: 4780,
-    night: 2308,
-    optimal: 3000,
-  },
-  {
-    name: "Day 5",
-    day: 3890,
-    night: 900,
-    optimal: 3000,
-  },
-  {
-    name: "Day 6",
-    day: 2390,
-    night: 1800,
-    optimal: 3000,
-  },
-  {
-    name: "Day 7",
-    day: 3490,
-    night: 2300,
-    optimal: 3000,
-  },
-];
+import { dayAndNightSelector } from "@store/selector";
+import { maxBy, minBy } from "lodash";
 
 const DayAndNightTempChart = () => {
+  const dayAndNight = useRecoilValue(dayAndNightSelector);
+
+  const chartData = dayAndNight.map((item) => ({
+    date: item.date,
+    dayLight: parseInt(item.dayAvg.light),
+    nightLight: parseInt(item.nightAvg.light),
+    dayTemp: parseFloat(item.dayAvg.temp),
+    nightTemp: parseFloat(item.nightAvg.temp),
+    dayMoisture: parseInt(item.dayAvg.moisture),
+    nightMoisture: parseInt(item.nightAvg.moisture),
+    dayHumidity: parseInt(item.dayAvg.humidity),
+    nightHumidity: parseInt(item.nightAvg.humidity),
+  }));
+
+  //일단 온도만 쓰는걸로
+  const dayMax = maxBy(chartData, "dayTemp");
+  const nightMax = maxBy(chartData, "nightTemp");
+  const dayMin = minBy(chartData, "dayTemp");
+  const nightMin = minBy(chartData, "nightTemp");
+
+  const maxVal = dayMax.dayTemp > nightMax.nightTemp ? dayMax.dayTemp : nightMax.nightTemp;
+  const minVal = dayMin.dayTemp < nightMin.nightTemp ? dayMin.dayTemp : nightMin.nightTemp;
+
   return (
     <Main>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           width={500}
           height={300}
-          data={data}
+          data={chartData}
           margin={{
             top: 20,
             right: 30,
@@ -64,11 +44,17 @@ const DayAndNightTempChart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis
+            dataKey="date"
+            tickFormatter={(date) => {
+              const [year, month, day] = date.split("/");
+              return `${month}/${day}`;
+            }}
+          />
+          <YAxis domain={[minVal - 0.3, maxVal + 0.3]} hide={true} />
           <Tooltip />
-          <Bar dataKey="day" stackId="a" fill={colorCode.yellow} />
-          <Bar dataKey="night" stackId="b" fill={colorCode.palelavender} />
-          <Bar dataKey="optimal" fill={colorCode.gray} />
+          <Bar dataKey="dayTemp" fill={colorCode.yellow} />
+          <Bar dataKey="nightTemp" fill={colorCode.palelavender} />
         </BarChart>
       </ResponsiveContainer>
     </Main>

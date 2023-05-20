@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 import {
   dailyAverageSensorSelector,
   dailyAverageMaxMinSelector,
-  formatSensorSelector,
+  hourlySensorSelector,
 } from "@store/selector";
 import { colorCode } from "@store/constValue";
 import {
@@ -20,7 +20,10 @@ import {
 const ComparisonAllChart = () => {
   const dailyAverage = useRecoilValue(dailyAverageSensorSelector);
   const dailyAverageMaxMin = useRecoilValue(dailyAverageMaxMinSelector);
+  const hourlySensor = useRecoilValue(hourlySensorSelector);
 
+  const data = hourlySensor;
+  /*
   const data = dailyAverage.map((item, index) => ({
     name: `Day ${index + 1}`,
     light: item.light,
@@ -28,7 +31,7 @@ const ComparisonAllChart = () => {
     humidity: item.humidity,
     moisture: item.moisture,
   }));
-
+*/
   return (
     <Main>
       <SensorTitleText>
@@ -46,8 +49,8 @@ const ComparisonAllChart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis domain={[0, dailyAverageMaxMin.temp.max * 1.5]} />
+          <XAxis dataKey="date" tickFormatter={(value) => value.substr(5)} />
+          <YAxis domain={[dailyAverageMaxMin.temp.min - 1, dailyAverageMaxMin.temp.max + 1]} />
           <Tooltip />
           <Area
             type="monotone"
@@ -74,8 +77,8 @@ const ComparisonAllChart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" domain={[50, 150]} />
-          <YAxis />
+          <XAxis dataKey="date" tickFormatter={(value) => value.substr(5)} />
+          <YAxis domain={[dailyAverageMaxMin.light.min - 1, dailyAverageMaxMin.light.max + 1]} />
           <Tooltip />
           <Area
             type="monotone"
@@ -102,8 +105,10 @@ const ComparisonAllChart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" domain={[50, 150]} />
-          <YAxis />
+          <XAxis dataKey="date" tickFormatter={(value) => value.substr(5)} />
+          <YAxis
+            domain={[dailyAverageMaxMin.moisture.min - 1, dailyAverageMaxMin.moisture.max + 1]}
+          />
           <Tooltip />
           <Area
             type="monotone"
@@ -130,8 +135,10 @@ const ComparisonAllChart = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" domain={[50, 150]} />
-          <YAxis />
+          <XAxis dataKey="date" tickFormatter={(value) => value.substr(5)} />
+          <YAxis
+            domain={[dailyAverageMaxMin.humidity.min - 1, dailyAverageMaxMin.humidity.max + 1]}
+          />
           <Tooltip />
           <Area
             type="monotone"

@@ -70,18 +70,11 @@ export default function SignupFunc() {
       return Swal.fire("ID를 입력하세요.", "", "warning");
     } else if (!password) {
       return Swal.fire(
-        "Password를 입력하세요.",
-        "8자 이상 16자 이하의 대소문자와 숫자를 포함해 입력해야 합니다.",
+        "Password 형식이 올바르지 않습니다.",
+        "8자 이상 16자 이하의 대소문자와 숫자를 포함해야 합니다.",
         "error"
       );
-    } // else if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/)) {
-    //   return Swal.fire(
-    //     "Password 형식이 올바르지 않습니다.",
-    //     "8자 이상 16자 이하의 대소문자와 숫자를 포함해야 합니다.",
-    //     "error"
-    //   );
-    // }
-    else if (!fullname) {
+    } else if (!fullname) {
       return Swal.fire("이름을 입력하세요.", "", "warning");
     } else if (!email) {
       return Swal.fire("이메일를 입력하세요.", "", "warning");
@@ -132,11 +125,10 @@ export default function SignupFunc() {
     axiosInstance
       .post(`user/sign_up`, body)
       .then((res) => {
-        console.log(res);
         setLoading(false);
         setTimeout(() => {
           router.push("/login");
-        }, 3000);
+        }, 4000);
         Swal.fire("가입이 완료되었습니다.", "", "success");
       })
       .catch((error) => {
@@ -204,6 +196,12 @@ const SingupPageDiv = styled.div`
   border-radius: 10px;
 
   background-color: #ffffff;
+
+  @media (max-width: 375px) {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
 `;
 
 const SignupPageContents = styled.div`
@@ -215,6 +213,10 @@ const SignupPageContents = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 375px) {
+    padding: 20px;
+  }
 `;
 
 const SignupPageCommentDiv = styled.div`
@@ -243,6 +245,20 @@ const SignupPageCommentDiv = styled.div`
   & h3 {
     font-weight: 500;
     font-size: 17px;
+  }
+
+  @media (max-width: 375px) {
+    & h1 {
+      font-size: 40px;
+    }
+
+    & h2 {
+      font-size: 15px;
+    }
+
+    & h3 {
+      font-size: 13px;
+    }
   }
 `;
 
@@ -305,6 +321,10 @@ const SignupPageForm = styled.form`
       background-color: rgba(0, 168, 107, 0.8);
     }
   }
+
+  @media (max-width: 375px) {
+    width: 100%;
+  }
 `;
 
 const DeviceImage = styled.img`
@@ -317,4 +337,8 @@ const DeviceImage = styled.img`
   opacity: ${({ selected }) => (selected ? 1 : 0.5)};
   border: ${({ selected }) => (selected ? "5px solid #107d8e" : "none")};
   outline: none;
+
+  @media (max-width: 375px) {
+    width: 50px;
+  }
 `;
