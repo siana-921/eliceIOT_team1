@@ -4,7 +4,6 @@ import Link from "next/link";
 import { isLoggedInState, tokenState } from "@/store/atoms";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { useRouter } from "next/router";
-import { useCookies } from "react-cookie";
 
 import styled from "@emotion/styled";
 
@@ -13,7 +12,6 @@ export default function LoginFunc() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
-  // const [cookies, setCookie] = useCookies(["access_token"]);
 
   const setToken = useSetRecoilState(tokenState);
   const [isLoggedIn, setLoggedIn] = useRecoilState(isLoggedInState);
@@ -24,15 +22,17 @@ export default function LoginFunc() {
     if (isLoggedIn) {
       setTimeout(() => {
         router.push("/mypage");
-      }, 1000);
+      }, 1500);
     }
   }, [isLoggedIn, router]);
 
   const handleResponse = (response) => {
-    console.log(response);
     if (response.status === 200) {
       setMsg(id + "님, 로그인 되었습니다! 반가워요 😊");
       setLoggedIn(true);
+
+      const token = response.data.accessToken;
+      setToken(token);
     } else if (response.status === 403) {
       setMsg("가입되지 않은 계정입니다.");
     } else if (response.status === 401) {
@@ -61,7 +61,6 @@ export default function LoginFunc() {
     axiosInstance
       .post(`user/sign_in`, body)
       .then((response) => {
-        console.log(response);
         handleResponse(response);
         setLoading(false);
       })

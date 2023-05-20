@@ -2,17 +2,12 @@ import { atom } from "recoil";
 import device000sensor from "@data/user000/sensorLog";
 const JSONdevice000sensor = JSON.parse(JSON.stringify(device000sensor));
 
-export const allDeviceSensorAtom = atom({
-  key: "allDeviceSensorAtom",
-  default: JSONdevice000sensor,
-});
-
 //현재 로그인한 녀석의 정보 (단일객체)
 export const clientAtom = atom({
   key: "clientAtom",
   default: {
-    user_id: "user999",
-    device_id: "unit003",
+    user_id: "user333",
+    device_id: "B48A0A75ADA0",
   },
 });
 
@@ -20,24 +15,24 @@ export const clientAtom = atom({
 export const userAtom = atom({
   key: "userAtom",
   default: {
-    id: "user999",
+    id: "user333",
     fullname: "정수아",
     phone: "010-1234-5678",
     email: "basilfarm@gmail.com",
-    picture: 1,
-    device_id: "unit003",
+    picture: 2,
+    device_id: "B48A0A75ADA0",
+    created_at: 1684470230378,
   },
 });
 
-//디바이스 정보 (단일객체)
+//디바이스 정보 (배열로 오지만 set할때 0번째 인덱스를 set -> 단일객체)
 export const deviceAtom = atom({
   key: "deviceAtom",
   default: {
-    device_id: "unit003",
-    device_name: "야생의바질",
+    device_id: "B48A0A75ADA0",
     device_type: "esp32",
-    device_macAddress: "12:34:56:78",
-    picture: 1,
+    device_macAddress: "B4:8A:0A:75:AD:A0",
+    picture: 3,
   },
 });
 
@@ -45,16 +40,7 @@ export const deviceAtom = atom({
 //api/auto/:device_id/status
 export const autoConfigAtom = atom({
   key: "autoConfigAtom",
-  default: [
-    {
-      device_id: "unit001",
-      status: 1,
-      target_temp: 20,
-      target_moisture: 70,
-      target_light: 4000,
-      created_at: "2023-05-12T12:26:40.000Z",
-    },
-  ],
+  default: {},
 });
 
 //누적 센서 데이터 (객체배열)
@@ -66,23 +52,13 @@ export const sensorAtom = atom({
 //제어명령 누적 (객체배열)
 export const actuatorAtom = atom({
   key: "actuatorAtom",
-  default: [
-    {
-      idx: 0,
-      device_id: "unit001",
-      led: 0,
-      pump: 0,
-      fan: 0,
-      peltier: 0,
-      created_at: 1682658179,
-    },
-  ],
+  default: [{}],
 });
 
 // ---------------------------------------------로그인---------------------------------------------------------
 
 // 토큰 관리(사용자 인증과 관련된 모든 페이지에 적용해야할 듯)
-// 사용 : signup
+// 사용 : login, mypage, dashboard
 export const tokenState = atom({
   key: "tokenState",
   default: "",
