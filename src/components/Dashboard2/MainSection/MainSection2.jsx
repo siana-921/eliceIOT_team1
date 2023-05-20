@@ -10,7 +10,7 @@ const MainSection2Content = () => {
   const MAX_LIGHT = 20000;
   const latestValue =
     latestData.light / (0.01 * MAX_LIGHT) > 100 ? 100 : latestData.light / (0.01 * MAX_LIGHT);
-
+  //흑... 왜 에러나는데
   return (
     <Main>
       <BackTriangleWrapper>
