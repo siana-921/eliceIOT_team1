@@ -125,7 +125,6 @@ export default function SignupFunc() {
     axiosInstance
       .post(`user/sign_up`, body)
       .then((res) => {
-        console.log(res);
         setLoading(false);
         setTimeout(() => {
           router.push("/login");

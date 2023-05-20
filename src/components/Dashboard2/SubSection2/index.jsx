@@ -134,19 +134,22 @@ const SubSection3Contents = () => {
     setIsButtonDisabled(true);
     setTimeout(() => {
       setIsButtonDisabled(false);
-    }, 20000);
+    }, 5000);
     const data = { command: cmd, actuator: "led" }; //command: "0" or "1"
 
     try {
       const postres = await axiosInstance.post(`/command/cmd/${device_id}`, data);
-      console.log(postres);
+      if (postres.status === 200) {
+        const getres = await axiosInstance.get(`/actuators/${device_id}?start_time=0`);
+        getres.status === 200 && alert("제어 명령을 보냈습니다.");
+      }
     } catch (err) {
       console.error(err);
-      //alert("서버와의 통신에 실패했습니다.");
+      alert("서버와의 통신에 실패했습니다.");
     }
   };
-  //자동제어 POST (useEffect: isAutoControl)
 
+  //자동제어 POST (useEffect: isAutoControl)
   useEffect(() => {
     !isValueMode && setTargetValue(parseInt(optimal.light));
   }, [isValueMode]);

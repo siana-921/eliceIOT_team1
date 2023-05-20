@@ -136,12 +136,15 @@ const SubSection3Contents = () => {
     setIsButtonDisabled(true);
     setTimeout(() => {
       setIsButtonDisabled(false);
-    }, 20000);
-    const data = { command: cmd, actuator: "led" }; //command: "0" or "1"
+    }, 5000);
+    const data = { command: cmd, actuator: "peltier" }; //command: "0" or "1"
 
     try {
       const postres = await axiosInstance.post(`/command/cmd/${device_id}`, data);
-      console.log(postres);
+      if (postres.status === 200) {
+        const getres = await axiosInstance.get(`/actuators/${device_id}?start_time=0`);
+        getres.status === 200 && alert("제어 명령을 보냈습니다.");
+      }
     } catch (err) {
       console.error(err);
       //alert("서버와의 통신에 실패했습니다.");
@@ -295,7 +298,8 @@ const SubSection3Contents = () => {
             </DisabledManualControlBtn>
           ) : (
             <ManualControlBtnWrapper>
-              <ManualControlBtn onClick={(e) => handlePost(e, "1")}>ON</ManualControlBtn>
+              <ManualControlBtn onClick={(e) => handlePost(e, "1")}>HOT</ManualControlBtn>
+              <ManualControlBtn onClick={(e) => handlePost(e, "2")}>COOL</ManualControlBtn>
               <ManualControlBtn onClick={(e) => handlePost(e, "0")}>OFF</ManualControlBtn>
             </ManualControlBtnWrapper>
           )}
@@ -418,15 +422,18 @@ const ToggleButton = styled.div`
   background-color: transparent;
 `;
 const ManualControlBtn = styled.button`
-  width: 50%;
+  width: 33%;
   border-radius: 0;
   border: none;
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
   background-color: #e4e4e4;
   &:hover {
     background-color: #8884d8;
     color: #fff;
+  }
+  &#1 {
+    background-color: "#FF2A16";
   }
 `;
 const StyledRadio = styled.div`

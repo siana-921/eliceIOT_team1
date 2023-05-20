@@ -19,7 +19,7 @@ const MainSection2Content = () => {
       <SensorNameText>Illuminance ──────────────────</SensorNameText>
       <DataValueTextWrapper>
         <DataValueText>
-          {latestValue}
+          {parseInt(latestValue)}
           <PercentText>%</PercentText>
         </DataValueText>
       </DataValueTextWrapper>
@@ -122,6 +122,12 @@ const SensorNameText = styled.div`
 const PercentText = styled.span`
   font-size: 5rem;
   font-weight: 300;
+  @media (max-width: 768px) {
+    font-size: 3rem;
+  }
+  @media (min-width: 769px) and (max-width: 1024px) {
+    font-size: 2rem;
+  }
 `;
 
 const RandomMsg = styled.p`

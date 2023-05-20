@@ -6,8 +6,8 @@ const JSONdevice000sensor = JSON.parse(JSON.stringify(device000sensor));
 export const clientAtom = atom({
   key: "clientAtom",
   default: {
-    user_id: "user999",
-    device_id: "unit003",
+    user_id: "user333",
+    device_id: "B48A0A75ADA0",
   },
 });
 
@@ -15,13 +15,13 @@ export const clientAtom = atom({
 export const userAtom = atom({
   key: "userAtom",
   default: {
-    id: "user999",
-    fullname: "김디폴트",
+    id: "user333",
+    fullname: "정수아",
     phone: "010-1234-5678",
     email: "basilfarm@gmail.com",
-    picture: 1,
-    device_id: "unit003",
-    created_at: 1,
+    picture: 2,
+    device_id: "B48A0A75ADA0",
+    created_at: 1684470230378,
   },
 });
 
@@ -29,11 +29,10 @@ export const userAtom = atom({
 export const deviceAtom = atom({
   key: "deviceAtom",
   default: {
-    device_id: "unit003",
-    device_name: "야생의바질",
+    device_id: "B48A0A75ADA0",
     device_type: "esp32",
-    device_macAddress: "12:34:56:78",
-    picture: 1,
+    device_macAddress: "B4:8A:0A:75:AD:A0",
+    picture: 3,
   },
 });
 
@@ -41,14 +40,7 @@ export const deviceAtom = atom({
 //api/auto/:device_id/status
 export const autoConfigAtom = atom({
   key: "autoConfigAtom",
-  default: {
-    device_id: "unit001",
-    status: 1,
-    target_temp: 20,
-    target_moisture: 70,
-    target_light: 4000,
-    created_at: 1682658179000,
-  },
+  default: {},
 });
 
 //누적 센서 데이터 (객체배열)
@@ -60,17 +52,7 @@ export const sensorAtom = atom({
 //제어명령 누적 (객체배열)
 export const actuatorAtom = atom({
   key: "actuatorAtom",
-  default: [
-    {
-      idx: 0,
-      device_id: "unit001",
-      led: 0,
-      pump: 0,
-      fan: 0,
-      peltier: 0,
-      created_at: 1682658179000,
-    },
-  ],
+  default: [{}],
 });
 
 // ---------------------------------------------로그인---------------------------------------------------------
