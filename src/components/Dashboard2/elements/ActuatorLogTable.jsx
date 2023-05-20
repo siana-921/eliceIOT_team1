@@ -1,15 +1,17 @@
 import { useEffect } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { clientAtom, actuatorAtom } from "@store/atoms";
+import { clientAtom, actuatorAtom, autoConfigAtom } from "@store/atoms";
 import { formatActuatorSelector } from "@store/selector";
 import styled from "@emotion/styled";
+import { axiosInstance, axiosTest } from "@baseURL";
 
 import unit000_actuator from "../../../data/user000/actuatorLog";
 
 const ActuatorLogTable = ({ category }) => {
+  const autoConfig = useRecoilValue(autoConfigAtom);
   const [actuator, setActuator] = useRecoilState(actuatorAtom);
-  const dataSelector = useRecoilValue(formatActuatorSelector);
   const client = useRecoilValue(clientAtom);
+  const dataSelector = useRecoilValue(formatActuatorSelector);
   const data = dataSelector;
 
   useEffect(() => {
@@ -22,8 +24,9 @@ const ActuatorLogTable = ({ category }) => {
         console.error(error);
       }
     };
+    fetchActuatorLog();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [autoConfig]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -69,7 +72,7 @@ const ActuatorLogTable = ({ category }) => {
                   </Styled_tr>
                 ))
             : data
-                .slice(0, 10)
+                .slice(data.length - 10, data.length)
                 .reverse()
                 .map((row, index) => (
                   <Styled_tr key={index}>

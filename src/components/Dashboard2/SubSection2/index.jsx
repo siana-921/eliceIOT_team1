@@ -62,7 +62,6 @@ const SubSection3Contents = () => {
             axiosInstance
               .get(`/auto/${device_id}/status`)
               .then((getRes) => {
-                console.log(getRes);
                 setAutoConfig(getRes.data[0]);
               })
               .catch((getError) => {
@@ -88,7 +87,6 @@ const SubSection3Contents = () => {
             axiosInstance
               .get(`/auto/${device_id}/status`)
               .then((getRes) => {
-                console.log(getRes);
                 setAutoConfig(getRes.data[0]);
               })
               .catch((getError) => {
@@ -112,7 +110,6 @@ const SubSection3Contents = () => {
 
   //자동제어 모드 라디오버튼 onChange
   const handleRadioChange = (e) => {
-    console.log(e.target.id);
     if (e.target.id === "setValueMode") {
       setIsValueMode(true);
     } else if (e.target.id === "setAlphaGoMode") {

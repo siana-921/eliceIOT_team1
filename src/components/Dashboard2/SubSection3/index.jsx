@@ -64,7 +64,7 @@ const SubSection3Contents = () => {
             axiosInstance
               .get(`/auto/${device_id}/status`)
               .then((getRes) => {
-                console.log(getRes);
+                getRes;
                 setAutoConfig(getRes.data[0]);
               })
               .catch((getError) => {

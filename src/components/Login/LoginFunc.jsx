@@ -27,7 +27,6 @@ export default function LoginFunc() {
   }, [isLoggedIn, router]);
 
   const handleResponse = (response) => {
-    console.log(response);
     if (response.status === 200) {
       setMsg(id + "님, 로그인 되었습니다! 반가워요 😊");
       setLoggedIn(true);

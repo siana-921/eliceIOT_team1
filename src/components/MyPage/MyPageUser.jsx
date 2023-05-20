@@ -22,8 +22,6 @@ export default function MyPageUser() {
         });
         const { id, email, phone, fullname } = response.data;
 
-        console.log(response);
-
         setUserInfo({
           id: response.data[0].id,
           fullname: response.data[0].fullname,
