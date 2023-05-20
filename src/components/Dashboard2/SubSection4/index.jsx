@@ -25,8 +25,8 @@ const SubSection3Contents = () => {
   );
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const user = useRecoilValue(userAtom); //현재 로그인된 유저의 정보 : default user001
-  const device = useRecoilValue(deviceAtom); //현재 로그인된 유저의 device : default unit001
+  const user = useRecoilValue(userAtom); //현재 로그인된 유저의 정보
+  const device = useRecoilValue(deviceAtom); //현재 로그인된 유저의 device
   const { device_id } = device;
   const { id: user_id } = user;
 
@@ -88,7 +88,6 @@ const SubSection3Contents = () => {
             axiosInstance
               .get(`/auto/${device_id}/status`)
               .then((getRes) => {
-                console.log(getRes);
                 setAutoConfig(getRes.data[0]);
               })
               .catch((getError) => {
@@ -112,7 +111,6 @@ const SubSection3Contents = () => {
 
   //자동제어 모드 라디오버튼 onChange
   const handleRadioChange = (e) => {
-    console.log(e.target.id);
     if (e.target.id === "setValueMode") {
       setIsValueMode(true);
     } else if (e.target.id === "setAlphaGoMode") {
@@ -131,18 +129,30 @@ const SubSection3Contents = () => {
       alert("이전 명령이 처리중입니다.");
       return;
     }
+
     setIsButtonDisabled(true);
     setTimeout(() => {
       setIsButtonDisabled(false);
-    }, 20000);
-    const data = { command: cmd, actuator: "led" }; //command: "0" or "1"
+    }, 5000);
 
     try {
-      const postres = await axiosInstance.post(`/command/cmd/${device_id}`, data);
-      console.log(postres);
+      const postres = await axiosInstance.post(`/command/cmd/${device_id}`, {
+        command: "1",
+        actuator: "pump",
+      });
+
+      if (postres.status === 200) {
+        setTimeout(async () => {
+          await axiosInstance.post(`/command/cmd/${device_id}`, {
+            command: "0",
+            actuator: "pump",
+          });
+          alert("펌프를 2.5 초간 작동했습니다.");
+        }, 2500);
+      }
     } catch (err) {
       console.error(err);
-      //alert("서버와의 통신에 실패했습니다.");
+      // alert("서버와의 통신에 실패했습니다.");
     }
   };
   //자동제어 POST (useEffect: isAutoControl)
@@ -286,15 +296,14 @@ const SubSection3Contents = () => {
           )}
         </Item2>
         <Item3>
-          <SmallTitleText>즉시 제어 (펌프)</SmallTitleText>
+          <SmallTitleText>즉시 제어 (펌프 2.5초간)</SmallTitleText>
           {formatAutoConfig.status ? (
             <DisabledManualControlBtn>
               <div>자동제어 동작 중에는 설정할 수 없습니다</div>
             </DisabledManualControlBtn>
           ) : (
             <ManualControlBtnWrapper>
-              <ManualControlBtn onClick={(e) => handlePost(e, "1")}>ON</ManualControlBtn>
-              <ManualControlBtn onClick={(e) => handlePost(e, "0")}>OFF</ManualControlBtn>
+              <ManualControlBtn onClick={(e) => handlePost(e)}>ON</ManualControlBtn>
             </ManualControlBtnWrapper>
           )}
         </Item3>
@@ -416,7 +425,7 @@ const ToggleButton = styled.div`
   background-color: transparent;
 `;
 const ManualControlBtn = styled.button`
-  width: 50%;
+  width: 100%;
   border-radius: 0;
   border: none;
   font-size: 3rem;

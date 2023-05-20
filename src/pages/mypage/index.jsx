@@ -1,15 +1,12 @@
 import styled from "@emotion/styled";
 
-import MyPageBailsList from "@/components/MyPage/MyPageBasilsList";
-import MyPageUser from "@/components/MyPage/MyPageUser";
+import MyPageBailsList from "@/components/mypage/MyPageBasilsList";
+import MyPageUser from "@/components/mypage/MyPageUser";
 import { tokenState, userAtom } from "@/store/atoms";
 import { useRecoilValue, useRecoilState } from "recoil";
 
 export default function MyPage({}) {
   const user = useRecoilValue(userAtom);
-
-  console.log(user);
-
   return (
     <MyPageContainer>
       <MyPageLogoImage src="/images/logo.png" alt="logo" layout="fill" />
