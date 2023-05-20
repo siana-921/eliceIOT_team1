@@ -62,7 +62,6 @@ const SubSection3Contents = () => {
             axiosInstance
               .get(`/auto/${device_id}/status`)
               .then((getRes) => {
-                console.log(getRes);
                 setAutoConfig(getRes.data[0]);
               })
               .catch((getError) => {
@@ -88,7 +87,6 @@ const SubSection3Contents = () => {
             axiosInstance
               .get(`/auto/${device_id}/status`)
               .then((getRes) => {
-                console.log(getRes);
                 setAutoConfig(getRes.data[0]);
               })
               .catch((getError) => {
@@ -112,7 +110,6 @@ const SubSection3Contents = () => {
 
   //자동제어 모드 라디오버튼 onChange
   const handleRadioChange = (e) => {
-    console.log(e.target.id);
     if (e.target.id === "setValueMode") {
       setIsValueMode(true);
     } else if (e.target.id === "setAlphaGoMode") {
@@ -134,19 +131,22 @@ const SubSection3Contents = () => {
     setIsButtonDisabled(true);
     setTimeout(() => {
       setIsButtonDisabled(false);
-    }, 20000);
+    }, 5000);
     const data = { command: cmd, actuator: "led" }; //command: "0" or "1"
 
     try {
       const postres = await axiosInstance.post(`/command/cmd/${device_id}`, data);
-      console.log(postres);
+      if (postres.status === 200) {
+        const getres = await axiosInstance.get(`/actuators/${device_id}?start_time=0`);
+        getres.status === 200 && alert("제어 명령을 보냈습니다.");
+      }
     } catch (err) {
       console.error(err);
-      //alert("서버와의 통신에 실패했습니다.");
+      alert("서버와의 통신에 실패했습니다.");
     }
   };
-  //자동제어 POST (useEffect: isAutoControl)
 
+  //자동제어 POST (useEffect: isAutoControl)
   useEffect(() => {
     !isValueMode && setTargetValue(parseInt(optimal.light));
   }, [isValueMode]);

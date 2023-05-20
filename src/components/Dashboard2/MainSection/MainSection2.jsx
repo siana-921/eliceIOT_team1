@@ -19,7 +19,7 @@ const MainSection2Content = () => {
       <SensorNameText>Illuminance ──────────────────</SensorNameText>
       <DataValueTextWrapper>
         <DataValueText>
-          {latestValue}
+          {parseInt(latestValue)}
           <PercentText>%</PercentText>
         </DataValueText>
       </DataValueTextWrapper>

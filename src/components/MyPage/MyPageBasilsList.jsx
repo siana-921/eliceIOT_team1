@@ -7,9 +7,6 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { tokenState, userAtom, deviceAtom } from "@/store/atoms";
 
 export default function MyPageBailsList() {
-  const token = useRecoilValue(tokenState);
-  const [isModalOpen, setModalOpen] = useState(false);
-
   const [user, setUser] = useRecoilState(userAtom);
   const [device, setDevice] = useRecoilState(deviceAtom);
   const device_id = user.device_id;
@@ -17,16 +14,9 @@ export default function MyPageBailsList() {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(user);
-    console.log(device);
-  }, [user, device]);
-
-  useEffect(() => {
     const fetchDefaultDeviceId = async () => {
       try {
         const response = await axiosInstance.get(`device/info/${device_id}`);
-
-        console.log(response);
         response.data[0] && setDevice(response.data[0]);
       } catch (error) {
         console.error("디바이스 목록 : 🚀디바이스 목록을 가져오는데 실패했습니다.", error);
@@ -37,22 +27,12 @@ export default function MyPageBailsList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  const openModal = () => {
-    //setModalOpen(true);
-    alert("지금은 1인 1디바이스입니다 예..");
-  };
-
-  const closeModal = () => {
-    //setModalOpen(false);
-  };
-
   const handleDeviceClick = () => {
     router.push({
       pathname: "./dashboard",
       query: { user_id: user.id, device_id: device.device_id },
     });
   };
-  const addDevice = () => {};
 
   const profileImage = [
     "url(/images/profile/cat.jpeg)",
@@ -62,12 +42,14 @@ export default function MyPageBailsList() {
     "url(/images/profile/basilpesto.png)",
   ];
 
+  const dummyhandler = () => {};
+
   return (
     <BasilsListMain>
-      <h2>🪴 {user.fullname}님의 바질목록 🪴</h2>
+      <h2>🌱{user.fullname}님의 바질목록🌱</h2>
       <BasilListDiv>
         <p>새로운 바질이 추가되었나요?</p>
-        <button onClick={openModal}> 등록하러 가기</button>
+        <button onClick={dummyhandler}> 등록하러 가기</button>
       </BasilListDiv>
       {/*<DeviceModal isOpen={isModalOpen} closeModal={closeModal} addDevice={addDevice} />*/}
       <BasilDeviceLists>

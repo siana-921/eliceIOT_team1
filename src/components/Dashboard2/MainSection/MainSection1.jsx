@@ -23,17 +23,12 @@ const MainSection1Content = () => {
     router.push("/");
   };
 
-  console.log(autoConfig);
-
   return (
     <Main>
       <ProfileImageWrapper>
         <Profileimage
           style={{
-            backgroundImage:
-              device.device_id === "unit003"
-                ? "url(/images/profile/cat.jpeg)"
-                : "url(/images/profile/basilpesto.png)",
+            backgroundImage: "url(/images/profile/cat.jpeg)",
             backgroundSize: "cover",
           }}
         ></Profileimage>
@@ -41,11 +36,11 @@ const MainSection1Content = () => {
       <TitleWrapper>
         <UserNameText>{user.fullname}님의</UserNameText>
         <PlantNameText>
-          {device.device_id === "unit003" ? "바질맛사료" : "그저그런바질"}
+          {device.device_id === "B48A0A75ADA0" ? "바질맛사료" : "독이든바질"}
         </PlantNameText>
       </TitleWrapper>
       <ContentsWrapper>
-        <SubTitleText>{`MAC address: ${device.device_macAddress} (${device.device_type})`}</SubTitleText>
+        <SubTitleText>{`DEVICE ID || ${device.device_id} (${device.device_type})`}</SubTitleText>
         <SubTitleText style={{ fontSize: "28px", fontWeight: 200 }}>
           {autoConfig.status ? "Auto Mode : ON " : "Auto Mode : OFF"}
         </SubTitleText>

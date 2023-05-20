@@ -4,7 +4,6 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import styled from "@emotion/styled";
 import { dayAndNightSelector } from "@store/selector";
 import { maxBy, minBy } from "lodash";
-import { scaleLinear } from "d3-scale";
 
 const DayAndNightTempChart = () => {
   const dayAndNight = useRecoilValue(dayAndNightSelector);
@@ -52,7 +51,7 @@ const DayAndNightTempChart = () => {
               return `${month}/${day}`;
             }}
           />
-          <YAxis domain={[minVal - 0.3, maxVal + 0.3]} />
+          <YAxis domain={[minVal - 0.3, maxVal + 0.3]} hide={true} />
           <Tooltip />
           <Bar dataKey="dayTemp" fill={colorCode.yellow} />
           <Bar dataKey="nightTemp" fill={colorCode.palelavender} />
