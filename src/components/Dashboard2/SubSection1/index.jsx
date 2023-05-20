@@ -116,7 +116,9 @@ const SubSection1Contents = () => {
               <div>MIN</div>
             </MaxAndMinSubTitleArea>
             <MaxAndMinTextArea>
-              <div className="maxmindiv">{result.humidity.max}</div>
+              <div className="maxmindiv">
+                {result.humidity.max > 100 ? 99 : result.humidity.max}
+              </div>
               <div className="maxmindiv">{result.humidity.min}</div>
             </MaxAndMinTextArea>
           </MaxAndMinContainer>

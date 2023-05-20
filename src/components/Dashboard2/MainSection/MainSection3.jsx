@@ -103,7 +103,7 @@ const SliderWrapper = styled.div`
 //----------------텍스트 스타일
 
 const DataValueText = styled.p`
-  font-size: 10rem;
+  font-size: 9.3rem;
   margin-top: -1.2rem;
 `;
 const SensorNameText = styled.p`
